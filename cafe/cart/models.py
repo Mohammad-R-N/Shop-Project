@@ -12,3 +12,6 @@ class Order(models.Model):
     earned_point=models.DecimalField(max_digits=10,decimal_places=0)
     customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
     staff=models.ForeignKey(Staff,on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.total_price
