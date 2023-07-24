@@ -7,6 +7,6 @@ urlpatterns = [
     path("cart/",include("cart.urls")),
     path("menu/",include("menu.urls"),name="menu-page"),
     path("staff/",include("staff.urls"),name="staff-page"),
-    path("customer/",include("customer.urls"),name="customer-page"),
+    path("customer/",include("customer.urls")),
     path("category/",include("category.urls"))
 ]
