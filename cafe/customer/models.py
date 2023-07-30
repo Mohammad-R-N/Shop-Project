@@ -1,9 +1,11 @@
 from django.db import models
 
-# Create your models here.
-class Customer(models.Model):
-    phone=models.DecimalField(max_digits=11,decimal_places=0)
-    points=models.DecimalField(max_digits=10,decimal_places=0)
 
-    def __str__(self) -> str:
-        return self.phone
+class Customer(models.Model):
+    phone_number = models.IntegerField(max_length=11)
+    order = models.IntegerField(default=0)
+    point = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.phone_number} "
+
