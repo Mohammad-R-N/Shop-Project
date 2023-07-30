@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Customer(models.Model):
-    phone_number = models.IntegerField(max_length=11)
+    phone_number = models.IntegerField()
     order = models.IntegerField(default=0)
     point = models.IntegerField(default=0)
 

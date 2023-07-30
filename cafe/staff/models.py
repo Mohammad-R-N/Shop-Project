@@ -5,8 +5,8 @@ from django.utils.text import slugify
 class Staff(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=30)
-    phone_number = models.IntegerField(max_length=11)
-    address = models.CharField()
+    phone_number = models.IntegerField()
+    address = models.CharField(max_length=150)
     iban = models.IntegerField()
     slug = models.SlugField(default="", null=False, db_index=True, blank=True)
 
