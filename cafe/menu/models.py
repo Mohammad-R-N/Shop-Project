@@ -1,6 +1,6 @@
 from django.db import models
-from cafe.category.models import Category
-from cafe.cart.models import Cart
+from category.models import Category
+from cart.models import Cart
 from django.utils.text import slugify
 
 

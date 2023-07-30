@@ -1,7 +1,6 @@
 from django.db import models
-from cafe.staff.models import Staff
-from cafe.customer.models import Customer
-
+from staff.models import Staff
+from customer.models import Customer
 
 class Cart(models.Model):
     count = models.IntegerField()
