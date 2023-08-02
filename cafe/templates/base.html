@@ -1,1 +1,184 @@
- 
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block title %}
+    {% endblock title %}
+    <link rel="shortcut icon" href="{% static 'images/logo/favicon.ico' %}" type="images/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/meanmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+</head>
+
+<body class="dark-bg">
+    <!-- header start -->
+    <header class="site-header black-bg">
+        <div class="menu-area custom-padding">
+            <div class="container-fluid custom-width">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-9 col-6">
+                        <div class="logo mm-only d-md-block d-lg-none">
+                            <a href="index.html">
+                                <img src="static/images/logo/logo-black.png" alt="img">
+                            </a>
+                        </div>
+                        <div class="main-menu main-menu">
+                            <nav id="mobile-menu">
+                                <ul>
+                                    <li><a href={% url 'home' %}>Home</a></li>
+                                    <li><a href={% url 'menu' %}>Menu</a></li>
+                                    <li><a href={% url 'cart' %}>Shop Cart</a></li>
+                                    <li><a href="checkout.html">Shop Checkout</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-3 col-6 align-self-center">
+                        <div class="menu-area__right menu-area__right d-flex justify-content-end align-items-center">
+                            <div class="search">
+                                <div class="search__trigger item">
+                                    <span class="open"><i class="far fa-search"></i></span>
+                                    <span class="close"><i class="fal fa-times"></i></span>
+                                </div>
+                                <div class="search__form">
+                                    <form role="search" method="get" action="home-3.html">
+                                        <input type="search" name="s" value="" placeholder="Search Keywords">
+                                        <button type="submit"><i class="far fa-search"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="hamburger-trigger item">
+                                <i class="far fa-bars"></i>
+                            </div>
+                            <div class="cart cart-trigger item position-relative">
+                                <i class="fa fa-shopping-basket"></i>
+                                <span class="cart__count">3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- header end -->
+    <!-- side info for mobile view -->
+    <aside class="side-info-wrapper mm-only">
+        <div class="side-info__wrapper d-flex align-items-center justify-content-between">
+            <div class="side-info__logo">
+                <a href="home-3.html">
+                    <img src="static/images/logo/logo-black.png" alt="logo">
+                </a>
+            </div>
+            <div class="side-info__close">
+                <a href="javascript:void(0);"><i class="fal fa-times"></i></a>
+            </div>
+        </div>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="menu-tab-1" role="tabpanel" aria-labelledby="menu-tab-1-tab">
+                <div class="mobile-menu"></div>
+            </div>
+
+        </div>
+    </aside>
+    {% block content %}
+    {% endblock content %}
+    <!-- footer start -->
+    <footer class="site-footer black-bg pt-125 position-relative">
+        <div class="footer__top">
+            <a href="#" class="go-top go-top__white position-absolute d-flex align-items-center justify-content-center">
+                <i class="fal fa-long-arrow-up"></i>
+            </a>
+            <div class="container">
+                <div class="row justify-content-center mt-none-30">
+                    <div class="col-xl-3 col-lg-6 mt-30">
+                        <div class="footer__widget footer__info">
+                            <div class="item d-flex align-items-center justify-content-center">
+                                <img src="static/images/icons/ft-phone.png" alt="">
+                                <span>Phone :</span>
+                                <a href="tel:9821210000">+98 021 21 0000</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 mt-30 pl-55">
+                        <div class="footer__widget footer__info">
+                            <div class="item d-flex align-items-center justify-content-start">
+                                <img src="static/images/icons/ft-map-marker.png" alt="">
+                                <span>Address :</span>
+                                <p>Some where in Tehran</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer__middle mt-65">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="footer__logo--content">
+                            <img class="mb-15" src="static/images/logo/logo.png" alt="">
+                            <p>Donec et nibh maximus, congue est eu, mattis nunc. Praesent ut quam quis quam venenatis
+                                fringilla. Morbi vestibulum</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 align-self-end">
+                        <div class="social-links d-flex align-items-center justify-content-lg-end">
+                            <a href="#0" target="_blank"><iconify-icon icon="mdi:twitter"></iconify-icon></a>
+                            <a href="#0" target="_blank"><iconify-icon icon="ri:facebook-fill"></iconify-icon></a>
+                            <a href="#0" target="_blank"><iconify-icon icon="bi:instagram"></iconify-icon></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer__menu-area mt-30 pb-90">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="footer__menu">
+                            <nav>
+                                <ul>
+                                    <li class="active"><a href="home-3.html">Home</a></li>
+                                    <li><a href="menu.html">Menu</a></li>
+                                    <li><a href="cart.html">Shop Cart</a></li>
+                                    <li><a href="checkout.html">Shop Checkout</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 text-center text-lg-end">
+                        <a href="#" class="go-top go-top__bottom">
+                            <span>go top</span>
+                            <iconify-icon icon="ph:arrow-up"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- footer end -->
+    {% comment %} <script src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'js/lightcase.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/sticky-header.js' %}"></script>
+    <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
+     {% endcomment %}
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html> 

@@ -1,5 +1,6 @@
 from django.shortcuts import render
-
+from . models import Category
 # Create your views here.
-def category_page(request):
-    return render(request,"category/category.html")
+def category():
+    cat = Category.objects.all()
+    return cat
