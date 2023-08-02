@@ -7,7 +7,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Group 5 - Coffee shop</title>
+    {% block title %}
+    {% endblock title %}
     <link rel="shortcut icon" href="static/images/logo/favicon.ico" type="images/x-icon" />
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/font-awesome.min.css">
@@ -25,7 +26,7 @@
                     <div class="col-xl-8 col-lg-9 col-6">
                         <div class="logo mm-only d-md-block d-lg-none">
                             <a href="index.html">
-                                <img src="staticstatic/images/logo/logo-black.png" alt="img">
+                                <img src="static/images/logo/logo-black.png" alt="img">
                             </a>
                         </div>
                         <div class="main-menu main-menu">
@@ -67,9 +68,29 @@
         </div>
     </header>
     <!-- header end -->
+    <!-- side info for mobile view -->
+    <aside class="side-info-wrapper mm-only">
+        <div class="side-info__wrapper d-flex align-items-center justify-content-between">
+            <div class="side-info__logo">
+                <a href="home-3.html">
+                    <img src="static/images/logo/logo-black.png" alt="logo">
+                </a>
+            </div>
+            <div class="side-info__close">
+                <a href="javascript:void(0);"><i class="fal fa-times"></i></a>
+            </div>
+        </div>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="menu-tab-1" role="tabpanel" aria-labelledby="menu-tab-1-tab">
+                <div class="mobile-menu"></div>
+            </div>
+
+        </div>
+    </aside>
     {% block content %}
     
     {% endblock content %}
+    <!-- footer start -->
     <footer class="site-footer black-bg pt-125 position-relative">
         <div class="footer__top">
             <a href="#" class="go-top go-top__white position-absolute d-flex align-items-center justify-content-center">
@@ -143,7 +164,7 @@
             </div>
         </div>
     </footer>
-
+    <!-- footer end -->
     <script src="static/js/jquery-2.2.4.min.js"></script>
     <script src="static/js/bootstrap.bundle.min.js"></script>
     <script src="static/js/jquery.meanmenu.min.js"></script>
