@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'cart/sidecart.html' %}
 <main>
     <!-- breadcrumb area start -->
     <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="static/images/bg/breadcrumb-bg-1.jpeg"
@@ -42,62 +45,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for pt in product %}
                                     <tr>
                                         <td class="product-thumbnail">
                                             <a href="#" class="img">
-                                                <img src="static/images/products/t-p-1.png" alt="">
+                                                <img src="{{ pt.photo.url }}" alt="">
                                             </a>
                                             <a href="#" class="product-remove"><i class="fal fa-times"></i></a>
                                         </td>
-                                        <td class="product-name"><a href="#">ESPRESSO RISTRETTO</a></td>
-                                        <td class="product-price"><span class="amount">$130.00</span></td>
+                                        <td class="product-name"><a href="#">{{ pt.name }}</a></td>
+                                        <td class="product-price"><span class="amount">$ {{ pt.price }}</span></td>
                                         <td class="product-quantity">
-                                            <input type="number" placeholder="2">
+                                            <input type="number">
                                         </td>
-                                        <td class="product-subtotal"><span class="amount">$130.00</span></td>
+                                        <td class="product-subtotal"><span class="amount">$ {{ pt.price }}</span></td>
                                     </tr>
-                                    <tr>
-                                        <td class="product-thumbnail">
-                                            <a href="#" class="img">
-                                                <img src="static/images/products/t-p-2.png" alt="">
-                                            </a>
-                                            <a href="#" class="product-remove"><i class="fal fa-times"></i></a>
-                                        </td>
-                                        <td class="product-name"><a href="#">ESPRESSO MACCHIATO</a></td>
-                                        <td class="product-price"><span class="amount">$130.00</span></td>
-                                        <td class="product-quantity">
-                                            <input type="number" placeholder="2">
-                                        </td>
-                                        <td class="product-subtotal"><span class="amount">$130.00</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="product-thumbnail">
-                                            <a href="#" class="img">
-                                                <img src="static/images/products/t-p-3.png" alt="">
-                                            </a>
-                                            <a href="#" class="product-remove"><i class="fal fa-times"></i></a>
-                                        </td>
-                                        <td class="product-name"><a href="#">CAFFÈ LATTE</a></td>
-                                        <td class="product-price"><span class="amount">$130.00</span></td>
-                                        <td class="product-quantity">
-                                            <input type="number" placeholder="2">
-                                        </td>
-                                        <td class="product-subtotal"><span class="amount">$130.00</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="product-thumbnail">
-                                            <a href="#" class="img">
-                                                <img src="static/images/products/t-p-4.png" alt="">
-                                            </a>
-                                            <a href="#" class="product-remove"><i class="fal fa-times"></i></a>
-                                        </td>
-                                        <td class="product-name"><a href="#">AMERICANO COFFEE</a></td>
-                                        <td class="product-price"><span class="amount">$130.00</span></td>
-                                        <td class="product-quantity">
-                                            <input type="number" placeholder="2">
-                                        </td>
-                                        <td class="product-subtotal"><span class="amount">$130.00</span></td>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -126,3 +89,4 @@
 
 
 </main>
+{% endblock content %}
