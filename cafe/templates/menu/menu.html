@@ -85,10 +85,9 @@
                                 <div class="card__wrapper">
                                     <div class="card__price" data-price="11.6">$ {{ pt.price }}</div>
                                     <div class="card__counter">
-                                        <button class="card__btn" onclick="decrementCounter('counterScore1')">-</button>
+                                        <button class="card__btn" onclick="decrementCounter('counterScore1', event)">-</button>
                                         <div class="card__counter-score" id="counterScore1">1</div>
-                                        <button class="card__btn card__btn-plus"
-                                            onclick="incrementCounter('counterScore1')">+</button>
+                                        <button class="card__btn card__btn-plus" onclick="incrementCounter('counterScore1', event)">+</button>
                                     </div>
                                 </div>
                                 <button class="card__btn3" type="submit" name="{{ pt.name }}" value="{{ pt.name }}">ADD TO CART</button>

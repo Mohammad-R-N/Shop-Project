@@ -109,38 +109,31 @@
 	
 })(jQuery);
 
-    function updatePriceDisplay(counterScoreId) {
-        var counterScore = document.getElementById(counterScoreId);
-        var quantity = parseInt(counterScore.innerText);
-        var priceElement = document.querySelector("#" + counterScoreId).closest(".card__wrapper").querySelector(".card__price");
-        var pricePerItem = parseFloat(priceElement.dataset.price);
-        var totalPrice = pricePerItem * quantity;
-        var itemPriceElement = document.getElementById(priceElement.id);
-        itemPriceElement.innerText = '$ ' + totalPrice.toFixed(2);
-    }
+// Function to increment the counter
+function incrementCounter(counterScoreId, event) {
+    event.preventDefault(); // Prevent form submission
+    var counterScore = document.getElementById(counterScoreId);
+    var currentScore = parseInt(counterScore.innerText);
+    counterScore.innerText = currentScore + 1;
+    updatePriceDisplay(counterScoreId);
+}
 
-    // Function to increment the counter
-    function incrementCounter(counterScoreId) {
-        var counterScore = document.getElementById(counterScoreId);
-        var currentScore = parseInt(counterScore.innerText);
-        counterScore.innerText = currentScore + 1;
+// Function to decrement the counter
+function decrementCounter(counterScoreId, event) {
+    event.preventDefault(); // Prevent form submission
+    var counterScore = document.getElementById(counterScoreId);
+    var currentScore = parseInt(counterScore.innerText);
+    if (currentScore > 1) {
+        counterScore.innerText = currentScore - 1;
         updatePriceDisplay(counterScoreId);
     }
+}
 
-    // Function to decrement the counter
-    function decrementCounter(counterScoreId) {
-        var counterScore = document.getElementById(counterScoreId);
-        var currentScore = parseInt(counterScore.innerText);
-        if (currentScore > 1) {
-            counterScore.innerText = currentScore - 1;
-            updatePriceDisplay(counterScoreId);
-        }
-    }
 
-    // Initial price display update
-    updatePriceDisplay('counterScore1');
-    updatePriceDisplay('counterScore2');
-    updatePriceDisplay('counterScore3');
+// Initial price display update
+updatePriceDisplay('counterScore1');
+updatePriceDisplay('counterScore2');
+updatePriceDisplay('counterScore3');
 
 
 
