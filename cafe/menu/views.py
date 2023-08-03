@@ -28,13 +28,31 @@ def menu_page(request):
                 if pt.name in request.POST:
                     result = pt.name
                     # del request.session['product']
-                    if request.session.has_key('product'):
-                        product = request.session['product']
-                        product.append(result)
-                        request.session['product'] = product
+                    if request.COOKIES.get('product'):
+                        product1 = request.COOKIES.get('product')
+                        product1 += f"-{result}"  #produc1 = farzad-nima-mmd-sina
+                        cat = category()
+                        product = Product.objects.all()
+                        context = {
+                            "category": cat,
+                            "product": product
+                        }
+                        res = render(request, 'menu/menu.html', context)
+                        res.set_cookie('product', product1)
+                        return res
+                        # res = render(request, 'menu/menu.html', context)
+                        # res.delete_cookie('product')
+                        # return res
                     else:
-                        request.session['product'] = [result,]
-                    return redirect('menu')
+                        cat = category()
+                        product = Product.objects.all()
+                        context = {
+                            "category": cat,
+                            "product": product
+                        }
+                        response = render(request, 'menu/menu.html')
+                        response.set_cookie(key='product', value=result)
+                        return response
     else:
         cat = category()
         product = Product.objects.all()
