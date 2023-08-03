@@ -26,7 +26,7 @@ def cart_page(request):
                 for name in result:
                     product = Product.objects.get(name=name)
                     pt2.append(product)
-            request.session['order'] = pt2
+            # request.session['order'] = pt2
             return redirect('menu')
         else:
             return redirect('home')
