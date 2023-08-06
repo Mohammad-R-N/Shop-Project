@@ -28,3 +28,9 @@ def login_user(request):
     else:
         form = CustomAuthenticationForm()
     return render(request, "login.html", {"form": form})
+
+
+
+def logout_user(request):
+    logout(request)
+    return redirect("home")
