@@ -3,7 +3,7 @@ from cart.models import Cart
 
 
 class Category(models.Model):
-    name = models.TextField(max_length=60)
+    name = models.CharField(max_length=60)
     photo = models.ImageField(upload_to='media/')
 
     def __str__(self):
@@ -30,8 +30,8 @@ class Product(models.Model):
 
 
 class OrderItem(models.Model):
-    menu = models.ForeignKey(Product, on_delete=models.PROTECT)
-    cart = models.ForeignKey(Cart, on_delete=models.PROTECT)
+    menu = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
 
 
 
