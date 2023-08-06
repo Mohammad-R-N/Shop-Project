@@ -13,3 +13,19 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"{self.total_price} order "
+    
+    
+class Table(models.Model):
+    Available = "Available"
+    unavailable = "unavailable"
+    
+    STATUS_CHOICES = [
+    (Available, 'Available'),
+    (unavailable, 'unavailable'),
+    ]
+    
+    table_name = models.CharField(max_length=100)
+    table_seats = models.PositiveIntegerField()
+    status = models.CharField(max_length=10 , choices=STATUS_CHOICES, default=unavailable)    
+
+    
