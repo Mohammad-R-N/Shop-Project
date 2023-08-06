@@ -32,6 +32,8 @@ class Product(models.Model):
 class OrderItem(models.Model):
     menu = models.ForeignKey(Product, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=6,decimal_places=2)
 
 
 
