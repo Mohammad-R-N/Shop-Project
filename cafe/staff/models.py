@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.text import slugify
 
 
 class Staff(models.Model):
@@ -13,6 +12,3 @@ class Staff(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.last_name)
-        super().save(*args, **kwargs)
