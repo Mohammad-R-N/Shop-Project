@@ -1,6 +1,8 @@
 from django.db import models
 from users.models import Users
 from customer.models import Customer
+from menu.models import Product
+
 
 class Table(models.Model):
     Available = "Available"
@@ -31,3 +33,8 @@ class Cart(models.Model):
     
     
 
+class OrderItem(models.Model):
+    menu = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=6,decimal_places=2)

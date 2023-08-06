@@ -1,5 +1,5 @@
 from django.db import models
-from cart.models import Cart
+
 
 
 class Category(models.Model):
@@ -29,11 +29,7 @@ class Product(models.Model):
         return f"product : {self.name}  price ={self.price}"
 
 
-class OrderItem(models.Model):
-    menu = models.ForeignKey(Product, on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=6,decimal_places=2)
+
 
 
 
