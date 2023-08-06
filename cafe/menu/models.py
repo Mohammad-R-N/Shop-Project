@@ -1,7 +1,7 @@
 from django.db import models
 from category.models import Category
 from cart.models import Cart
-from django.utils.text import slugify
+
 
 
 class Product(models.Model):
@@ -16,10 +16,6 @@ class Product(models.Model):
 
     def __str__(self):
         return f"product : {self.name}  price ={self.price}"
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
 
 
 class OrderItem(models.Model):
