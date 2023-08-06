@@ -1,5 +1,5 @@
 from django.db import models
-from staff.models import Users
+from users.models import Users
 from customer.models import Customer
 
 class Table(models.Model):
