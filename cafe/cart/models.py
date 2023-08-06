@@ -15,8 +15,10 @@ class Table(models.Model):
     
     table_name = models.CharField(max_length=100)
     table_seats = models.PositiveIntegerField()
-    status = models.CharField(max_length=10 , choices=STATUS_CHOICES, default=unavailable)    
-
+    status = models.CharField(max_length=10 , choices=STATUS_CHOICES, default=unavailable) 
+       
+    def __str__(self):
+        return f"{self.table_name} order "
     
 class Cart(models.Model):
     total_price = models.DecimalField(max_digits=6,decimal_places=2)
