@@ -1,18 +1,30 @@
 from django.db import models
-from category.models import Category
 from cart.models import Cart
 
 
+class Category(models.Model):
+    name = models.TextField(max_length=60)
+    photo = models.ImageField(upload_to='media/img')
+    slug = models.SlugField(default="", null=False, db_index=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Product(models.Model):
-    name = models.CharField(max_length=20)
-    price = models.FloatField()
-    status = models.BooleanField(default=False)
-    photo = models.ImageField(upload_to='')
-    description = models.CharField(max_length=300)
-    point = models.IntegerField(default=0)
-    category_menu = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='product')
-    slug = models.SlugField(default="", null=False, db_index=True, blank=True)
+    
+    STATUS_CHOICES = [
+    (True, 'active'),
+    (False, 'inactive'),
+    ]
+    name = models.CharField(max_length=50)
+    price = models.DecimalField(max_digits=6,decimal_places=2)
+    status = models.CharField(max_length=5 , choices=STATUS_CHOICES, default="False")
+    photo = models.ImageField(upload_to='static/menu_photos')
+    description = models.CharField(max_length=500)
+    point = models.PositiveIntegerField(default=0)
+    category_menu = models.ForeignKey(Category, on_delete=models.PROTECT)
+    
 
     def __str__(self):
         return f"product : {self.name}  price ={self.price}"
@@ -23,10 +35,4 @@ class OrderItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
 
 
-class Category(models.Model):
-    name = models.TextField(max_length=60)
-    photo = models.ImageField(upload_to='media/img')
-    slug = models.SlugField(default="", null=False, db_index=True, blank=True)
 
-    def __str__(self):
-        return f"{self.name}"
