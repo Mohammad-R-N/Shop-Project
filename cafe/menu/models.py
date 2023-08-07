@@ -1,9 +1,9 @@
 from django.db import models
-from cart.models import Cart
+
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60 , unique=True)
     photo = models.ImageField(upload_to='media/category_photos')
 
     def __str__(self):
@@ -16,7 +16,7 @@ class Product(models.Model):
     (IS_ACTIVE, 'active'),
     (NOT_ACTIVE, 'inactive'),
     ]
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50 ,unique=True)
     price = models.DecimalField(max_digits=6,decimal_places=2)
     status = models.CharField(max_length=10 , choices=STATUS_CHOICES, default=NOT_ACTIVE)
     photo = models.ImageField(upload_to='media/menu_photos')
@@ -29,11 +29,7 @@ class Product(models.Model):
         return f"product : {self.name}  price ={self.price}"
 
 
-class OrderItem(models.Model):
-    menu = models.ForeignKey(Product, on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=6,decimal_places=2)
+
 
 
 

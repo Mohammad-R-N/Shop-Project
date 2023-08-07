@@ -1,7 +1,10 @@
 from django.shortcuts import render, HttpResponse, redirect
-from category.views import category
 from . models import Product
-
+from . models import Category
+# Create your views here.
+def category():
+    cat = Category.objects.all()
+    return cat
 # Create your views here.
 def menu_page(request):
     if request.method == "POST":

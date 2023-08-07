@@ -3,6 +3,11 @@ from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 
+# Create your views here.
+def users_page(request):
+    return render(request,"users/staff.html")
+
+
 def register_user(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
@@ -28,7 +33,6 @@ def login_user(request):
     else:
         form = CustomAuthenticationForm()
     return render(request, "login.html", {"form": form})
-
 
 
 def logout_user(request):
