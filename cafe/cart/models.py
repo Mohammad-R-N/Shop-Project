@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import Users
+from users.models import CustomUser
 from customer.models import Customer
 from menu.models import Product
 
@@ -28,6 +29,7 @@ class Cart(models.Model):
     earned_point = models.PositiveIntegerField(default=0)
     cart_customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     cart_users = models.ForeignKey(Users, on_delete=models.PROTECT)
+    cart_staff = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     cart_table = models.ForeignKey(Table, on_delete=models.PROTECT)
 
     def __str__(self):
