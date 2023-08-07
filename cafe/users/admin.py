@@ -24,3 +24,4 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('phone_number',)
 
 
+admin.site.register(CustomUser, CustomUserAdmin)
