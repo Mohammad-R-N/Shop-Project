@@ -13,5 +13,14 @@ class CustomUserAdmin(UserAdmin):
     )
 
 
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('phone_number', 'password1', 'password2'),
+        }),
+    )
+    list_display = ('phone_number', 'first_name', 'last_name', 'is_staff')
+    search_fields = ('phone_number', 'first_name', 'last_name')
+    ordering = ('phone_number',)
 
 
