@@ -1,1 +1,71 @@
- 
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'cart/sidecart.html' %}
+<main>
+    <!-- breadcrumb area start -->
+    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static "images/bg/breadcrumb-bg-1.jpeg" %}"
+        data-overlay="dark" data-opacity="5">
+        <div class="shape shape__1"><img src="{% static "images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
+        <div class="shape shape__2"><img src="{% static "images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 text-center">
+                    <h2 class="page-title">Incoming Orders</h2>
+                    <div class="cafena-breadcrumb breadcrumbs">
+                        <ul class="list-unstyled d-flex align-items-center justify-content-center">
+                            <li class="cafenabcrumb-item duxinbcrumb-begin">
+                                <a href="{% url 'home' %}"><span>Home</span></a>
+                            </li>
+                            <li class="cafenabcrumb-item duxinbcrumb-end">
+                                <span>Staff Panel</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb area end -->
+
+    <!-- orders area start -->
+    <div class="orders-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="orders-wrapper">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="cart-product-name">Product Name</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">subTotal</th>
+                                        <th class="product-actions">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                    <tr>
+                                        <td class="product-name"><a href="#">{{ order.product.name }}</a></td>
+                                        <td class="product-price"><span class="amount">$ {{ order.product.price }}</span></td>
+                                        <td class="product-quantity">{{ order.quantity }}</td>
+                                        <td class="product-subtotal"><span class="amount">$ {{ order.total_amount }}</span></td>
+                                        <td class="product-actions">
+                                            <button type="button" class="accept-order" data-order-id="{{ order.id }}">Accept</button>
+                                            <button type="button" class="refuse-order" data-order-id="{{ order.id }}">Refuse</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- orders area end -->
+</main>
+{% endblock content %}
