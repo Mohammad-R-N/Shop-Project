@@ -47,12 +47,12 @@
                                     <span class="close"><i class="fal fa-times"></i></span>
                                 </div>
                                 <div class="search__form">
-                                    <form role="search" method="get" action="home-3.html">
-                                        <input type="search" name="s" value="" placeholder="Search Keywords">
+                                    <form role="search" method="get" action="{% url 'search_products' %}">
+                                        <input type="search" name="query" value="" placeholder="Search Keywords">
                                         <button type="submit"><i class="far fa-search"></i></button>
                                     </form>
                                 </div>
-                            </div>
+
                             <div class="hamburger-trigger item">
                                 <i class="far fa-bars"></i>
                             </div>
@@ -164,7 +164,7 @@
     </footer>
 
     <!-- footer end -->
-    {% comment %} <script src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
     <script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
@@ -172,7 +172,7 @@
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'js/sticky-header.js' %}"></script>
     <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
-     {% endcomment %}
+
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
