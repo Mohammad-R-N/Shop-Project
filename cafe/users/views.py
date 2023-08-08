@@ -39,3 +39,12 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect("home")
+
+
+class StaffPanelView(TemplateView):
+    template_name = "staff/staff.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["orders"] = OrderItem.objects.all()
+        return context
