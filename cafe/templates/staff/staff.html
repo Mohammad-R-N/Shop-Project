@@ -46,15 +46,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for order in orders %}
+                                    {% for order in order %}
                                     <tr>
-                                        <td class="product-name"><a href="#">{{ order.product.name }}</a></td>
-                                        <td class="product-price"><span class="amount">$ {{ order.product.price }}</span></td>
-                                        <td class="product-quantity">{{ order.quantity }}</td>
-                                        <td class="product-subtotal"><span class="amount">$ {{ order.total_amount }}</span></td>
+                                        <td class="product-name"><a href="#">{{ order.name }}</a></td>
+                                        <td class="product-price"><span class="amount">$ {{ order.price }}</span></td>
+                                        <td class="product-quantity" style="color: aliceblue;">{{ order.quantity }}1</td>
+                                        <td class="product-subtotal"><span class="amount">$ {{ order.price }}</span></td>
                                         <td class="product-actions">
-                                            <button type="button" class="accept-order" data-order-id="{{ order.id }}">Accept</button>
-                                            <button type="button" class="refuse-order" data-order-id="{{ order.id }}">Refuse</button>
+                                            <button type="button" class="site-btn mt-30" data-order-id="{{ order.id }}">Accept</button>
+                                            <button type="button" class="site-btn mt-30" data-order-id="{{ order.id }}">Refuse</button>
                                         </td>
                                     </tr>
                                     {% endfor %}
