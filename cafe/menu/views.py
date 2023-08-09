@@ -1,6 +1,8 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from .models import Product
 from .models import Category
+from django.http import JsonResponse
+from .models import Product
 
 
 def category():
@@ -64,3 +66,11 @@ def search_products(request):
     return render(
         request, "menu/search_results.html", {"results": results, "query": query}
     )
+
+
+def product_popup(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    html = render(request, "product_popup.html", {"product": product}).content.decode(
+        "utf-8"
+    )
+    return JsonResponse({"html": html})
