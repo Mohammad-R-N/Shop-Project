@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import CustomUser
-
+from django import forms
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -12,3 +12,6 @@ class CustomAuthenticationForm(AuthenticationForm):
     class Meta:
         model = CustomUser
         fields = ["phone_number", "password"]
+
+class StaffLoginForm(forms.Form):
+    phone=forms.CharField(label="PHONE NUMBER",max_length=11)
