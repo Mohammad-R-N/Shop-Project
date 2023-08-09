@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm,StaffLoginForm
+from django.views import View
 from django.views.generic import TemplateView
 from cart.models import OrderItem
 
@@ -48,3 +49,12 @@ class StaffPanelView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["orders"] = OrderItem.objects.all()
         return context
+
+class StaffLogin(View):
+    form_staff=StaffLoginForm
+    def get(self,request):
+        form=self.form_staff
+        return render(request,"staff/login.html",{"form":form})
+
+    def post(self,request):
+        pass
