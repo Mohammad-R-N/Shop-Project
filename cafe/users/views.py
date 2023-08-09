@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, CustomAuthenticationForm,StaffLoginForm
 from django.views import View
@@ -58,17 +58,23 @@ class StaffPanelView(View):
     template_name = "staff/staff.html"
     
     def get(self, request, *args, **kwargs):
-        orders = OrderItem.objects.all()
-        order = request.session['order']
         customer_info = request.session['reserve']
+        order = customer_info['orders']
         product_list = list()
         for name in order:
             product = Product.objects.get(name=name)
             product_list.append(product)
-        context = {"orders": orders,
+        context = {
                     "order": product_list,
-                    "info": customer_info}
+                    "info": customer_info
+                }
         return render(request, self.template_name, context)
+
+class StaffOrderDetail(View):
+    def get(self, request, *args, **kwargs):
+        todo = get_object_or_404(Product, id=kwargs['id'])
+        customer_info = request.session['reserve']
+        order = customer_info['orders']
 
 class StaffLogin(View):
     form_staff=StaffLoginForm
