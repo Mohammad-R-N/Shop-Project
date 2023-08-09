@@ -52,7 +52,10 @@
                                             <a href="#" class="img">
                                                 <img src="{{ pt.photo.url }}" alt="">
                                             </a>
-                                            <a href="#" class="product-remove"><i class="fal fa-times"></i></a>
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                            <button class="product-remove" type="submit" name="remove" value="{{ pt.name }}" style="background: unset;"><i class="fal fa-times"></i></button>
+                                            </form>
                                         </td>
                                         <td class="product-name"><a href="#">{{ pt.name }}</a></td>
                                         <td class="product-price"><span class="amount">$ {{ pt.price }}</span></td>
@@ -68,18 +71,9 @@
                         <div class="row justify-content-center">
                             <div class="col-xl-5 col-lg-7">
                                 <div class="cart-total mt-100">
-                                    <h2 class="title">Cart Total</h2>
-                                    <div class="ct-sub">
-                                        <span>Sub Total</span>
-                                        <span>$ 180</span>
-                                    </div>
-                                    <div class="ct-sub ct-sub__total">
-                                        <span>Total</span>
-                                        <span>$ 180</span>
-                                    </div>
                                     <form action="" method="post">
                                         {% csrf_token %}
-                                        <button data-filter=".cat1" type="submit" name="done" value="">finalize</button>
+                                        <button data-filter=".cat1" type="submit" name="done" value="" class="site-btn mt-30">finalize</button>
                                     </form>
                                 </div>
                             </div>

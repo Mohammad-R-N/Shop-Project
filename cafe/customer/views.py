@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, HttpResponse
+from django.views import View
+
 
 # Create your views here.
-def customer_page(request):
-    return render(request,"customer/customer.html")
-
-def reservation(request):
-    return render(request, "customer/reserve.html")
+class CustomerView(View):
+    def get(self, request):
+        return render(request,"customer/customer.html")
+    def post(self, request):
+        pass
