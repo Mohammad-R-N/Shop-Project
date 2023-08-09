@@ -14,7 +14,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    
+    code=models.PositiveSmallIntegerField(null=True)
 
     USERNAME_FIELD = "phone_number"
     REQUIRED_FIELDS = []
@@ -23,21 +23,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.phone_number
-    
-class Users(models.Model):
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=30)
-    phone_number = models.CharField(max_length=20, unique=True)
-    photo = models.ImageField(upload_to="media/users_photos")
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-    
-
-class OtpCode(models.Model):
-    phone_number=models.CharField(_("phone number"),max_length=11,validators=[phone_regex])
-    code=models.PositiveSmallIntegerField()
-    created=models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.phone_number} - {self.code} - {self.created}"
