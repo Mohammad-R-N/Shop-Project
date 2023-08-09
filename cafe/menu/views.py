@@ -54,6 +54,13 @@ def menu_page(request):
 
 
 def search_products(request):
-    query = request.GET.get("s", "")
-    results = Product.objects.filter(name__icontains=query)
-    return render(request, "search_results.html", {"results": results, "query": query})
+    query = request.GET.get(
+        "query", ""
+    ).strip()  # Using 'query' and stripping whitespace
+    if not query:  # If the query is empty
+        results = []
+    else:
+        results = Product.objects.filter(name__icontains=query)
+    return render(
+        request, "menu/search_results.html", {"results": results, "query": query}
+    )
