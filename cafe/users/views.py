@@ -60,6 +60,7 @@ class StaffPanelView(View):
     def get(self, request, *args, **kwargs):
         orders = OrderItem.objects.all()
         order = request.session['order']
+        customer_info = request.session['reserve']
         product_list = list()
         for name in order:
             product = Product.objects.get(name=name)
