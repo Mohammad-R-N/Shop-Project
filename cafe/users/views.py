@@ -66,7 +66,8 @@ class StaffPanelView(View):
             product = Product.objects.get(name=name)
             product_list.append(product)
         context = {"orders": orders,
-                    "order": product_list}
+                    "order": product_list,
+                    "info": customer_info}
         return render(request, self.template_name, context)
 
 class StaffLogin(View):
