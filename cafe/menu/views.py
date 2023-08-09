@@ -71,20 +71,24 @@ class MenuView(View):
                         # response.set_cookie(key='quantity', value=res_quantity)
                         return response
 
-
-def search_products(request):
-    query = request.GET.get(
-        "query", ""
-    ).strip()  # Using 'query' and stripping whitespace
-    if not query:  # If the query is empty
-        results = []
-    else:
-        results = Product.objects.filter(name__icontains=query)
-    return render(
-        request, "menu/search_results.html", {"results": results, "query": query}
-    )
+class SearchProducts(View):
+    def get(self, request):
+        query = request.GET.get(
+            "query", ""
+        ).strip()
+        if not query:
+            results = []
+        else:
+            results = Product.objects.filter(name__icontains=query)
+        return render(
+            request, "menu/search_results.html", {"results": results, "query": query}
+        )
+    def post(self, request):
+        pass
 
 class ProductPopup(View):
     def get(self, request, product_id):
         product = Product.objects.get(id=product_id)
         return render(request, "menu/product_detail.html", {"product": product})
+    def post(self, request):
+        pass
