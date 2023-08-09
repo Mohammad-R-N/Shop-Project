@@ -1,22 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .forms import CustomUserCreationForm, CustomAuthenticationForm,StaffLoginForm
+from .forms import StaffLoginForm,StaffOtpForm
 from django.views import View
 from cart.models import OrderItem
+import random
+from utils import send_OTP
+from .models import CustomUser
 from menu.models import Product
-
-
-# Create your views here.
-class RegisterView(View):
-    def get(self, request):
-        form = CustomUserCreationForm()
-        return render(request, "register.html", {"form": form})
-    
-    def post(self, request):
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("login_user")
 
 class UserView(View):
     def get(self, request):
@@ -25,20 +15,39 @@ class UserView(View):
     def post(self, request):
         pass
 
-class LoginView(View):
+
+class StaffLogin(View):
+    form_staff=StaffLoginForm
     def get(self, request):
-        form = CustomAuthenticationForm()
-        return render(request, "login.html", {"form": form})
+        form = self.form_staff
+        return render(request, "staff/login.html", {"form": form})
 
     def post(self, request):
-        form = CustomAuthenticationForm(request, request.POST)
+        form = self.form_staff(request.POST)
         if form.is_valid():
+            random_code=random.randint(1000,9999)
+            print(random_code)
+            CustomUser.objects.update(code=random_code)
             phone_number = form.cleaned_data.get("phone_number")
-            password = form.cleaned_data.get("password")
-            user = authenticate(request, phone_number=phone_number, password=password)
+            send_OTP(phone_number,random_code)
+            request.session["user_info"]={'phone_number':phone_number,"code":random_code}
+            return redirect("check-otp")
+
+class CheckOtp(View):
+    form_otp=StaffOtpForm
+    def get(self, request):
+        form = self.form_otp()
+        return render(request, "staff/otp.html", {"form": form})        
+    def post(self, request):
+        form = self.form_otp(request.POST)
+        otp = form.cleaned_data.get("code")
+        if form.is_valid():
+            user = authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
             if user is not None:
                 login(request, user)
-                return redirect("home")
+                return redirect("staff/")
+            return redirect("/")
+
 
 
 class LogOutView(View):
@@ -48,10 +57,6 @@ class LogOutView(View):
 
     def post(self, request):
         pass
-
-def logout_user(request):
-    logout(request)
-    return redirect("home")
 
 
 class StaffPanelView(View):

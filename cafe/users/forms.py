@@ -14,4 +14,8 @@ class CustomAuthenticationForm(AuthenticationForm):
         fields = ["phone_number", "password"]
 
 class StaffLoginForm(forms.Form):
-    phone=forms.CharField(label="PHONE NUMBER",max_length=11)
+    phone_number=forms.CharField(label="PHONE NUMBER",max_length=11)
+
+class StaffOtpForm(forms.Form):
+    code=forms.IntegerField()
+
