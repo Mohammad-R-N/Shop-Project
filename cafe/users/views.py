@@ -61,8 +61,6 @@ class StaffPanelView(View):
         context = {"orders": orders}
         return render(request, self.template_name, context)
 
-      
-
 class StaffLogin(View):
     form_staff=StaffLoginForm
     def get(self,request):
