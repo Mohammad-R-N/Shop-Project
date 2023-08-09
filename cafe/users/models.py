@@ -32,3 +32,12 @@ class Users(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+
+class OtpCode(models.Model):
+    phone_number=models.CharField(_("phone number"),max_length=11,validators=[phone_regex])
+    code=models.PositiveSmallIntegerField()
+    created=models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.phone_number} - {self.code} - {self.created}"
