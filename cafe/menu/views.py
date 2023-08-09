@@ -1,15 +1,22 @@
 from django.shortcuts import render, HttpResponse, redirect
 from . models import Product
 from . models import Category
+from django.views import View
+
 # Create your views here.
-def category():
-    cat = Category.objects.all()
-    return cat
-# Create your views here.
-def menu_page(request):
-    if request.method == "POST":
+class MenuView(View):
+    def get(self, request):
+        cat = Category.objects.all()
+        product = Product.objects.all()
+        context = {
+            "category": cat,
+            "product": product
+        }
+        return render(request,"menu/menu.html", context)
+    
+    def post(self, request):
         if 'all' in request.POST:
-            cat = category()
+            cat = Category.objects.all()
             product = Product.objects.all()
             context = {
             "category": cat,
@@ -17,7 +24,7 @@ def menu_page(request):
             }
             return render(request,"menu/menu.html", context)
         else:
-            cat = category()
+            cat = Category.objects.all()
             product = Product.objects.all()
             for cat_obj in cat:
                 if cat_obj.name in request.POST:
@@ -30,11 +37,10 @@ def menu_page(request):
             for pt in product:
                 if pt.name in request.POST:
                     result = pt.name
-                    # del request.session['product']
                     if request.COOKIES.get('product'):
                         product1 = request.COOKIES.get('product')
                         product1 += f"-{result}"  #produc1 = farzad-nima-mmd-sina
-                        cat = category()
+                        cat = Category.objects.all()
                         product = Product.objects.all()
                         context = {
                             "category": cat,
@@ -46,8 +52,20 @@ def menu_page(request):
                         # res = render(request, 'menu/menu.html', context)
                         # res.delete_cookie('product')
                         # return res
+                    # elif request.COOKIES.get('quantity'):
+                    #     quantity = request.COOKIES.get('quantity')
+                    #     quantity += f"-{res_quantity}"
+                    #     cat = Category.objects.all()
+                    #     product = Product.objects.all()
+                    #     context = {
+                    #         "category": cat,
+                    #         "product": product
+                    #     }
+                    #     res = render(request, 'menu/menu.html', context)
+                    #     res.set_cookie('quantity', quantity)
+                    #     return res
                     else:
-                        cat = category()
+                        cat = Category.objects.all()
                         product = Product.objects.all()
                         context = {
                             "category": cat,
@@ -55,12 +73,5 @@ def menu_page(request):
                         }
                         response = render(request, 'menu/menu.html')
                         response.set_cookie(key='product', value=result)
+                        # response.set_cookie(key='quantity', value=res_quantity)
                         return response
-    else:
-        cat = category()
-        product = Product.objects.all()
-        context = {
-            "category": cat,
-            "product": product
-        }
-        return render(request,"menu/menu.html", context)
