@@ -29,25 +29,43 @@
     <!-- breadcrumb area end -->
 
     <!-- search results area start -->
-    <div class="search-results-area pt-120 pb-120">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    {% if results %}
-                    <ul class="search-results-list">
-                        {% for product in results %}
-                        <li>
-                            <a href="#">{{ product.name }}</a> - ${{ product.price }}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                    <p>No products found for your search query.</p>
-                    {% endif %}
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 pt-120 pb-120">
+                {% if results %}
+                    {% for product in results %}
+                    <div class="col-xl-4 col-lg-4 col-md-4 l-item grid-item cat1 cat3 cat4 mt-35">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="card">
+                                <div class="card__wrapper"></div>
+                                <div class="card__img">
+                                    <img src="{{ product.photo.url }}" alt="">
+                                </div>
+                                <h3 class="view title border-effect">
+                                    <a href="#">{{ product.name }}</a>
+                                </h3>
+                                <div class="card__subtitle">{{ product.description }}</div>
+                                <div class="card__wrapper">
+                                    <div class="card__price" data-price="11.6">$ {{ product.price }}</div>
+                                    <div class="card__counter">
+                                        <button class="card__btn" onclick="decrementCounter('counterScore1', event)">-</button>
+                                        <div class="card__counter-score" id="counterScore1">1</div>
+                                        <button class="card__btn card__btn-plus" onclick="incrementCounter('counterScore1', event)">+</button>
+                                    </div>
+                                </div>
+                                <button class="card__btn3" type="submit" name="{{ product.name }}" value="{{ product.name }}">ADD TO CART</button>
+                            </div>
+                        </form>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="mt-35">No products found for your search query.</p>
+                {% endif %}
             </div>
         </div>
     </div>
+
     <!-- search results area end -->
 </main>
 {% endblock content %}
