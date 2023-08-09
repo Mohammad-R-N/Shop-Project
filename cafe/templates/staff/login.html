@@ -37,7 +37,7 @@
                         <form action="{% url 'login' %}" method="post">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <button type="submit">Login</button>
+                            <button type="submit" class="site-btn mt-30">Login</button>
                         </form>
                     </div>
                 </div>
