@@ -38,10 +38,9 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="cart-product-name">Product Name</th>
-                                        <th class="product-price">Price</th>
-                                        <th class="product-quantity">Quantity</th>
-                                        <th class="product-subtotal">subTotal</th>
+                                        <th class="cart-product-name">Phone number</th>
+                                        <th class="product-price">Order Id</th>
+                                        <th class="product-quantity">Detail</th>
                                         <th class="product-actions">Actions</th>
                                     </tr>
                                 </thead>
@@ -50,7 +49,6 @@
                                     <tr>
                                         <td class="product-name"><a href="#">{{ order.name }}</a></td>
                                         <td class="product-price"><span class="amount">$ {{ order.price }}</span></td>
-                                        <td class="product-quantity" style="color: aliceblue;">{{ order.quantity }}1</td>
                                         <td class="product-subtotal"><span class="amount">$ {{ order.price }}</span></td>
                                         <td class="product-actions">
                                             <button type="button" class="site-btn mt-30" data-order-id="{{ order.id }}">Accept</button>
