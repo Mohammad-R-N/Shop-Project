@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.views import View
 
+
 # Create your views here.
 class RegisterView(View):
     def get(self, request):
@@ -37,6 +38,7 @@ class LoginView(View):
                 login(request, user)
                 return redirect("home")
 
+
 class LogOutView(View):
     def get(self, request):
         logout(request)
@@ -44,3 +46,16 @@ class LogOutView(View):
 
     def post(self, request):
         pass
+
+def logout_user(request):
+    logout(request)
+    return redirect("home")
+
+
+class StaffPanelView(View):
+    template_name = "staff/staff.html"
+
+    def get(self, request, *args, **kwargs):
+        orders = OrderItem.objects.all()
+        context = {"orders": orders}
+        return render(request, self.template_name, context)
