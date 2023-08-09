@@ -84,7 +84,7 @@ def search_products(request):
         request, "menu/search_results.html", {"results": results, "query": query}
     )
 
-
-def product_popup(request, product_id):
-    product = Product.objects.get(id=product_id)
-    return render(request, "menu/product_detail.html", {"product": product})
+class ProductPopup(View):
+    def get(self, request, product_id):
+        product = Product.objects.get(id=product_id)
+        return render(request, "menu/product_detail.html", {"product": product})
