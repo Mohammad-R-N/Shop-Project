@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from .forms import StaffLoginForm,StaffOtpForm
 from django.views import View
@@ -6,6 +6,7 @@ from cart.models import OrderItem
 import random
 from utils import send_OTP
 from .models import CustomUser
+from menu.models import Product
 
 class UserView(View):
     def get(self, request):
@@ -62,8 +63,30 @@ class StaffPanelView(View):
     template_name = "staff/staff.html"
     
     def get(self, request, *args, **kwargs):
-        orders = OrderItem.objects.all()
-        context = {"orders": orders}
+        customer_info = request.session['reserve']
+        order = customer_info['orders']
+        product_list = list()
+        for name in order:
+            product = Product.objects.get(name=name)
+            product_list.append(product)
+        context = {
+                    "order": product_list,
+                    "info": customer_info
+                }
         return render(request, self.template_name, context)
 
+class StaffOrderDetail(View):
+    def get(self, request, *args, **kwargs):
+        todo = get_object_or_404(Product, id=kwargs['id'])
+        customer_info = request.session['reserve']
+        order = customer_info['orders']
+
+class StaffLogin(View):
+    form_staff=StaffLoginForm
+    def get(self,request):
+        form=self.form_staff
+        return render(request,"staff/login.html",{"form":form})
+
+    def post(self,request):
+        pass
 

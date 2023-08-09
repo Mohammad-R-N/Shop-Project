@@ -38,18 +38,20 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="cart-product-name">Phone number</th>
-                                        <th class="product-price">Total</th>
-                                        <th class="product-quantity">Detail</th>
+                                        <th class="cart-product-name">Product Name</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">subTotal</th>
                                         <th class="product-actions">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for order in order %}
                                     <tr>
-                                        <td class="product-name"><a href="#">{{ info.phone_number }}</a></td>
-                                        <td class="product-price"><span class="amount">$ {{ info.cost }}</span></td>
-                                        <td class="product-subtotal"><span class="amount"><a href="{% url 'staff_order_detail' order.id %}"><button type="button" class="site-btn mt-30">link</button></a></span></td>
+                                        <td class="product-name"><a href="#">{{ order.name }}</a></td>
+                                        <td class="product-price"><span class="amount">$ {{ order.price }}</span></td>
+                                        <td class="product-quantity" style="color: aliceblue;">{{ order.quantity }}1</td>
+                                        <td class="product-subtotal"><span class="amount">$ {{ order.price }}</span></td>
                                         <td class="product-actions">
                                             <button type="button" class="site-btn mt-30" data-order-id="{{ order.id }}">Accept</button>
                                             <button type="button" class="site-btn mt-30" data-order-id="{{ order.id }}">Refuse</button>
