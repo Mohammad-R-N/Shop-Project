@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, CustomAuthenticationForm,StaffLoginForm
 from django.views import View
 from cart.models import OrderItem
+from menu.models import Product
 
 
 # Create your views here.
@@ -58,7 +59,13 @@ class StaffPanelView(View):
     
     def get(self, request, *args, **kwargs):
         orders = OrderItem.objects.all()
-        context = {"orders": orders}
+        order = request.session['order']
+        product_list = list()
+        for name in order:
+            product = Product.objects.get(name=name)
+            product_list.append(product)
+        context = {"orders": orders,
+                    "order": product_list}
         return render(request, self.template_name, context)
 
 class StaffLogin(View):
