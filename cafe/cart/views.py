@@ -65,6 +65,8 @@ class ReservationView(View):
     def post(self, request):
         cost = request.session['cost']
         del request.session['cost']
+        order = request.session['order']
+        del request.session['order']
         table = request.POST['subject']
         date = request.POST['date']
         time = request.POST['time']
@@ -83,7 +85,8 @@ class ReservationView(View):
             'time': time,
             'email': email,
             'cost': cost,
-            'phone_number': phone_number
+            'phone_number': phone_number,
+            'orders': order
         }
         request.session['reserve'] = reserve_info
         return redirect('home')
