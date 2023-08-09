@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
-from django.views.generic import TemplateView
+from django.views import View
 from cart.models import OrderItem
 
 
@@ -41,10 +41,10 @@ def logout_user(request):
     return redirect("home")
 
 
-class StaffPanelView(TemplateView):
+class StaffPanelView(View):
     template_name = "staff/staff.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["orders"] = OrderItem.objects.all()
-        return context
+    def get(self, request, *args, **kwargs):
+        orders = OrderItem.objects.all()
+        context = {"orders": orders}
+        return render(request, self.template_name, context)
