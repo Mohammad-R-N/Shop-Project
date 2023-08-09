@@ -79,7 +79,10 @@
                                 <div class="card__wrapper">
                                 </div>
                                 <div class="card__img"><img src="{{ pt.photo.url }}" alt=""></div>
-                                <h3 class="view title border-effect"><a href="#">{{ pt.name }}</a></h3>
+                                <h3 class="view title border-effect">
+                                    <a href="{% url 'product_popup' pt.id %}" class="product-link">{{ pt.name }}</a>
+                                </h3>
+
                                 <div class="card__subtitle">{{ pt.description }}
                                 </div>
                                 <div class="card__wrapper">
@@ -103,7 +106,7 @@
     <!-- populer menu area end -->
 
     <!-- product popup start -->
-    <div class="product-popup product-popup-1">
+    {% comment %} <div class="product-popup product-popup-1">
         <div class="view-background">
             <div class="row">
                 <div class="col-md-4 align-self-center">
@@ -135,9 +138,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
     <!-- product popup end -->
 </main>
+
 {% endblock content %}
 
 
