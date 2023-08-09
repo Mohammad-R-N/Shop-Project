@@ -69,8 +69,5 @@ def search_products(request):
 
 
 def product_popup(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    html = render(request, "product_popup.html", {"product": product}).content.decode(
-        "utf-8"
-    )
-    return JsonResponse({"html": html})
+    product = Product.objects.get(id=product_id)
+    return render(request, "menu/product_detail.html", {"product": product})
