@@ -34,7 +34,6 @@
                                     <li><a href={% url 'home' %}>Home</a></li>
                                     <li><a href={% url 'menu' %}>Menu</a></li>
                                     <li><a href={% url 'cart' %}>Shop Cart</a></li>
-                                    <li><a href={% url 'reservation' %}>Shop Checkout</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -57,7 +56,7 @@
                                 <i class="far fa-bars"></i>
                             </div>
                             <div class="cart cart-trigger item position-relative">
-                                <i class="fa fa-shopping-basket"></i>
+                                <a href="{% url 'cart' %}"></a><i class="fa fa-shopping-basket"></i>
                                 <span class="cart__count">3</span>
                             </div>
                         </div>
@@ -171,6 +170,7 @@
     <script src="{% static 'js/lightcase.js' %}"></script>
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'js/sticky-header.js' %}"></script>
+
     <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
 
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>

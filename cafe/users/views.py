@@ -2,27 +2,33 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.views import View
-from cart.models import OrderItem
 
 
 # Create your views here.
-def users_page(request):
-    return render(request, "users/staff.html")
-
-
-def register_user(request):
-    if request.method == "POST":
+class RegisterView(View):
+    def get(self, request):
+        form = CustomUserCreationForm()
+        return render(request, "register.html", {"form": form})
+    
+    def post(self, request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("login")
-    else:
-        form = CustomUserCreationForm()
-    return render(request, "staff/register.html", {"form": form})
+            return redirect("login_user")
 
+class UserView(View):
+    def get(self, request):
+        return render(request,"users/staff.html")
 
-def login_user(request):
-    if request.method == "POST":
+    def post(self, request):
+        pass
+
+class LoginView(View):
+    def get(self, request):
+        form = CustomAuthenticationForm()
+        return render(request, "login.html", {"form": form})
+
+    def post(self, request):
         form = CustomAuthenticationForm(request, request.POST)
         if form.is_valid():
             phone_number = form.cleaned_data.get("phone_number")
@@ -31,10 +37,15 @@ def login_user(request):
             if user is not None:
                 login(request, user)
                 return redirect("home")
-    else:
-        form = CustomAuthenticationForm()
-    return render(request, "staff/login.html", {"form": form})
 
+
+class LogOutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect("home")
+
+    def post(self, request):
+        pass
 
 def logout_user(request):
     logout(request)
