@@ -6,7 +6,12 @@ from .models import Product
 
 class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
+   
     list_filter = ['status']
-    
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    search_fields = ['name']
+
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
