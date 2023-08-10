@@ -6,7 +6,7 @@ from .models import Product
 
 class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
-   
+    list_display = ['name', 'price', 'category_menu']
     list_filter = ['status']
 
 
