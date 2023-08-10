@@ -46,15 +46,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for order in order %}
+                                    {% for item in order %}
                                     <tr>
-                                        <td class="product-name"><a href="#">{{ order.name }}</a></td>
-                                        <td class="product-price"><span class="amount">$ {{ order.price }}</span></td>
-                                        <td class="product-quantity" style="color: aliceblue;">{{ order.quantity }}1</td>
-                                        <td class="product-subtotal"><span class="amount">$ {{ order.price }}</span></td>
+                                        <td class="product-name">
+                                            <a href="{% url 'staff_order_detail' id=item.id %}">{{ item.name }}</a>
+                                        </td>
+                                        <td class="product-price">
+                                            <span class="amount">$ {{ item.price }}</span>
+                                        </td>
+                                        <td class="product-quantity" style="color: aliceblue;">{{ item.quantity }}1</td>
+                                        <td class="product-subtotal">
+                                            <span class="amount">$ {{ item.price }}</span>
+                                        </td>
                                         <td class="product-actions">
-                                            <button type="button" class="site-btn mt-30" data-order-id="{{ order.id }}">Accept</button>
-                                            <button type="button" class="site-btn mt-30" data-order-id="{{ order.id }}">Refuse</button>
+                                            <button type="button" class="site-btn mt-30" data-order-id="{{ item.id }}">Accept</button>
+                                            <button type="button" class="site-btn mt-30" data-order-id="{{ item.id }}">Refuse</button>
                                         </td>
                                     </tr>
                                     {% endfor %}
