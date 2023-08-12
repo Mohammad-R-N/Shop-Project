@@ -93,8 +93,8 @@ DATABASES = {
         'HOST': env("DB_HOST"),
         'PORT': env("DB_PORT"),
     }
-
 }
+
 
 
 # Password validation
@@ -114,6 +114,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'users.authentication.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 AUTH_USER_MODEL = "users.CustomUser"
 # Internationalization
