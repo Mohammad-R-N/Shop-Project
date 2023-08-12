@@ -46,10 +46,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for item in order %}
                                     <tr>
                                         <td class="product-name">
-                                            <a href="{% url 'staff_order_detail' id=item.id %}">{{ item.name }}</a>
+                                            <a href="#">{{ item.name }}</a>
                                         </td>
                                         <td class="product-price">
                                             <span class="amount">$ {{ item.price }}</span>
@@ -63,7 +62,6 @@
                                             <button type="button" class="site-btn mt-30" data-order-id="{{ item.id }}">Refuse</button>
                                         </td>
                                     </tr>
-                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
