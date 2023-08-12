@@ -44,11 +44,11 @@
                             <form action="" method="post">
                                 {% csrf_token %}
                                 <div class="row">
-                                    <div class="col-xl-6 col-lg-6">
+                                    {% comment %} <div class="col-xl-6 col-lg-6">
                                         <div class="from-group mt-30">
                                             <input type="text" name="name" placeholder="Enter your name">
                                         </div>
-                                    </div>
+                                    </div> {% endcomment %}
                                     <div class="col-xl-6 col-lg-6">
                                         <div class="from-group mt-30">
                                             <input type="tel" name="tel" id="tel" placeholder="Enter your number">
@@ -58,13 +58,15 @@
                                         <div class="from-group mt-30">
                                             <select name="subject" id="subject">
                                                 <option data-display="Service Category">Seates*</option>
-                                                <option value="1">For 2 Persons</option>
-                                                <option value="2">For 5 Persons</option>
-                                                <option value="3">For 6 Persons</option>
+                                                <option value="1">table 1</option>
+                                                <option value="2">table 2</option>
+                                                <option value="3">table 3</option>
+                                                <option value="4">table 4</option>
+                                                <option value="5">table 5</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-xl-6 col-lg-6">
+                                    {% comment %} <div class="col-xl-6 col-lg-6">
                                         <div class="from-group mt-30">
                                             <input type="date" id="date" name="date">
                                         </div>
@@ -79,25 +81,17 @@
                                             <input type="email" id="2email" name="2email"
                                                 placeholder="Enter your mail">
                                         </div>
-                                    </div>
+                                    </div> {% endcomment %}
                                     <div class="col-xl-12 text-center">
                                         <div class="cart-total mt-100">
                                             <h2 class="title">Cart Total</h2>
                                             <div class="ct-sub">
                                                 <span>Sub Total</span>
-                                                {% comment %} {% if total %} {% endcomment %}
                                                 <span>$ {{ total }}</span>
-                                                {% comment %} {% else %} {% endcomment %}
-                                                {% comment %} <span>$ 0</span>
-                                                {% endif %} {% endcomment %}
                                             </div>
                                             <div class="ct-sub ct-sub__total">
                                                 <span>Total</span>
-                                                {% comment %} {% if total %} {% endcomment %}
                                                 <span>$ {{ total }}</span>
-                                                {% comment %} {% else %}
-                                                <span>$ 0</span>
-                                                {% endif %} {% endcomment %}
                                             </div>
                                             <button type="submit" class="site-btn mt-30">Submit your reservation</button>
                                         </div>

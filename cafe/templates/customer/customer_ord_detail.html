@@ -1,4 +1,4 @@
-{% extends 'baseAdmin.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
 {% include 'cart/sidecart.html' %}
@@ -11,14 +11,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 text-center">
-                    <h2 class="page-title">Incoming Orders</h2>
+                    <h2 class="page-title">Ord Detail</h2>
                     <div class="cafena-breadcrumb breadcrumbs">
                         <ul class="list-unstyled d-flex align-items-center justify-content-center">
                             <li class="cafenabcrumb-item duxinbcrumb-begin">
                                 <a href="{% url 'home' %}"><span>Home</span></a>
                             </li>
                             <li class="cafenabcrumb-item duxinbcrumb-end">
-                                <span>Staff Panel</span>
+                                <span>Ord Information</span>
                             </li>
                         </ul>
                     </div>
@@ -28,40 +28,41 @@
     </section>
     <!-- breadcrumb area end -->
 
-    <!-- orders area start -->
-    <div class="orders-area pt-120 pb-120">
+    <!-- cart area start -->
+    <div class="cart-area pt-120 pb-120">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
-                    <div class="orders-wrapper">
+                    <div class="cart-wrapper">
                         <div class="table-content table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th class="product-thumbnail">Product Image</th>
                                         <th class="cart-product-name">Product Name</th>
                                         <th class="product-price">Price</th>
                                         <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Table</th>
                                         <th class="product-subtotal">subTotal</th>
-                                        <th class="product-actions">Actions</th>
+                                        <th class="product-subtotal">Process</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for pt in product_info %}
                                     <tr>
-                                        <td class="product-name">
-                                            <a href="#">{{ item.name }}</a>
+                                        <td class="product-thumbnail">
+                                            <a href="#" class="img">
+                                                <img src="{{ pt.product_photo}}" alt="">
+                                            </a>
                                         </td>
-                                        <td class="product-price">
-                                            <span class="amount">$ {{ item.price }}</span>
-                                        </td>
-                                        <td class="product-quantity" style="color: aliceblue;">{{ item.quantity }}1</td>
-                                        <td class="product-subtotal">
-                                            <span class="amount">$ {{ item.price }}</span>
-                                        </td>
-                                        <td class="product-actions">
-                                            <button type="button" class="site-btn mt-30" data-order-id="{{ item.id }}">Accept</button>
-                                            <button type="button" class="site-btn mt-30" data-order-id="{{ item.id }}">Refuse</button>
-                                        </td>
+                                        <td class="product-name"><a href="#">{{ pt.product_name }}</a></td>
+                                        <td class="product-price"><span class="amount">$ {{ pt.product_price }}</span></td>
+                                        <td class="product-quantity"><span class="amount">{{ pt.product_quantity }}</span></td>
+                                        <td class="product-quantity"><span class="amount">{{ user_info }}</span></td>
+                                        <td class="product-subtotal"><span class="amount">$ {{ pt.total }}</span></td>
+                                        <td class="product-subtotal"><span class="amount">{{ process }}</span></td>
                                     </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -70,6 +71,6 @@
             </div>
         </div>
     </div>
-    <!-- orders area end -->
+    <!-- cart area end -->
 </main>
 {% endblock content %}
