@@ -7,6 +7,7 @@ import random
 from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product
+from .authentication import CustomAuthBackend
 
 
 class UserView(View):
@@ -50,7 +51,13 @@ class CheckOtp(View):
         form = self.form_otp(request.POST)
         otp = form.cleaned_data.get("code")
         if form.is_valid():
-            user = authenticate(
+            phone_number = request.session["user_info"]["phone_number"]
+            user = CustomUser.objects.filter(phone_number=phone_number).first() #check if the otp 
+            if user is None:
+                return redirect("signup")  # Redirect to signup page if user is not registered
+            if user.code != otp:
+                return redirect("invalid-otp")
+            user = CustomAuthBackend().authenticate(
                 request,
                 phone_number=request.session["user_info"]["phone_number"],
                 code=otp,
@@ -97,13 +104,3 @@ class StaffOrderDetail(View):
         context = {"order": order, "order_items": order_items}
         return render(request, self.template_name, context)
 
-
-class StaffLogin(View):
-    form_staff = StaffLoginForm
-
-    def get(self, request):
-        form = self.form_staff
-        return render(request, "staff/login.html", {"form": form})
-
-    def post(self, request):
-        pass
