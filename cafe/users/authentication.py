@@ -13,4 +13,4 @@ class CustomAuthBackend(BaseBackend):
         if user.code == code:
             return user
         else:
-            return redirect('invalid_otp')
+            return None
