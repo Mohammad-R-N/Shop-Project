@@ -17,7 +17,7 @@ class Table(models.Model):
     table_name = models.CharField(max_length=100)
     table_seats = models.PositiveIntegerField()
     status = models.CharField(max_length=20 , choices=STATUS_CHOICES, default=unavailable) 
-       
+
     def __str__(self):
         return f"{self.table_name} order "
     
