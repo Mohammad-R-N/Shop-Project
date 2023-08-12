@@ -1,6 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import CustomUser
 from django import forms
+import re
+from .validation import phone_regex
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -14,7 +16,12 @@ class CustomAuthenticationForm(AuthenticationForm):
         fields = ["phone_number", "password"]
 
 class StaffLoginForm(forms.Form):
-    phone_number=forms.CharField(label="PHONE NUMBER",max_length=11)
+    phone_number=forms.CharField(label="PHONE NUMBER", max_length=19, validators=[phone_regex])
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        formatted_phone_number = re.sub(r'^0098|^\+98', '09', phone_number)
+        return formatted_phone_number
 
 class StaffOtpForm(forms.Form):
     code=forms.IntegerField()
