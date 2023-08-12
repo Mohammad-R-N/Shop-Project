@@ -1,8 +1,12 @@
 from django.contrib import admin
-from .models import CustomUser
-
+from .models import CustomUser,OtpCode
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+
+
+@admin.register(OtpCode)
+class OtpCodeAdmin(admin.ModelAdmin):
+    list_display=('phone_number','code','created')
+
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = (

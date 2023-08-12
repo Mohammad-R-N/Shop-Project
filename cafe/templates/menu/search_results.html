@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'cart/sidecart.html' %}
+<main>
+    <!-- breadcrumb area start -->
+    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static "images/bg/breadcrumb-bg-1.jpeg" %}"
+        data-overlay="dark" data-opacity="5">
+        <div class="shape shape__1"><img src="{% static "images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
+        <div class="shape shape__2"><img src="{% static "images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 text-center">
+                    <h2 class="page-title">Search Results for "{{ query }}"</h2>
+                    <div class="cafena-breadcrumb breadcrumbs">
+                        <ul class="list-unstyled d-flex align-items-center justify-content-center">
+                            <li class="cafenabcrumb-item duxinbcrumb-begin">
+                                <a href="{% url 'home' %}"><span>Home</span></a>
+                            </li>
+                            <li class="cafenabcrumb-item duxinbcrumb-end">
+                                <span>Search Results</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb area end -->
+
+    <!-- search results area start -->
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 pt-120 pb-120">
+                {% if results %}
+                    {% for product in results %}
+                    <div class="col-xl-4 col-lg-4 col-md-4 l-item grid-item cat1 cat3 cat4 mt-35">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="card">
+                                <div class="card__wrapper"></div>
+                                <div class="card__img">
+                                    <img src="{{ product.photo.url }}" alt="">
+                                </div>
+                                <h3 class="view title border-effect">
+                                    <a href="#">{{ product.name }}</a>
+                                </h3>
+                                <div class="card__subtitle">{{ product.description }}</div>
+                                <div class="card__wrapper">
+                                    <div class="card__price" data-price="11.6">$ {{ product.price }}</div>
+                                    <div class="card__counter">
+                                        <button class="card__btn" onclick="decrementCounter('counterScore1', event)">-</button>
+                                        <div class="card__counter-score" id="counterScore1">1</div>
+                                        <button class="card__btn card__btn-plus" onclick="incrementCounter('counterScore1', event)">+</button>
+                                    </div>
+                                </div>
+                                <button class="card__btn3" type="submit" name="{{ product.name }}" value="{{ product.name }}">ADD TO CART</button>
+                            </div>
+                        </form>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="mt-35">No products found for your search query.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- search results area end -->
+</main>
+{% endblock content %}

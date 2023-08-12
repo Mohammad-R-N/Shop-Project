@@ -1,27 +1,35 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm,StaffLoginForm
+from django.views import View
+from cart.models import OrderItem
 
 
 # Create your views here.
-def users_page(request):
-    return render(request,"users/staff.html")
-
-
-def register_user(request):
-    if request.method == "POST":
+class RegisterView(View):
+    def get(self, request):
+        form = CustomUserCreationForm()
+        return render(request, "register.html", {"form": form})
+    
+    def post(self, request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect("login_user")
-    else:
-        form = CustomUserCreationForm()
-    return render(request, "register.html", {"form": form})
 
+class UserView(View):
+    def get(self, request):
+        return render(request,"users/staff.html")
 
+    def post(self, request):
+        pass
 
-def login_user(request):
-    if request.method == "POST":
+class LoginView(View):
+    def get(self, request):
+        form = CustomAuthenticationForm()
+        return render(request, "login.html", {"form": form})
+
+    def post(self, request):
         form = CustomAuthenticationForm(request, request.POST)
         if form.is_valid():
             phone_number = form.cleaned_data.get("phone_number")
@@ -30,11 +38,37 @@ def login_user(request):
             if user is not None:
                 login(request, user)
                 return redirect("home")
-    else:
-        form = CustomAuthenticationForm()
-    return render(request, "login.html", {"form": form})
 
+
+class LogOutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect("home")
+
+    def post(self, request):
+        pass
 
 def logout_user(request):
     logout(request)
     return redirect("home")
+
+
+class StaffPanelView(View):
+    template_name = "staff/staff.html"
+    
+    def get(self, request, *args, **kwargs):
+        orders = OrderItem.objects.all()
+        context = {"orders": orders}
+        return render(request, self.template_name, context)
+
+      
+
+class StaffLogin(View):
+    form_staff=StaffLoginForm
+    def get(self,request):
+        form=self.form_staff
+        return render(request,"staff/login.html",{"form":form})
+
+    def post(self,request):
+        pass
+

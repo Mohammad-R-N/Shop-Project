@@ -41,7 +41,8 @@
                             <h2 class="title">Checkout menu</h2>
                         </div>
                         <div class="reservation__form reservation__form--2 mt-none-30 text-center">
-                            <form action="index.html">
+                            <form action="" method="post">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="col-xl-6 col-lg-6">
                                         <div class="from-group mt-30">
@@ -84,13 +85,21 @@
                                             <h2 class="title">Cart Total</h2>
                                             <div class="ct-sub">
                                                 <span>Sub Total</span>
-                                                <span>$ 180</span>
+                                                {% comment %} {% if total %} {% endcomment %}
+                                                <span>$ {{ total }}</span>
+                                                {% comment %} {% else %} {% endcomment %}
+                                                {% comment %} <span>$ 0</span>
+                                                {% endif %} {% endcomment %}
                                             </div>
                                             <div class="ct-sub ct-sub__total">
                                                 <span>Total</span>
-                                                <span>$ 180</span>
+                                                {% comment %} {% if total %} {% endcomment %}
+                                                <span>$ {{ total }}</span>
+                                                {% comment %} {% else %}
+                                                <span>$ 0</span>
+                                                {% endif %} {% endcomment %}
                                             </div>
-                                            <button type="submit" class="site-btn mt-30">Submit you request</button>
+                                            <button type="submit" class="site-btn mt-30">Submit your reservation</button>
                                         </div>
                                     </div>
                                 </div>

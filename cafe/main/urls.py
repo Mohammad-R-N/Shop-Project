@@ -1,9 +1,8 @@
-
 from django.urls import path, include
 from .views import *
 
 urlpatterns = [
-    path('',home_page,name="home"),
+    path('', HomeView.as_view(), name="home"),
     path("cart/",include("cart.urls")),
     path("menu/",include("menu.urls")),
     path("users/",include("users.urls")),
