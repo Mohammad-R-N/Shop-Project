@@ -14,7 +14,6 @@ class UserView(View):
     def post(self, request):
         pass
 
-
 class StaffLogin(View):
     form_staff=StaffLoginForm
     def get(self, request):
@@ -46,7 +45,6 @@ class CheckOtp(View):
                 login(request, user)
                 return redirect("staff/")
             return redirect("/")
-
 
 
 class LogOutView(View):
