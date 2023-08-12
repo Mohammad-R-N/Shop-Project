@@ -5,7 +5,7 @@ from .models import Product, OrderItem
 
 class CartAdmin(admin.ModelAdmin):
     list_display = ['cart_customer', 'cart_users', 'time']
-
+    list_filter = ['time']
     list_editable = ['cart_users']
 
 
