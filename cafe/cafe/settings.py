@@ -20,10 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-import environ
-env = environ.Env()
-environ.Env.read_env()
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = 'django-insecure-)69ud)py$z03u_i4#3j$24vflrd%0dp&9hj(!siom5m#zs1zz^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -85,16 +82,11 @@ WSGI_APPLICATION = 'cafe.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':
-    'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"),
-        'PORT': env("DB_PORT"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-
 }
+
 
 
 # Password validation
@@ -114,6 +106,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'path.to.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 AUTH_USER_MODEL = "users.CustomUser"
 # Internationalization
