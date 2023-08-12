@@ -32,12 +32,16 @@ class StaffLogin(View):
             print(random_code)
             CustomUser.objects.update(code=random_code)
             phone_number = form.cleaned_data.get("phone_number")
-            send_OTP(phone_number, random_code)
-            request.session["user_info"] = {
-                "phone_number": phone_number,
-                "code": random_code,
-            }
-            return redirect("check-otp")
+            user = CustomUser.objects.filter(phone_number=phone_number).first()
+            if user is None:
+                return redirect("notregistered_user")  # Redirect to signup page if user is not registered
+            else: 
+                send_OTP(phone_number, random_code)
+                request.session["user_info"] = {
+                    "phone_number": phone_number,
+                    "code": random_code,
+                }
+                return redirect("check-otp")
 
 
 class CheckOtp(View):
@@ -51,13 +55,7 @@ class CheckOtp(View):
         form = self.form_otp(request.POST)
         otp = form.cleaned_data.get("code")
         if form.is_valid():
-            phone_number = request.session["user_info"]["phone_number"]
-            user = CustomUser.objects.filter(phone_number=phone_number).first() #check if the otp 
-            if user is None:
-                return redirect("signup")  # Redirect to signup page if user is not registered
-            if user.code != otp:
-                return redirect("invalid-otp")
-            user = CustomAuthBackend().authenticate(
+            user = authenticate(
                 request,
                 phone_number=request.session["user_info"]["phone_number"],
                 code=otp,
