@@ -33,6 +33,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
+                    {% if product %}
                     <div class="cart-wrapper">
                         <div class="table-content table-responsive">
                             <table class="table">
@@ -50,23 +51,34 @@
                                     <tr>
                                         <td class="product-thumbnail">
                                             <a href="#" class="img">
-                                                <img src="{{ pt.photo.url }}" alt="">
+                                                <img src="{{ pt.product_photo}}" alt="">
                                             </a>
                                             <form action="" method="post">
                                                 {% csrf_token %}
-                                            <button class="product-remove" type="submit" name="remove" value="{{ pt.name }}" style="background: unset;"><i class="fal fa-times"></i></button>
+                                            <button class="product-remove" type="submit" name="remove" value="{{ pt.product_name }}" style="background: unset;"><i class="fal fa-times"></i></button>
                                             </form>
                                         </td>
-                                        <td class="product-name"><a href="#">{{ pt.name }}</a></td>
-                                        <td class="product-price"><span class="amount">$ {{ pt.price }}</span></td>
-                                        <td class="product-quantity">
-                                            <input type="number">
-                                        </td>
-                                        <td class="product-subtotal"><span class="amount">$ {{ pt.price }}</span></td>
+                                        <td class="product-name"><a href="#">{{ pt.product_name }}</a></td>
+                                        <td class="product-price"><span class="amount">$ {{ pt.product_price }}</span></td>
+                                        <td class="product-quantity"><span class="amount">{{ pt.product_quantity }}</span></td>
+                                        <td class="product-subtotal"><span class="amount">$ {{ pt.total }}</span></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
+                            <div class="col-xl-12 text-center">
+                                <div class="cart-total mt-100">
+                                    <h2 class="title">Cart Total</h2>
+                                    <div class="ct-sub ct-sub__total">
+                                        <span>Total</span>
+                                        {% if sub_total %}
+                                        <span>$ {{ sub_total }}</span>
+                                        {% else %}
+                                        <span>$ 0</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-xl-5 col-lg-7">
@@ -79,6 +91,31 @@
                             </div>
                         </div>
                     </div>
+                    {% else %}
+                    <div class="cart-wrapper">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="product-name text-center"><h2 style="color: aliceblue;">There is nothing to show<br>You have to add something</h2></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-xl-5 col-lg-7">
+                                <div class="cart-total mt-100">
+                                    <a href="{% url 'menu' %}"><button data-filter=".cat1" type="submit" name="done" value="" class="site-btn mt-30">Add Product</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
