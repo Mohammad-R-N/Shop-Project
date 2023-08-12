@@ -16,6 +16,7 @@
                         <ul class="list-unstyled d-flex align-items-center justify-content-center">
                             <li class="cafenabcrumb-item duxinbcrumb-begin">
                                 <a href="{% url 'home' %}"><span>Home</span></a>
+                                <a href="{% url 'dashboard' %}"><span>/ Manager Dashboard</span></a>
                             </li>
                             <li class="cafenabcrumb-item duxinbcrumb-end">
                                 <span>Staff Panel</span>
@@ -39,20 +40,32 @@
                                 <thead>
                                     <tr>
                                         <th class="cart-product-name">Phone number</th>
+                                        <th class="cart-product-name">Order Quantity</th>
                                         <th class="product-price">Total</th>
                                         <th class="product-quantity">Detail</th>
                                         <th class="product-actions">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for order in order %}
+                                    {% for info in order %}
                                     <tr>
-                                        <td class="product-name"><a href="#">{{ info.phone_number }}</a></td>
-                                        <td class="product-price"><span class="amount">$ {{ info.cost }}</span></td>
-                                        <td class="product-subtotal"><span class="amount"><a href="{% url 'staff_order_detail' order.id %}"><button type="button" class="site-btn mt-30">link</button></a></span></td>
+                                        <td class="product-name"><a>{{ info.number }}</a></td>
+                                        <td class="product-name"><a>{{ info.quantity }} orders</a></td>
+                                        <td class="product-price"><span class="amount">$ {{ info.total }}</span></td>
+                                        <td class="product-subtotal"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
+                                            {% for ord in info.ord_detail %}{% for ord in ord %}{{ ord }}<br>{% endfor %}{% endfor %}
+                                        </details></button></span></td>
                                         <td class="product-actions">
-                                            <button type="button" class="site-btn mt-30" data-order-id="{{ order.id }}">Accept</button>
-                                            <button type="button" class="site-btn mt-30" data-order-id="{{ order.id }}">Refuse</button>
+                                            {% if info.refuse %}
+                                                <button type="button" class="btn btn-outline-secondary">Refused by Staff</button> 
+                                            {% else %}
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-success mx-1" name="accept" value="{{ info.number }}">Accept</button>
+                                                <button type="submit" class="btn btn-danger" name="refuse" value="{{ info.number }}">Refuse</button>
+                                                <button type="submit" class="btn btn-light mx-5" name="edit" value="{{ info.number }}">Edit</button>
+                                            </form>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                     {% endfor %}
