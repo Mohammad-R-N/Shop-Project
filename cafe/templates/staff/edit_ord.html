@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'cart/sidecart.html' %}
+<main>
+    <!-- breadcrumb area start -->
+    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static "images/bg/breadcrumb-bg-1.jpeg" %}"
+        data-overlay="dark" data-opacity="5">
+        <div class="shape shape__1"><img src="{% static "images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
+        <div class="shape shape__2"><img src="{% static "images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 text-center">
+                    <h2 class="page-title">Edit Orders</h2>
+                    <div class="cafena-breadcrumb breadcrumbs">
+                        <ul class="list-unstyled d-flex align-items-center justify-content-center">
+                            <li class="cafenabcrumb-item duxinbcrumb-begin">
+                                <a href="{% url 'home' %}"><span>Home</span></a>
+                            </li>
+                            <li class="cafenabcrumb-item duxinbcrumb-end">
+                                <span>Cart</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb area end -->
+
+    <!-- cart area start -->
+    <div class="cart-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    {% if product %}
+                    <div class="cart-wrapper">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <caption style="color: aliceblue;caption-side: top;">Phone Number: &emsp; {{ number }}</caption>
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">Product Image</th>
+                                        <th class="cart-product-name">Product Name</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pt in product %}
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="#" class="img">
+                                                <img src="{{ pt.product_photo}}" alt="">
+                                            </a> 
+                                        </td>
+                                        <td class="product-name"><a href="#">{{ pt.product_name }}</a></td>
+                                        <form action="" method="post">
+                                        {% csrf_token %}
+                                        <td class="product-quantity">
+                                            <input class="rounded" type="number" name="{{ pt.product_name }}" placeholder="{{ pt.product_quantity }}" style="color:white;background-color: slategray;">
+                                        </td>
+                                        <td class="product-price">  
+                                            <button class="btn btn-danger" type="submit" name="remove" value="{{ pt.product_name }}">Remove</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button data-filter=".cat1" type="submit" name="add_ord" value="" class="site-btn mt-30">Add Order</button></td>
+                                        
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-xl-5 col-lg-7">
+                                <div class="cart-total mt-100">
+                                        <button data-filter=".cat1" type="submit" name="done" value="{{ number }}" class="site-btn mt-30">Confirm Edit</button>                                    
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="cart-wrapper">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="product-name text-center"><h2 style="color: aliceblue;">There is nothing to show<br>You have to add something</h2></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-xl-5 col-lg-7">
+                                <div class="cart-total mt-100">
+                                    <a href="{% url 'menu' %}"><button data-filter=".cat1" type="submit" name="done" value="" class="site-btn mt-30">Add Product</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- cart area end -->
+</main>
+{% endblock content %}
+
