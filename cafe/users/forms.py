@@ -3,6 +3,7 @@ from .models import CustomUser
 from django import forms
 import re
 from .validation import phone_number_validator
+from .models import PhoneNumberField
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -16,7 +17,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         fields = ["phone_number", "password"]
 
 class StaffLoginForm(forms.Form):
-    phone_number=forms.CharField(label="PHONE NUMBER", max_length=19, validators=[phone_number_validator])
+    phone_number = PhoneNumberField(label="PHONE NUMBER", max_length=19, validators=[phone_number_validator])
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data['phone_number']
