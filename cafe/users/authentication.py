@@ -1,6 +1,6 @@
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import get_user_model
-
+from django.shortcuts import redirect
 
 class CustomAuthBackend(BaseBackend):
     def authenticate(self, request, phone_number=None, code=None, **kwargs):
@@ -13,4 +13,4 @@ class CustomAuthBackend(BaseBackend):
         if user.code == code:
             return user
         else:
-            return None
+            return redirect('invalid_otp')
