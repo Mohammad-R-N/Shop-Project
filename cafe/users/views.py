@@ -37,7 +37,7 @@ class StaffLogin(View):
 
             user = CustomUser.objects.filter(phone_number=formatted_phone_number).first()
             if user is None:
-                return redirect("notregistered_user")  # Redirect to signup page if user is not registered
+                return redirect("login")  # Redirect to signup page if user is not registered
             else: 
                 send_OTP(formatted_phone_number, random_code)
                 request.session["user_info"] = {
