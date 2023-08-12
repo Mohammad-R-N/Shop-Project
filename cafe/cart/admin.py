@@ -14,3 +14,5 @@ class TableAdmin(admin.ModelAdmin):
 
 admin.site.register(Cart, CartAdmin)
 admin.site.register(OrderItem)
+admin.site.register(Table, TableAdmin)
+
