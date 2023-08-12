@@ -31,33 +31,19 @@ class MenuView(View):
                     return render(request, "menu/menu.html", context)
             for pt in product:
                 if pt.name in request.POST:
+                    quantity = request.POST['quantity']
                     result = pt.name
-
                     if request.COOKIES.get('product'):
-                        product1 = request.COOKIES.get('product')
-                        product1 += f"-{result}"  #produc1 = farzad-nima-mmd-sina
+                        product_cookie = request.COOKIES.get('product')
+                        product_cookie += f"-{result}={quantity}"  #product_cookie = latte=2-product=4
                         cat = Category.objects.all()
-
                         product = Product.objects.all()
                         context = {"category": cat, "product": product}
                         res = render(request, "menu/menu.html", context)
-                        res.set_cookie("product", product1)
+                        res.set_cookie("product", product_cookie)
+                        # res.delete_cookie("product")
                         return res
-                        # res = render(request, 'menu/menu.html', context)
-                        # res.delete_cookie('product')
-                        # return res
-                    # elif request.COOKIES.get('quantity'):
-                    #     quantity = request.COOKIES.get('quantity')
-                    #     quantity += f"-{res_quantity}"
-                    #     cat = Category.objects.all()
-                    #     product = Product.objects.all()
-                    #     context = {
-                    #         "category": cat,
-                    #         "product": product
-                    #     }
-                    #     res = render(request, 'menu/menu.html', context)
-                    #     res.set_cookie('quantity', quantity)
-                    #     return res
+
                     else:
                         cat = Category.objects.all()
                         product = Product.objects.all()
@@ -66,9 +52,8 @@ class MenuView(View):
                             "category": cat,
                             "product": product
                         }
-                        response = render(request, 'menu/menu.html')
-                        response.set_cookie(key='product', value=result)
-                        # response.set_cookie(key='quantity', value=res_quantity)
+                        response = render(request, 'menu/menu.html', context)
+                        response.set_cookie(key='product', value=f"-{result}={quantity}")
                         return response
 
 class SearchProducts(View):
