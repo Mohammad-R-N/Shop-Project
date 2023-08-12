@@ -8,6 +8,7 @@ from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product
 from .authentication import CustomAuthBackend
+import re
 
 
 class UserView(View):
@@ -32,13 +33,15 @@ class StaffLogin(View):
             print(random_code)
             CustomUser.objects.update(code=random_code)
             phone_number = form.cleaned_data.get("phone_number")
-            user = CustomUser.objects.filter(phone_number=phone_number).first()
+            formatted_phone_number = re.sub(r'^\+98|^0098', '0', phone_number)
+
+            user = CustomUser.objects.filter(phone_number=formatted_phone_number).first()
             if user is None:
                 return redirect("notregistered_user")  # Redirect to signup page if user is not registered
             else: 
-                send_OTP(phone_number, random_code)
+                send_OTP(formatted_phone_number, random_code)
                 request.session["user_info"] = {
-                    "phone_number": phone_number,
+                    "phone_number": formatted_phone_number,
                     "code": random_code,
                 }
                 return redirect("check-otp")
