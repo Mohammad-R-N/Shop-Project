@@ -24,7 +24,6 @@ class Table(models.Model):
 class Cart(models.Model):
     total_price = models.DecimalField(max_digits=6,decimal_places=2)
     total_quantity = models.PositiveIntegerField()
-    discount = models.PositiveIntegerField(null=True)
     time = models.DateTimeField(auto_now_add=True)
     customer_number = PhoneNumberField(_("phone number"), max_length=14, unique=True, validators=[phone_number_validator])
     cart_users = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
