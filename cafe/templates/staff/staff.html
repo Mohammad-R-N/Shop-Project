@@ -41,6 +41,7 @@
                                     <tr>
                                         <th class="cart-product-name">Phone number</th>
                                         <th class="cart-product-name">Order Quantity</th>
+                                        <th class="cart-product-name">Table</th>
                                         <th class="product-price">Total</th>
                                         <th class="product-quantity">Detail</th>
                                         <th class="product-actions">Actions</th>
@@ -51,13 +52,16 @@
                                     <tr>
                                         <td class="product-name"><a>{{ info.number }}</a></td>
                                         <td class="product-name"><a>{{ info.quantity }} orders</a></td>
+                                        <td class="product-name"><a>Table {{ info.table }}</a></td>
                                         <td class="product-price"><span class="amount">$ {{ info.total }}</span></td>
                                         <td class="product-subtotal"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
                                             {% for ord in info.ord_detail %}{% for ord in ord %}{{ ord }}<br>{% endfor %}{% endfor %}
                                         </details></button></span></td>
                                         <td class="product-actions">
                                             {% if info.refuse %}
-                                                <button type="button" class="btn btn-outline-secondary">Refused by Staff</button> 
+                                                <button type="button" class="btn btn-outline-danger">Refused by Staff</button> 
+                                            {% elif info.accept %}
+                                                <button type="button" class="btn btn-outline-success">Accepted by Staff</button>
                                             {% else %}
                                             <form action="" method="post">
                                                 {% csrf_token %}
