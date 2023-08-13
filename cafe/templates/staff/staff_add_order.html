@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'cart/sidecart.html' %}
+<main>
+    <!-- breadcrumb area start -->
+    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static "images/bg/breadcrumb-bg-1.jpeg" %}"
+        data-overlay="dark" data-opacity="5">
+        <div class="shape shape__1"><img src="{% static "images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
+        <div class="shape shape__2"><img src="{% static "images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 text-center">
+                    <h2 class="page-title">Add Order By Staff</h2>
+                    <div class="cafena-breadcrumb breadcrumbs">
+                        <ul class="list-unstyled d-flex align-items-center justify-content-center">
+                            <li class="cafenabcrumb-item duxinbcrumb-begin">
+                                <a href="{% url 'home' %}"><span>Home</span></a>
+                            </li>
+                            <li class="cafenabcrumb-item duxinbcrumb-end">
+                                <span>Staff Panel</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb area end -->
+
+    <!-- orders area start -->
+    <div class="orders-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 text-center">
+                    <div class="popular-menu__wrapper m-auto d-inline-block">
+                        <div class="popular-menu__filter d-flex justify-content-center align-items-center mb-55">
+                            <form action="" method="post" class="popular-menu__filter d-flex justify-content-center align-items-center mb-55">
+                                {% csrf_token %}
+                                <button class="active" data-filter="*" type="submit" name="all"><iconify-icon class="icon" icon="bxs:food-menu"
+                                        style="color: white;" width="32" height="32"></iconify-icon>
+                                    <div class="navi-text">All</div>
+                                </button>
+                                {% for cat in category %}
+                                <button data-filter=".cat1" type="submit" name="{{ cat.name }}" value="{{ cat.name }}"><img src="{{ cat.photo.url }}" alt="" style="width: 32px;height: 32px;">
+                                    <div class="navi-text">{{ cat.name }}</div>
+                                </button>
+                                {% endfor %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="orders-wrapper">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="cart-product-name">Product Image</th>
+                                        <th class="cart-product-name">Product Name</th>
+                                        <th class="cart-product-name">Description</th>
+                                        <th class="cart-product-name">Quantity</th>
+                                        <th class="product-price">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pt in product %}
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                    <tr>
+                                        <td class="product-name">
+                                            <div class="card__img">
+                                                <img src="{{ pt.photo.url }}" alt="" style="width: 90px;height: 90px;">
+                                            </div>
+                                        </td>
+                                        <td class="product-price">
+                                            <span class="amount">{{ pt.name }}</span>
+                                        </td>
+                                        <td class="product-quantity" style="color: aliceblue;">{{ pt.description }}1</td>
+                                        <td>
+                                            <select name="quantity" id="quantity" style="background-color: #C7A17A;color: black;">
+                                                <option value="1" selected>1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                            </select>
+                                        </td>
+                                        <td class="product-subtotal">
+                                            <span class="amount">$ {{ pt.price }}</span>
+                                        </td>
+                                        <td class="product-subtotal">
+                                            <button class="btn btn-success" name="{{ pt.name }}">Add To Cart</button>
+                                        </td>
+                                    </tr>
+                                    </form>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- orders area end -->
+</main>
+{% endblock content %}

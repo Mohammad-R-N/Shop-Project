@@ -23,11 +23,11 @@ class Table(models.Model):
     
 class Cart(models.Model):
     total_price = models.DecimalField(max_digits=6,decimal_places=2)
-    discount = models.PositiveIntegerField()
+    discount = models.PositiveIntegerField(null=True)
     time = models.DateTimeField(auto_now_add=True)
     total_quantity = models.PositiveIntegerField()
     earned_point = models.PositiveIntegerField(default=0)
-    cart_customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    cart_customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     cart_users = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     cart_table = models.ForeignKey(Table, on_delete=models.PROTECT)
 

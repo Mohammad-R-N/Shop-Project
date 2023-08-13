@@ -61,7 +61,7 @@
                                             <input class="rounded" type="number" name="{{ pt.product_name }}" placeholder="{{ pt.product_quantity }}" style="color:white;background-color: slategray;">
                                         </td>
                                         <td class="product-price">  
-                                            <button class="btn btn-danger" type="submit" name="remove" value="{{ pt.product_name }}">Remove</button>
+                                            <button class="btn btn-danger" type="submit" name="remove" value="{{ pt.product_name }}-{{ number }}">Remove</button>
                                         </td>
                                     </tr>
                                     {% endfor %}
