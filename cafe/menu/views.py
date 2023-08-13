@@ -3,6 +3,7 @@ from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from . models import Product
 from . models import Category
 from django.views import View
+from django.db.models import Q
 
 # Create your views here.
 class MenuView(View):
@@ -64,7 +65,7 @@ class SearchProducts(View):
         if not query:
             results = []
         else:
-            results = Product.objects.filter(name__icontains=query)
+            results = Product.objects.filter( Q(name__icontains=query) | Q(description__icontains=query) | Q(price__icontains=query))
         return render(
             request, "menu/search_results.html", {"results": results, "query": query}
         )
