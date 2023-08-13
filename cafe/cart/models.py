@@ -13,9 +13,7 @@ class Table(models.Model):
     (Available, 'Available'),
     (unavailable, 'unavailable'),
     ]
-    
     table_name = models.CharField(max_length=100)
-    table_seats = models.PositiveIntegerField()
     status = models.CharField(max_length=20 , choices=STATUS_CHOICES, default=unavailable) 
 
     def __str__(self):
@@ -28,6 +26,7 @@ class Cart(models.Model):
     customer_number = PhoneNumberField(_("phone number"), max_length=14, unique=True, validators=[phone_number_validator])
     cart_users = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     cart_table = models.ForeignKey(Table, on_delete=models.PROTECT)
+
 
     def __str__(self):
         return f"{self.total_price} order "
