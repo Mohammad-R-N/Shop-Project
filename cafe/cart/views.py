@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from menu.models import Product
 from django.views import View
+import datetime
 
 # Create your views here.
 class CartView(View):
@@ -84,6 +85,8 @@ class ReservationView(View):
     
     def post(self, request):
         ord_list = list()
+        date = datetime.datetime.now()
+        date = date.strftime("%A %m %-Y %H:%M:%S")
         if request.session.has_key('reserve'):
             if request.session['reserve'] is not None:
                 reserve_ord = request.session['reserve']
@@ -111,7 +114,8 @@ class ReservationView(View):
                 'table': table,
                 'cost': cost,
                 'phone_number': phone_number,
-                'orders': order
+                'date': str(date),
+                'orders': order,
                 }
                 ord_list.append(reserve_info)
                 request.session['reserve'] = ord_list
@@ -139,7 +143,8 @@ class ReservationView(View):
             'table': table,
             'cost': cost,
             'phone_number': phone_number,
-            'orders': order
+            'date': str(date),
+            'orders': order,
             }
             ord_list.append(reserve_info)
             request.session['reserve'] = ord_list
