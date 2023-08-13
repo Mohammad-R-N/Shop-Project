@@ -6,7 +6,7 @@ from cart.models import OrderItem
 import random
 from utils import send_OTP
 from .models import CustomUser
-from menu.models import Product
+from menu.models import Product, Category
 from cart.models import Cart
 import datetime
 
@@ -98,6 +98,7 @@ class StaffPanelView(View):
                 order_list['total'] = ord_information['cost']
                 order_list['table'] = ord_information['table']
                 order_list['refuse'] = False
+                order_list['accept'] = False
                 info_list.append(order_list)
 
             request.session["staff"] = info_list
@@ -118,6 +119,7 @@ class StaffPanelView(View):
                     data['ord_detail'] = ord['ord_detail']
                     data['table'] = ord['table']
                     data['refuse'] = True
+                    data['accept'] = False
                     edit_ord.append(data)
                 elif ord['refuse'] == True:
                     data = dict()
@@ -127,6 +129,7 @@ class StaffPanelView(View):
                     data['ord_detail'] = ord['ord_detail']
                     data['table'] = ord['table']
                     data['refuse'] = True
+                    data['accept'] = False
                     edit_ord.append(data)
                 else:
                     data = dict()
@@ -136,6 +139,7 @@ class StaffPanelView(View):
                     data['ord_detail'] = ord['ord_detail']
                     data['table'] = ord['table']
                     data['refuse'] = False
+                    data['accept'] = False
                     edit_ord.append(data)
 
             request.session["staff"] = edit_ord
@@ -189,7 +193,7 @@ class StaffPanelView(View):
                     data['accept'] = False
                     edit_ord.append(data)
 
-            # Cart.objects.create(total_price=total, total_quantity=quantity)
+            Cart.objects.create(total_price=total, total_quantity=quantity)
             request.session["staff"] = edit_ord
             return redirect('staff')
 
@@ -335,6 +339,36 @@ class EditOrder(View):
 
             request.session["staff"] = edited_list
             return redirect("staff")
+
+        elif "add_ord" in request.POST:
+            return redirect('add_ord')
+
+class AddOrder(View):
+    template_name = "staff/staff_add_order.html"
+    
+    def get(self, request):
+        cat = Category.objects.all()
+        product = Product.objects.all()
+        context = {
+            "category": cat,
+            "product": product
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        if 'all' in request.POST:
+            cat = Category.objects.all()
+            product = Product.objects.all()
+            context = {"category": cat, "product": product}
+            return render(request, self.template_name, context)
+        else:
+            cat = Category.objects.all()
+            product = Product.objects.all()
+            for cat_obj in cat:
+                if cat_obj.name in request.POST:
+                    product_cat = Product.objects.filter(category_menu=cat_obj)
+                    context = {"category": cat, "product": product_cat}
+                    return render(request, self.template_name, context)
 
 class ManagerDashboard(View):
     template_name = 'manager/manager_dashboard.html'
