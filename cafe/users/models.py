@@ -13,18 +13,16 @@ class PhoneNumberField(models.CharField):
     def get_prep_value(self, value):
         if value is None:
             return value
-
         try:
             regex = phone_number_validator(value)
         except ValidationError:
             raise ValidationError("Phone number must be entered in the format: '09XXXXXXXXX', '00989XXXXXXXXX' or '+989XXXXXXXXX'.")
-
         formatted_phone_number = re.sub(r'^\+98|^0098', '0', value)
         return formatted_phone_number
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
-    phone_number = PhoneNumberField(_("phone number"), max_length=19, unique=True, validators=[phone_number_validator])
+    phone_number = PhoneNumberField(_("phone number"), max_length=14, unique=True, validators=[phone_number_validator])
     first_name = models.CharField(_("first name"), max_length=20)
     last_name = models.CharField(_("first name"), max_length=30)
     is_staff = models.BooleanField(default=False)
