@@ -1,9 +1,9 @@
 from django.db import models
 from users.models import CustomUser
-from customer.models import Customer
 from menu.models import Product
 from users.models import PhoneNumberField
 from users.validation import phone_number_validator
+from django.utils.translation import gettext_lazy as _
 
 class Table(models.Model):
     Available = "Available"
@@ -26,7 +26,6 @@ class Cart(models.Model):
     total_quantity = models.PositiveIntegerField()
     discount = models.PositiveIntegerField(null=True)
     time = models.DateTimeField(auto_now_add=True)
-    earned_point = models.PositiveIntegerField(default=0)
     customer_number = PhoneNumberField(_("phone number"), max_length=14, unique=True, validators=[phone_number_validator])
     cart_users = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     cart_table = models.ForeignKey(Table, on_delete=models.PROTECT)
