@@ -44,11 +44,6 @@
                             <form action="" method="post">
                                 {% csrf_token %}
                                 <div class="row">
-                                    {% comment %} <div class="col-xl-6 col-lg-6">
-                                        <div class="from-group mt-30">
-                                            <input type="text" name="name" placeholder="Enter your name">
-                                        </div>
-                                    </div> {% endcomment %}
                                     <div class="col-xl-6 col-lg-6">
                                         <div class="from-group mt-30">
                                             <input type="tel" name="tel" id="tel" placeholder="Enter your number">
@@ -58,30 +53,12 @@
                                         <div class="from-group mt-30">
                                             <select name="subject" id="subject">
                                                 <option data-display="Service Category">Seates*</option>
-                                                <option value="1">table 1</option>
-                                                <option value="2">table 2</option>
-                                                <option value="3">table 3</option>
-                                                <option value="4">table 4</option>
-                                                <option value="5">table 5</option>
+                                                {% for tb in table %}
+                                                <option value="{{ tb.table_name }}">{{ tb.table_name }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
-                                    {% comment %} <div class="col-xl-6 col-lg-6">
-                                        <div class="from-group mt-30">
-                                            <input type="date" id="date" name="date">
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-6">
-                                        <div class="from-group mt-30">
-                                            <input type="time" id="time" name="time">
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-6">
-                                        <div class="from-group mt-30">
-                                            <input type="email" id="2email" name="2email"
-                                                placeholder="Enter your mail">
-                                        </div>
-                                    </div> {% endcomment %}
                                     <div class="col-xl-12 text-center">
                                         <div class="cart-total mt-100">
                                             <h2 class="title">Cart Total</h2>
