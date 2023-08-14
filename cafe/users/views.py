@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, logout
 from .forms import StaffLoginForm, StaffOtpForm
 from django.views import View
 from cart.models import OrderItem
@@ -58,18 +58,15 @@ class CheckOtp(View):
 
     def post(self, request):
         form = self.form_otp(request.POST)
-        otp = form.cleaned_data.get("code")
         if form.is_valid():
-            user = authenticate(
-                request,
-                phone_number=request.session["user_info"]["phone_number"],
-                code=otp,
-            )
-            if user is not None:
-                login(request, user)
-                return redirect("staff/")
-            return redirect("/")
+            otp = form.cleaned_data["code"]
+            user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
 
+            if user is not None:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                return redirect("staff")
+            return redirect("home")
+        return redirect('menu')
 
 class LogOutView(View):
     def get(self, request):
@@ -364,7 +361,10 @@ class AddOrder(View):
         return render(request, self.template_name, context)
 
     def post(self, request):
-        if 'all' in request.POST:
+        if "add" in request.POST:
+            pt_name = request.POST["add"]
+
+        elif 'all' in request.POST:
             cat = Category.objects.all()
             product = Product.objects.all()
             context = {"category": cat, "product": product}
