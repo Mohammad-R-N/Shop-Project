@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="login-wrapper">
-                        <form action="{% url 'login' %}" method="post">
+                        <form action="" method="post">
                             {% csrf_token %}
                             {{ form.as_p }}
                             <button type="submit">Login</button>
