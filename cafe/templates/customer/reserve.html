@@ -54,7 +54,7 @@
                                             <select name="subject" id="subject">
                                                 <option data-display="Service Category">Seates*</option>
                                                 {% for tb in table %}
-                                                <option value="{{ tb.table_name }}">{{ tb.table_name }}</option>
+                                                <option value="{{ tb.table_name }}">Table {{ tb.table_name }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>

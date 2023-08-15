@@ -47,16 +47,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for pt in order %}
+                                    {% for cart in carts %}
                                     <tr>
-                                        <td class="product-number" style="color: aliceblue;">{{ pt.number }}</td>
-                                        <td class="product-name"><a href="#">{{ pt.quantity }} orders</a></td>
-                                        <td class="product-price"><span class="amount">Table {{ pt.table }}</span></td>
-                                        <td class="product-quantity"><span class="amount">$ {{ pt.total }}</span></td>
+                                        <td class="product-number" style="color: aliceblue;">{{ cart.customer_number }}</td>
+                                        <td class="product-name"><a href="#">{{ cart.total_quantity }} orders</a></td>
+                                        <td class="product-price"><span class="amount">Table {{ cart.cart_table.table_name }}</span></td>
+                                        <td class="product-quantity"><span class="amount">$ {{ cart.total_price }}</span></td>
                                         <td class="product-quantity"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
-                                            {% for ord in pt.orders %}{% for ord in ord %}{{ ord }}<br>{% endfor %}{% endfor %}
+                                            {% for item in items %}{{ item.product.name }} {{ item.quantity }}<br>{% endfor %}
                                         </details></button></span></td>
-                                        <td class="product-subtotal"><span class="amount">{{ pt.date }}</span></td>
+                                        <td class="product-subtotal"><span class="amount">{{ cart.time }}</span></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

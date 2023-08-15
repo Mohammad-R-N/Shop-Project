@@ -48,28 +48,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for info in order %}
+                                    {% for cart in cart %}
                                     <tr>
-                                        <td class="product-name"><a>{{ info.number }}</a></td>
-                                        <td class="product-name"><a>{{ info.quantity }} orders</a></td>
-                                        <td class="product-name"><a>Table {{ info.table }}</a></td>
-                                        <td class="product-price"><span class="amount">$ {{ info.total }}</span></td>
+                                        <td class="product-name"><a>{{ cart.customer_number }}</a></td>
+                                        <td class="product-name"><a>{{ cart.total_quantity }} orders</a></td>
+                                        <td class="product-name"><a>{{ cart.cart_table.table_name }}</a></td>
+                                        <td class="product-price"><span class="amount">$ {{ cart.total_price }}</span></td>
                                         <td class="product-subtotal"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
-                                            {% for ord in info.ord_detail %}{% for ord in ord %}{{ ord }}<br>{% endfor %}{% endfor %}
+                                            {% for ord in item %}{% for i in ord %}{{ i.product.name }} {{ i.quantity }}<br>{% endfor %}{% endfor %}
                                         </details></button></span></td>
                                         <td class="product-actions">
-                                            {% if info.refuse %}
-                                                <button type="button" class="btn btn-outline-danger">Refused by Staff</button> 
-                                            {% elif info.accept %}
-                                                <button type="button" class="btn btn-outline-success">Accepted by Staff</button>
-                                            {% else %}
                                             <form action="" method="post">
                                                 {% csrf_token %}
-                                                <button type="submit" class="btn btn-success mx-1" name="accept" value="{{ info.number }}">Accept</button>
-                                                <button type="submit" class="btn btn-danger" name="refuse" value="{{ info.number }}">Refuse</button>
-                                                <button type="submit" class="btn btn-light mx-5" name="edit" value="{{ info.number }}">Edit</button>
+                                                <button type="submit" class="btn btn-success mx-1" name="accept" value="{{ cart.id }}">Accept</button>
+                                                <button type="submit" class="btn btn-danger" name="refuse" value="{{ cart.id }}">Refuse</button>
+                                                <button type="submit" class="btn btn-light mx-5" name="edit" value="{{ cart.id }}">Edit</button>
                                             </form>
-                                            {% endif %}
                                         </td>
                                     </tr>
                                     {% endfor %}
