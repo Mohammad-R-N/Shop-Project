@@ -298,3 +298,15 @@ def sales_by_customer(request):
         .order_by("-total_sales")[:3]
     )
     return render(request, "sales_by_customer.html"), {"sales": sales}
+
+
+def peak_business_hour(request):
+    hours = (
+        Cart.objects.annotate(hour=ExtractHour("time"))
+        .values("hour")
+        .annotate(order_count=Count("id"))
+        .order_by("-order_count")[:1]
+    )
+    peak_hour = hours[0] if hours else None
+
+    return render(request, "peak_hour", {"peak_hour": peak_hour})
