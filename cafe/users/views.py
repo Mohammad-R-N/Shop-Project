@@ -1,16 +1,21 @@
+from multiprocessing import context
+from urllib import request
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from .forms import StaffLoginForm, StaffOtpForm
 from django.views import View
 from cart.models import OrderItem
 import random
-from utils import send_OTP
+from django.db.models.functions import ExtractHour
+
+# from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
 from cart.models import Cart
 import datetime
 from .authentication import CustomAuthBackend
 import re
+from django.db.models import Sum, Count
 
 
 class UserView(View):
@@ -35,12 +40,16 @@ class StaffLogin(View):
             print(random_code)
             CustomUser.objects.update(code=random_code)
             phone_number = form.cleaned_data.get("phone_number")
-            formatted_phone_number = re.sub(r'^\+98|^0098', '0', phone_number)
+            formatted_phone_number = re.sub(r"^\+98|^0098", "0", phone_number)
 
-            user = CustomUser.objects.filter(phone_number=formatted_phone_number).first()
+            user = CustomUser.objects.filter(
+                phone_number=formatted_phone_number
+            ).first()
             if user is None:
-                return redirect("login")  # Redirect to signup page if user is not registered
-            else: 
+                return redirect(
+                    "login"
+                )  # Redirect to signup page if user is not registered
+            else:
                 send_OTP(formatted_phone_number, random_code)
                 request.session["user_info"] = {
                     "phone_number": formatted_phone_number,
@@ -49,24 +58,25 @@ class StaffLogin(View):
                 return redirect("check-otp")
 
 
-class CheckOtp(View):
-    form_otp = StaffOtpForm
+# class CheckOtp(View):
+#     form_otp = StaffOtpForm
 
-    def get(self, request):
-        form = self.form_otp()
-        return render(request, "staff/otp.html", {"form": form})
+#     def get(self, request):
+#         form = self.form_otp()
+#         return render(request, "staff/otp.html", {"form": form})
 
-    def post(self, request):
-        form = self.form_otp(request.POST)
-        if form.is_valid():
-            otp = form.cleaned_data["code"]
-            user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
+#     def post(self, request):
+#         form = self.form_otp(request.POST)
+#         if form.is_valid():
+#             otp = form.cleaned_data["code"]
+#             user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
 
-            if user is not None:
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                return redirect("staff")
-            return redirect("home")
-        return redirect('menu')
+#             if user is not None:
+#                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#                 return redirect("staff")
+#             return redirect("home")
+#         return redirect('menu')
+
 
 class LogOutView(View):
     def get(self, request):
@@ -93,15 +103,12 @@ class StaffPanelView(View):
                 item.append(items)
                 carts.append(cart_obj)
 
-        context = {
-            'item': item,
-            'cart': carts
-        }
+        context = {"item": item, "cart": carts}
         return render(request, self.template_staff, context)
 
     def post(self, request):
         if "refuse" in request.POST:
-            cart_refuse_id = request.POST['refuse']
+            cart_refuse_id = request.POST["refuse"]
             cart = Cart.objects.all()
 
             for cart_obj in cart:
@@ -111,9 +118,9 @@ class StaffPanelView(View):
                     update_cart.save()
 
             return redirect("staff")
-        
+
         elif "accept" in request.POST:
-            cart_accept_id = request.POST['accept']
+            cart_accept_id = request.POST["accept"]
             cart = Cart.objects.all()
 
             for cart_obj in cart:
@@ -123,17 +130,17 @@ class StaffPanelView(View):
                     update_cart.save()
 
             return redirect("staff")
-        
+
         elif "edit" in request.POST:
-            cart_edit_id = request.POST['edit']
+            cart_edit_id = request.POST["edit"]
             request.session["edit_id"] = cart_edit_id
             return redirect("edit_ord")
-            
+
+
 class EditOrder(View):
     template_name = "staff/edit_ord.html"
 
     def get(self, request):
-
         if request.session.has_key("edit_id"):
             cart_edit_id = request.session["edit_id"]
             cart = Cart.objects.all()
@@ -154,7 +161,7 @@ class EditOrder(View):
             return render(request, self.template_name, context)
         else:
             return render(request, self.template_name)
-    
+
     def post(self, request):
         if "remove" in request.POST:
             cart_edit_id = request.session["edit_id"]
@@ -166,7 +173,7 @@ class EditOrder(View):
                 if cart_obj.id == int(cart_edit_id):
                     items = OrderItem.objects.get(cart=cart_obj)
                     item_list.append(items)
-            
+
             for item in item_list:
                 if item.id == int(order_item_id):
                     OrderItem.objects.get(id=int(order_item_id)).delete()
@@ -174,7 +181,7 @@ class EditOrder(View):
 
         elif "done" in request.POST:
             order_items = OrderItem.objects.all()
-        
+
             for ord in order_items:
                 if str(ord.id) in request.POST:
                     new_quantity = request.POST[f"{ord.id}"]
@@ -182,20 +189,18 @@ class EditOrder(View):
                     ord.cart.total_price = ord.price * int(new_quantity)
                     ord.save()
                     return redirect("staff")
-        
+
         elif "add_ord" in request.POST:
-            return redirect('add_ord')
+            return redirect("add_ord")
+
 
 class AddOrder(View):
     template_name = "staff/staff_add_order.html"
-    
+
     def get(self, request):
         cat = Category.objects.all()
         product = Product.objects.all()
-        context = {
-            "category": cat,
-            "product": product
-        }
+        context = {"category": cat, "product": product}
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -208,11 +213,15 @@ class AddOrder(View):
 
             for cart_obj in cart:
                 if cart_obj.id == int(cart_edit_id):
-                    order_item = OrderItem.objects.create(product=new_product_obj, cart=cart_obj, 
-                                                            quantity=int(new_product_quantity), price=new_product_obj.price)
+                    order_item = OrderItem.objects.create(
+                        product=new_product_obj,
+                        cart=cart_obj,
+                        quantity=int(new_product_quantity),
+                        price=new_product_obj.price,
+                    )
                     order_item.save()
 
-        elif 'all' in request.POST:
+        elif "all" in request.POST:
             cat = Category.objects.all()
             product = Product.objects.all()
             context = {"category": cat, "product": product}
@@ -226,8 +235,9 @@ class AddOrder(View):
                     context = {"category": cat, "product": product_cat}
                     return render(request, self.template_name, context)
 
+
 class ManagerDashboard(View):
-    template_name = 'manager/manager_dashboard.html'
+    template_name = "manager/manager_dashboard.html"
     today = datetime.datetime.today()
 
     def get(self, request):
@@ -239,7 +249,7 @@ class ManagerDashboard(View):
             today_discount += ord.discount
         avg_today_discount = today_discount / len(daily_order)
 
-        today_order = 0 
+        today_order = 0
         for ord in daily_order:
             today_order += 1
 
@@ -256,11 +266,11 @@ class ManagerDashboard(View):
             total_order += 1
 
         data = {
-            'avg_today_discount': avg_today_discount,
-            'today_order': today_order,
-            'today_sales': today_sales,
-            'total_sales': total_sales,
-            'total_order': total_order,
+            "avg_today_discount": avg_today_discount,
+            "today_order": today_order,
+            "today_sales": today_sales,
+            "total_sales": total_sales,
+            "total_order": total_order,
         }
 
         context = {
@@ -269,3 +279,13 @@ class ManagerDashboard(View):
 
         return render(request, self.template_name, context)
         # return render(request, self.template_name)
+
+
+def popular_items(request):
+    items = (
+        (OrderItem.objects.values("product__name"))
+        .annotate(total_ordered=Sum("quantity"))
+        .order_by("-total_ordered")[:5]
+    )
+
+    return render(request, "dashboard1.html", {"items": items})
