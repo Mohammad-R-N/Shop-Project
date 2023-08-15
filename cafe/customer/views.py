@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
-
+from cart.models import Cart, OrderItem
 
 # Create your views here.
 class CustomerView(View):
@@ -10,34 +10,28 @@ class CustomerView(View):
         pass
 
 class CustomerHistory(View):
-    template_name = "customer/history_login.html"
+    template_login = "customer/history_login.html"
+    template_history = "customer/history.html"
     def get(self, request):
-        ord_history = request.session['reserve']
-        print(ord_history)
-        return render(request, self.template_name)
+        return render(request, self.template_login)
     
     def post(self, request):
         if 'tel' in request.POST:
             number = request.POST['tel']
-            ord_history = request.session['reserve']
-            print(ord_history)
-            result = list()
+            cart = Cart.objects.all()
+            item_list = list()
+            cart_list = list()
 
-            for ord in ord_history:
-                if ord['phone_number'] == number:
-                    data = dict()
-                    data['number'] = ord['phone_number']
-                    data['table'] = ord['table']
-                    data['total'] = ord['cost']
-                    data['date'] = ord['date']
-                    order_detail = list()
-                    order = ord["orders"]
-                    for ord in order:
-                        ords = ord.split('=')
-                        order_detail.append(ords)
-                    data['orders'] = order_detail
-                    data['quantity'] = len(order_detail)
-                    result.append(data)
-            
-            context = {"order": result}
-            return render(request, "customer/history.html", context)         
+            for cart_obj in cart:
+                if cart_obj.customer_number == number:
+                    item = OrderItem.objects.get(cart=cart_obj)
+                    item_list.append(item)
+                    cart_list.append(cart_obj)
+            print(item_list)
+            context = {
+                "items": item_list,
+                "carts": cart_list
+                }
+            return render(request, self.template_history, context)
+        else:
+            return render(request, self.template_history)
