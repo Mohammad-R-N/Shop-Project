@@ -310,3 +310,13 @@ def peak_business_hour(request):
     peak_hour = hours[0] if hours else None
 
     return render(request, "peak_hour", {"peak_hour": peak_hour})
+
+
+def sales_by_category(request):
+    categories = (
+        OrderItem.objects.select_related("product")
+        .values("product__category_menu__name")
+        .annotate(total_sales=Sum("price"))
+        .order_by("-total_sales")
+    )
+    return render(request, "sales_by_category.html", {"categories": categories})
