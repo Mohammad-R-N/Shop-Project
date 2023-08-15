@@ -1,6 +1,7 @@
 {% load static %}
 <!doctype html>
 <html class="no-js" lang="zxx">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -30,6 +31,9 @@
                         </div>
                         {% include "navbar_staff.html" %}
                     </div>
+                    <div>
+                        {% include 'messages.html' %}
+                    </div>
                     <div class="col-xl-4 col-lg-3 col-6 align-self-center">
                         <div class="menu-area__right menu-area__right d-flex justify-content-end align-items-center">
                             <div class="search">
@@ -44,18 +48,18 @@
                                     </form>
                                 </div>
 
-                            <div class="hamburger-trigger item">
-                                <i class="far fa-bars"></i>
-                            </div>
-                            <div class="cart cart-trigger item position-relative">
-                                <i class="fa fa-shopping-basket"></i>
-                                <span class="cart__count">3</span>
+                                <div class="hamburger-trigger item">
+                                    <i class="far fa-bars"></i>
+                                </div>
+                                <div class="cart cart-trigger item position-relative">
+                                    <i class="fa fa-shopping-basket"></i>
+                                    <span class="cart__count">3</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </header>
     <!-- header end -->
     <!-- side info for mobile view -->

@@ -11,14 +11,8 @@ from cart.models import Cart
 import datetime
 from .authentication import CustomAuthBackend
 import re
+from django.contrib import messages
 
-
-class UserView(View):
-    def get(self, request):
-        return render(request, "users/staff.html")
-
-    def post(self, request):
-        pass
 
 
 class StaffLogin(View):
@@ -39,6 +33,7 @@ class StaffLogin(View):
 
             user = CustomUser.objects.filter(phone_number=formatted_phone_number).first()
             if user is None:
+                messages.error(request, 'User not found!', 'danger')
                 return redirect("login")  # Redirect to signup page if user is not registered
             else: 
                 send_OTP(formatted_phone_number, random_code)
@@ -64,17 +59,19 @@ class CheckOtp(View):
 
             if user is not None:
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                messages.success(request, 'LogIn Successfully', 'success')
                 return redirect("staff")
+            messages.error(request, 'OTP code is NOT CORRECT!', 'danger')
             return redirect("home")
         return redirect('menu')
 
 class LogOutView(View):
     def get(self, request):
         logout(request)
+        messages.success(request, 'LogOut Successfully!', 'success')
         return redirect("home")
 
-    def post(self, request):
-        pass
+
 
 
 class StaffPanelView(View):
@@ -109,7 +106,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "r"
                     update_cart.save()
-
+                    messages.success(request, 'Refused successfully!', 'warning')
             return redirect("staff")
         
         elif "accept" in request.POST:
@@ -121,7 +118,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "a"
                     update_cart.save()
-
+                    messages.success(request, 'Accepted successfully', 'success')
             return redirect("staff")
         
         elif "edit" in request.POST:
@@ -170,6 +167,7 @@ class EditOrder(View):
             for item in item_list:
                 if item.id == int(order_item_id):
                     OrderItem.objects.get(id=int(order_item_id)).delete()
+                    messages.success(request, 'deleted successfully!', 'warning')
                     return redirect("staff")
 
         elif "done" in request.POST:
@@ -181,6 +179,7 @@ class EditOrder(View):
                     ord.quantity = int(new_quantity)
                     ord.cart.total_price = ord.price * int(new_quantity)
                     ord.save()
+                    messages.success(request, 'Quantity has changed successfully!', 'success')
                     return redirect("staff")
         
         elif "add_ord" in request.POST:
