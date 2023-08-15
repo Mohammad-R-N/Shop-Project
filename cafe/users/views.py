@@ -7,23 +7,18 @@ from django.views import View
 from cart.models import OrderItem
 import random
 from django.db.models.functions import ExtractHour
-
-# from utils import send_OTP
+from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
 from cart.models import Cart
-import datetime
 from .authentication import CustomAuthBackend
 import re
 from django.db.models import Sum, Count
+from django.utils import timezone
+from django.db.models import Sum
+from django.contrib import messages
 
 
-class UserView(View):
-    def get(self, request):
-        return render(request, "users/staff.html")
-
-    def post(self, request):
-        pass
 
 
 class StaffLogin(View):
@@ -46,10 +41,10 @@ class StaffLogin(View):
                 phone_number=formatted_phone_number
             ).first()
             if user is None:
-                return redirect(
-                    "login"
-                )  # Redirect to signup page if user is not registered
-            else:
+                messages.error(request, 'User not found!', 'danger')
+                return redirect("login")  # Redirect to signup page if user is not registered
+            else: 
+
                 send_OTP(formatted_phone_number, random_code)
                 request.session["user_info"] = {
                     "phone_number": formatted_phone_number,
@@ -78,13 +73,19 @@ class StaffLogin(View):
 #         return redirect('menu')
 
 
+            if user is not None:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                messages.success(request, 'Loged In Successfully', 'success')
+                return redirect("staff")
+            messages.error(request, 'OTP code is NOT CORRECT!', 'danger')
+            return redirect("home")
+        return redirect('menu')
+
 class LogOutView(View):
     def get(self, request):
         logout(request)
+        messages.success(request, 'LogOut Successfully!', 'success')
         return redirect("home")
-
-    def post(self, request):
-        pass
 
 
 class StaffPanelView(View):
@@ -92,19 +93,28 @@ class StaffPanelView(View):
     # template_staff_login = "staff/login.html"
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+
         # return redirect("staff_login")
-        cart = Cart.objects.all()
-        item = list()
-        carts = list()
+            cart = Cart.objects.all()
+            item = list()
+            carts = list()
 
-        for cart_obj in cart:
-            if cart_obj.status == "w":
-                items = OrderItem.objects.filter(cart=cart_obj)
-                item.append(items)
-                carts.append(cart_obj)
+            for cart_obj in cart:
+                if cart_obj.status == "w":
+                    items = OrderItem.objects.filter(cart=cart_obj)
+                    item.append(items)
+                    carts.append(cart_obj)
 
-        context = {"item": item, "cart": carts}
-        return render(request, self.template_staff, context)
+
+            context = {
+                'item': item,
+                'cart': carts
+            }
+            return render(request, self.template_staff, context)
+        else:
+            messages.error(request,"You are NOT allowed to see staff panel",extra_tags="danger")
+            return render(request,"staff_login")
 
     def post(self, request):
         if "refuse" in request.POST:
@@ -116,7 +126,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "r"
                     update_cart.save()
-
+                    messages.success(request, 'Refused successfully!', 'warning')
             return redirect("staff")
 
         elif "accept" in request.POST:
@@ -128,7 +138,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "a"
                     update_cart.save()
-
+                    messages.success(request, 'Accepted successfully!', 'success')
             return redirect("staff")
 
         elif "edit" in request.POST:
@@ -177,6 +187,7 @@ class EditOrder(View):
             for item in item_list:
                 if item.id == int(order_item_id):
                     OrderItem.objects.get(id=int(order_item_id)).delete()
+                    messages.success(request, 'Deleted successfully!', 'warning')
                     return redirect("staff")
 
         elif "done" in request.POST:
@@ -237,40 +248,65 @@ class AddOrder(View):
 
 
 class ManagerDashboard(View):
-    template_name = "manager/manager_dashboard.html"
-    today = datetime.datetime.today()
+
+    template_name = 'manager/manager_dashboard.html'
+    today = timezone.now().today().date()
+    week = today - timezone.timedelta(days=7)
+    month = today - timezone.timedelta(days=30)
+    year = today - timezone.timedelta(days=365)
 
     def get(self, request):
-        daily_order = Cart.objects.filter(time=self.today)
-        orders = Cart.objects.all()
+        all_cart = Cart.objects.all()
+        all_accepted_cart = Cart.objects.filter(status="a")
+        daily_order = Cart.objects.filter(status="a").filter(time=self.today)
+        weekly_order = Cart.objects.filter(status="a").filter(time=self.week)
+        monthly_order = Cart.objects.filter(status="a").filter(time=self.month)
+        yearly_order = Cart.objects.filter(status="a").filter(time=self.year)
 
-        today_discount = 0
-        for ord in daily_order:
-            today_discount += ord.discount
-        avg_today_discount = today_discount / len(daily_order)
+        #Daily
+        daily_sales = daily_order.aggregate(daily_sales=Sum("total_price"))["daily_sales"]
+        daily_order_count = daily_order.count()
 
-        today_order = 0
-        for ord in daily_order:
-            today_order += 1
+        #Weekly
+        weekly_sales = daily_order.aggregate(weekly_sales=Sum("total_price"))["weekly_sales"]
+        weekly_order_count = weekly_order.count()
 
-        today_sales = 0
-        for ord in today_order:
-            today_sales += ord.total_price
+        #Monthly
+        monthly_sales = daily_order.aggregate(monthly_sales=Sum("total_price"))["monthly_sales"]
+        monthly_order_count = monthly_order.count()
 
-        total_sales = 0
-        for ord in orders:
-            total_sales += 1
+        #Yearly
+        yearly_sales = daily_order.aggregate(yearly_sales=Sum("total_price"))["yearly_sales"]
+        yearly_order_count = yearly_order.count()
 
-        total_order = 0
-        for ord in orders:
-            total_order += 1
+        #Total
+        total_sales = all_accepted_cart.aggregate(daily_sales=Sum("total_price"))["total_sales"]
+        total_order_count = all_accepted_cart.count()
+        
+        #Most_Popular_Product
 
+        #Peak_Business_hour
+
+        #Customer_Order_History
+        
         data = {
+
             "avg_today_discount": avg_today_discount,
             "today_order": today_order,
             "today_sales": today_sales,
             "total_sales": total_sales,
             "total_order": total_order,
+            "daily_sales": daily_sales,
+            "daily_order_count": daily_order_count,
+            "weekly_sales": weekly_sales,
+            "weekly_order_count": weekly_order_count,
+            "monthly_sales": monthly_sales,
+            "monthly_order_count": monthly_order_count,
+            "yearly_sales": yearly_sales,
+            "yearly_order_count": yearly_order_count,
+            "total_sales": total_sales,
+            "total_order_count": total_order_count,
+
         }
 
         context = {
@@ -278,6 +314,7 @@ class ManagerDashboard(View):
         }
 
         return render(request, self.template_name, context)
+
         # return render(request, self.template_name)
 
 
@@ -320,3 +357,4 @@ def sales_by_category(request):
         .order_by("-total_sales")
     )
     return render(request, "sales_by_category.html", {"categories": categories})
+
