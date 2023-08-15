@@ -68,7 +68,7 @@ class CheckOtp(View):
 class LogOutView(View):
     def get(self, request):
         logout(request)
-        messages.success(request, 'LogOut Successfully', 'success')
+        messages.success(request, 'LogOut Successfully!', 'success')
         return redirect("home")
 
 
@@ -106,7 +106,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "r"
                     update_cart.save()
-
+                    messages.success(request, 'Refused successfully!', 'warning')
             return redirect("staff")
         
         elif "accept" in request.POST:
@@ -118,7 +118,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "a"
                     update_cart.save()
-
+                    messages.success(request, 'Accepted successfully', 'success')
             return redirect("staff")
         
         elif "edit" in request.POST:
@@ -167,6 +167,7 @@ class EditOrder(View):
             for item in item_list:
                 if item.id == int(order_item_id):
                     OrderItem.objects.get(id=int(order_item_id)).delete()
+                    messages.success(request, 'deleted successfully!', 'warning')
                     return redirect("staff")
 
         elif "done" in request.POST:
@@ -178,6 +179,7 @@ class EditOrder(View):
                     ord.quantity = int(new_quantity)
                     ord.cart.total_price = ord.price * int(new_quantity)
                     ord.save()
+                    messages.success(request, 'Quantity has changed successfully!', 'success')
                     return redirect("staff")
         
         elif "add_ord" in request.POST:
