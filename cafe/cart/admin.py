@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Cart
 from datetime import datetime, time
-from .models import Product, OrderItem, Table
+from .models import OrderItem, Table
 
 class CartAdmin(admin.ModelAdmin):
     list_display = ['customer_number', 'cart_users', 'time']
