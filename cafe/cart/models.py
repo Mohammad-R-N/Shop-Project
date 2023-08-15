@@ -37,7 +37,7 @@ class Cart(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     total_quantity = models.PositiveIntegerField()
     customer_number = PhoneNumberField(_("phone number"), max_length=14, validators=[phone_number_validator])
-    cart_users = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    cart_users = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=True)
     cart_table = models.ForeignKey(Table, on_delete=models.PROTECT)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=WAITING)
 
