@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from menu.models import Product
 from cart.models import Table, Cart, OrderItem
 from django.views import View
+from django.contrib import messages
 
-# Create your views here.
 class CartView(View):
     cost = 0
     def get(self, request):
@@ -127,14 +127,14 @@ class OrdDetail(View):
                     cart_list.append(cart)
                     item.append(items)
 
+
             context = {
                 "cart": cart_list,
                 "items": item,
                 "process": "Waiting for accepting from Staff"
             }
+            messages.success(request, 'Your ORDER has send successfully!', 'success')
             return render(request, self.template_name, context)
         else:
             return render(request, self.template_name)
-    
-    def post(self, request):
-        pass
+

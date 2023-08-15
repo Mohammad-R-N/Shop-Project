@@ -12,10 +12,8 @@ from .authentication import CustomAuthBackend
 import re
 from django.utils import timezone
 from django.db.models import Sum
+from django.contrib import messages
 
-class UserView(View):
-    def get(self, request):
-        return render(request, "users/staff.html")
 
 
 class StaffLogin(View):
@@ -36,6 +34,7 @@ class StaffLogin(View):
 
             user = CustomUser.objects.filter(phone_number=formatted_phone_number).first()
             if user is None:
+                messages.error(request, 'User not found!', 'danger')
                 return redirect("login")  # Redirect to signup page if user is not registered
             else: 
                 send_OTP(formatted_phone_number, random_code)
@@ -61,36 +60,45 @@ class CheckOtp(View):
 
             if user is not None:
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                messages.success(request, 'Loged In Successfully', 'success')
                 return redirect("staff")
+            messages.error(request, 'OTP code is NOT CORRECT!', 'danger')
             return redirect("home")
         return redirect('menu')
 
 class LogOutView(View):
     def get(self, request):
         logout(request)
+        messages.success(request, 'LogOut Successfully!', 'success')
         return redirect("home")
+
 
 class StaffPanelView(View):
     template_staff = "staff/staff.html"
     # template_staff_login = "staff/login.html"
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+
         # return redirect("staff_login")
-        cart = Cart.objects.all()
-        item = list()
-        carts = list()
+            cart = Cart.objects.all()
+            item = list()
+            carts = list()
 
-        for cart_obj in cart:
-            if cart_obj.status == "w":
-                items = OrderItem.objects.filter(cart=cart_obj)
-                item.append(items)
-                carts.append(cart_obj)
+            for cart_obj in cart:
+                if cart_obj.status == "w":
+                    items = OrderItem.objects.filter(cart=cart_obj)
+                    item.append(items)
+                    carts.append(cart_obj)
 
-        context = {
-            'item': item,
-            'cart': carts
-        }
-        return render(request, self.template_staff, context)
+            context = {
+                'item': item,
+                'cart': carts
+            }
+            return render(request, self.template_staff, context)
+        else:
+            messages.error(request,"You are NOT allowed to see staff panel",extra_tags="danger")
+            return render(request,"staff_login")
 
     def post(self, request):
         if "refuse" in request.POST:
@@ -102,7 +110,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "r"
                     update_cart.save()
-
+                    messages.success(request, 'Refused successfully!', 'warning')
             return redirect("staff")
         
         elif "accept" in request.POST:
@@ -114,7 +122,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "a"
                     update_cart.save()
-
+                    messages.success(request, 'Accepted successfully!', 'success')
             return redirect("staff")
         
         elif "edit" in request.POST:
@@ -163,6 +171,7 @@ class EditOrder(View):
             for item in item_list:
                 if item.id == int(order_item_id):
                     OrderItem.objects.get(id=int(order_item_id)).delete()
+                    messages.success(request, 'Deleted successfully!', 'warning')
                     return redirect("staff")
 
         elif "done" in request.POST:
