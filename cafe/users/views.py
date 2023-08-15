@@ -8,17 +8,14 @@ from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
 from cart.models import Cart
-import datetime
 from .authentication import CustomAuthBackend
 import re
-
+from django.utils import timezone
+from django.db.models import Sum
 
 class UserView(View):
     def get(self, request):
         return render(request, "users/staff.html")
-
-    def post(self, request):
-        pass
 
 
 class StaffLogin(View):
@@ -72,10 +69,6 @@ class LogOutView(View):
     def get(self, request):
         logout(request)
         return redirect("home")
-
-    def post(self, request):
-        pass
-
 
 class StaffPanelView(View):
     template_staff = "staff/staff.html"
@@ -228,39 +221,56 @@ class AddOrder(View):
 
 class ManagerDashboard(View):
     template_name = 'manager/manager_dashboard.html'
-    today = datetime.datetime.today()
+    today = timezone.now().today().date()
+    week = today - timezone.timedelta(days=7)
+    month = today - timezone.timedelta(days=30)
+    year = today - timezone.timedelta(days=365)
 
     def get(self, request):
-        daily_order = Cart.objects.filter(time=self.today)
-        orders = Cart.objects.all()
+        all_cart = Cart.objects.all()
+        all_accepted_cart = Cart.objects.filter(status="a")
+        daily_order = Cart.objects.filter(status="a").filter(time=self.today)
+        weekly_order = Cart.objects.filter(status="a").filter(time=self.week)
+        monthly_order = Cart.objects.filter(status="a").filter(time=self.month)
+        yearly_order = Cart.objects.filter(status="a").filter(time=self.year)
 
-        today_discount = 0
-        for ord in daily_order:
-            today_discount += ord.discount
-        avg_today_discount = today_discount / len(daily_order)
+        #Daily
+        daily_sales = daily_order.aggregate(daily_sales=Sum("total_price"))["daily_sales"]
+        daily_order_count = daily_order.count()
 
-        today_order = 0 
-        for ord in daily_order:
-            today_order += 1
+        #Weekly
+        weekly_sales = daily_order.aggregate(weekly_sales=Sum("total_price"))["weekly_sales"]
+        weekly_order_count = weekly_order.count()
 
-        today_sales = 0
-        for ord in today_order:
-            today_sales += ord.total_price
+        #Monthly
+        monthly_sales = daily_order.aggregate(monthly_sales=Sum("total_price"))["monthly_sales"]
+        monthly_order_count = monthly_order.count()
 
-        total_sales = 0
-        for ord in orders:
-            total_sales += 1
+        #Yearly
+        yearly_sales = daily_order.aggregate(yearly_sales=Sum("total_price"))["yearly_sales"]
+        yearly_order_count = yearly_order.count()
 
-        total_order = 0
-        for ord in orders:
-            total_order += 1
+        #Total
+        total_sales = all_accepted_cart.aggregate(daily_sales=Sum("total_price"))["total_sales"]
+        total_order_count = all_accepted_cart.count()
+        
+        #Most_Popular_Product
 
+        #Peak_Business_hour
+
+        #Customer_Order_History
+        
         data = {
-            'avg_today_discount': avg_today_discount,
-            'today_order': today_order,
-            'today_sales': today_sales,
-            'total_sales': total_sales,
-            'total_order': total_order,
+            "daily_sales": daily_sales,
+            "daily_order_count": daily_order_count,
+            "weekly_sales": weekly_sales,
+            "weekly_order_count": weekly_order_count,
+            "monthly_sales": monthly_sales,
+            "monthly_order_count": monthly_order_count,
+            "yearly_sales": yearly_sales,
+            "yearly_order_count": yearly_order_count,
+            "total_sales": total_sales,
+            "total_order_count": total_order_count,
         }
 
         context = {
@@ -268,4 +278,3 @@ class ManagerDashboard(View):
         }
 
         return render(request, self.template_name, context)
-        # return render(request, self.template_name)
