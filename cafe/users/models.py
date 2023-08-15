@@ -24,7 +24,7 @@ class PhoneNumberField(models.CharField):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
-    phone_number = PhoneNumberField(_("phone number"), max_length=19, unique=True, validators=[phone_number_validator])
+    phone_number = PhoneNumberField(_("phone number"), max_length=14, unique=True, validators=[phone_number_validator])
     first_name = models.CharField(_("first name"), max_length=20)
     last_name = models.CharField(_("first name"), max_length=30)
     is_staff = models.BooleanField(default=False)

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'baseAdmin.html' %}
 {% load static %}
 {% block content %}
 {% include 'cart/sidecart.html' %}
@@ -97,7 +97,7 @@
                                             <span class="amount">$ {{ pt.price }}</span>
                                         </td>
                                         <td class="product-subtotal">
-                                            <button class="btn btn-success" name="{{ pt.name }}">Add To Cart</button>
+                                            <button type="submit" class="btn btn-success" name="add" value="{{ pt.id }}">Add To Cart</button>
                                         </td>
                                     </tr>
                                     </form>

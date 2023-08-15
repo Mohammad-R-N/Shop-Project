@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from menu.models import Product
+from cart.models import Table, Cart, OrderItem
 from django.views import View
-import datetime
 
 # Create your views here.
 class CartView(View):
@@ -78,78 +78,33 @@ class CartView(View):
         
 class ReservationView(View):
     def get(self, request):
+        tables = Table.objects.all()
         context = {
+            'table': tables,
             'total': request.session['cost']
         }
         return render(request, "customer/reserve.html", context)
     
     def post(self, request):
-        ord_list = list()
-        date = datetime.datetime.now()
-        date = date.strftime("%A %m %-Y %H:%M:%S")
-        if request.session.has_key('reserve'):
-            if request.session['reserve'] is not None:
-                reserve_ord = request.session['reserve']
-                for ord in reserve_ord:
-                    ord_list.append(ord)
-                cost = request.session['cost']
-                del request.session['cost']
-                order = request.session['order']
-                del request.session['order']
-                table = request.POST['subject']
-                phone_number = request.POST['tel']
+        user = request.user
+        cost = request.session['cost']
+        del request.session['cost']
+        order = request.session['order']
+        del request.session['order']
+        table = request.POST['subject']
+        phone_number = request.POST['tel']
+        request.session['number'] = phone_number
+        table_obj = Table.objects.get(table_name=table)          
+        cart = Cart.objects.create(total_price=cost, total_quantity=len(order), 
+                                        customer_number=phone_number, cart_users=user, cart_table=table_obj)
+        cart.save()
 
-                if table == '1':
-                    table = 1
-                elif table == '2':
-                    table = 2
-                elif table == '3':
-                    table = 3
-                elif table == '4':
-                    table = 4
-                elif table == '5':
-                    table = 5
+        for ord in order:
+            pt_name = ord.split('=')
+            pt = Product.objects.get(name=pt_name[0])
+            order_item = OrderItem.objects.create(product=pt, cart=cart, quantity=pt_name[1], price=pt.price)
+            order_item.save()
 
-                reserve_info = {
-                'table': table,
-                'cost': cost,
-                'phone_number': phone_number,
-                'date': str(date),
-                'orders': order,
-                }
-                ord_list.append(reserve_info)
-                request.session['reserve'] = ord_list
-                # del request.session['reserve']
-        else:
-            cost = request.session['cost']
-            del request.session['cost']
-            order = request.session['order']
-            del request.session['order']
-            table = request.POST['subject']
-            phone_number = request.POST['tel']
-
-            if table == '1':
-                table = 1
-            elif table == '2':
-                table = 2
-            elif table == '3':
-                table = 3
-            elif table == '4':
-                table = 4
-            elif table == '5':
-                table = 5
-
-            reserve_info = {
-            'table': table,
-            'cost': cost,
-            'phone_number': phone_number,
-            'date': str(date),
-            'orders': order,
-            }
-            ord_list.append(reserve_info)
-            request.session['reserve'] = ord_list
-
-            # del request.session['reserve']
         result = redirect('ord_detail')
         result.delete_cookie('product')
         return result
@@ -158,21 +113,19 @@ class OrdDetail(View):
     template_name = "customer/customer_ord_detail.html"
 
     def get(self, request):
-        product_list = list()
-        order = request.session['reserve'][-1]
-        for name in order['orders']:
-                pt_name = name.split('=')
-                product = Product.objects.get(name=pt_name[0])
-                data = dict()
-                data['product_name'] = product.name
-                data['product_photo'] = product.photo.url
-                data['product_price'] = product.price
-                data['product_quantity'] = pt_name[1]
-                data['total'] = int(pt_name[1]) * product.price
-                product_list.append(data)
+        phone_number = request.session['number']
+        cart = Cart.objects.all()
+        item = list()
+        cart_list = list()
+        for cart in cart:
+            if cart.customer_number == phone_number:
+                items = OrderItem.objects.filter(cart=cart)
+                cart_list.append(cart)
+                item.append(items)
+
         context = {
-            "product_info": product_list,
-            "user_info": order['table'],
+            "cart": cart_list,
+            "items": item,
             "process": "Waiting for accepting from Staff"
         }
         return render(request, self.template_name, context)

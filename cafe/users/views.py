@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, logout
 from .forms import StaffLoginForm, StaffOtpForm
 from django.views import View
 from cart.models import OrderItem
@@ -58,18 +58,15 @@ class CheckOtp(View):
 
     def post(self, request):
         form = self.form_otp(request.POST)
-        otp = form.cleaned_data.get("code")
         if form.is_valid():
-            user = authenticate(
-                request,
-                phone_number=request.session["user_info"]["phone_number"],
-                code=otp,
-            )
-            if user is not None:
-                login(request, user)
-                return redirect("staff/")
-            return redirect("/")
+            otp = form.cleaned_data["code"]
+            user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
 
+            if user is not None:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                return redirect("staff")
+            return redirect("home")
+        return redirect('menu')
 
 class LogOutView(View):
     def get(self, request):
@@ -81,273 +78,111 @@ class LogOutView(View):
 
 
 class StaffPanelView(View):
-    template_name = "staff/staff.html"
+    template_staff = "staff/staff.html"
+    # template_staff_login = "staff/login.html"
 
     def get(self, request, *args, **kwargs):
-        customer_ord_info = request.session["reserve"]
-        info_list = list()
-        # del request.session["staff"]
-        if request.session.has_key("staff"):
-            data = request.session["staff"]
-            context = {"order": data}
-            return render(request, self.template_name, context)
-        else:
-            for ord_information in customer_ord_info:
-                order_list = dict()
-                order_detail = list()
-                order = ord_information["orders"]
-                for ord in order:
-                    ords = ord.split('=')
-                    order_detail.append(ords)
+        # return redirect("staff_login")
+        cart = Cart.objects.all()
+        item = list()
+        carts = list()
 
-                order_list['ord_detail'] = order_detail
-                order_list['number'] = ord_information['phone_number']
-                order_list['quantity'] = len(order)
-                order_list['total'] = ord_information['cost']
-                order_list['table'] = ord_information['table']
-                order_list['refuse'] = False
-                order_list['accept'] = False
-                info_list.append(order_list)
+        for cart_obj in cart:
+            if cart_obj.status == "w":
+                items = OrderItem.objects.filter(cart=cart_obj)
+                item.append(items)
+                carts.append(cart_obj)
 
-            request.session["staff"] = info_list
-            context = {"order": info_list}
-            return render(request, self.template_name, context)
+        context = {
+            'item': item,
+            'cart': carts
+        }
+        return render(request, self.template_staff, context)
 
     def post(self, request):
         if "refuse" in request.POST:
-            refuse_ord = request.POST['refuse']
-            info = request.session["staff"]
-            edit_ord = list()
-            for ord in info:
-                if ord['number'] == refuse_ord:
-                    data = dict()
-                    data['number'] = ord['number']
-                    data['quantity'] = ord['quantity']
-                    data['total'] = ord['total']
-                    data['ord_detail'] = ord['ord_detail']
-                    data['table'] = ord['table']
-                    data['refuse'] = True
-                    data['accept'] = False
-                    edit_ord.append(data)
-                elif ord['refuse'] == True:
-                    data = dict()
-                    data['number'] = ord['number']
-                    data['quantity'] = ord['quantity']
-                    data['total'] = ord['total']
-                    data['ord_detail'] = ord['ord_detail']
-                    data['table'] = ord['table']
-                    data['refuse'] = True
-                    data['accept'] = False
-                    edit_ord.append(data)
-                else:
-                    data = dict()
-                    data['number'] = ord['number']
-                    data['quantity'] = ord['quantity']
-                    data['total'] = ord['total']
-                    data['ord_detail'] = ord['ord_detail']
-                    data['table'] = ord['table']
-                    data['refuse'] = False
-                    data['accept'] = False
-                    edit_ord.append(data)
+            cart_refuse_id = request.POST['refuse']
+            cart = Cart.objects.all()
 
-            request.session["staff"] = edit_ord
-            return redirect('staff')
+            for cart_obj in cart:
+                if cart_obj.id == int(cart_refuse_id):
+                    update_cart = Cart.objects.get(id=cart_obj.id)
+                    update_cart.status = "r"
+                    update_cart.save()
+
+            return redirect("staff")
         
         elif "accept" in request.POST:
-            accept_ord_number = request.POST['accept']
-            info = request.session["staff"]
-            edit_ord = list()
-            for ord in info:
-                if ord['number'] == accept_ord_number:
-                    total = ord['total']
-                    quantity = ord['quantity']
-                    data = dict()
-                    data['number'] = ord['number']
-                    data['quantity'] = ord['quantity']
-                    data['total'] = ord['total']
-                    data['ord_detail'] = ord['ord_detail']
-                    data['table'] = ord['table']
-                    data['refuse'] = False
-                    data['accept'] = True
-                    edit_ord.append(data)
-                elif ord['refuse'] == True:
-                    data = dict()
-                    data['number'] = ord['number']
-                    data['quantity'] = ord['quantity']
-                    data['total'] = ord['total']
-                    data['ord_detail'] = ord['ord_detail']
-                    data['table'] = ord['table']
-                    data['refuse'] = True
-                    data['accept'] = False
-                    edit_ord.append(data)
-                elif ord['accept'] == True:
-                    data = dict()
-                    data['number'] = ord['number']
-                    data['quantity'] = ord['quantity']
-                    data['total'] = ord['total']
-                    data['ord_detail'] = ord['ord_detail']
-                    data['table'] = ord['table']
-                    data['refuse'] = False
-                    data['accept'] = True
-                    edit_ord.append(data)
-                else:
-                    data = dict()
-                    data['number'] = ord['number']
-                    data['quantity'] = ord['quantity']
-                    data['total'] = ord['total']
-                    data['ord_detail'] = ord['ord_detail']
-                    data['table'] = ord['table']
-                    data['refuse'] = False
-                    data['accept'] = False
-                    edit_ord.append(data)
+            cart_accept_id = request.POST['accept']
+            cart = Cart.objects.all()
 
-            Cart.objects.create(total_price=total, total_quantity=quantity)
-            request.session["staff"] = edit_ord
-            return redirect('staff')
+            for cart_obj in cart:
+                if cart_obj.id == int(cart_accept_id):
+                    update_cart = Cart.objects.get(id=cart_obj.id)
+                    update_cart.status = "a"
+                    update_cart.save()
 
+            return redirect("staff")
+        
         elif "edit" in request.POST:
-            edit_ord = request.POST['edit']
-            info = request.session["staff"]
-            ord_for_edit = dict()
-            for ord in info:
-                if ord['number'] == edit_ord:
-                    ord_for_edit['number'] = ord['number']
-                    ord_for_edit['quantity'] = ord['quantity']
-                    ord_for_edit['total'] = ord['total']
-                    ord_for_edit['ord_detail'] = ord['ord_detail']
-                    ord_for_edit['table'] = ord['table']
+            cart_edit_id = request.POST['edit']
+            request.session["edit_id"] = cart_edit_id
+            return redirect("edit_ord")
             
-            request.session["ord_for_edit"] = ord_for_edit
-            return redirect('edit_ord')
-
 class EditOrder(View):
     template_name = "staff/edit_ord.html"
+
     def get(self, request):
-        ord_for_edit = request.session["ord_for_edit"]
-        number = ord_for_edit['number']
-        product = list()
 
-        for edit_pt in ord_for_edit['ord_detail']:
-            pt = Product.objects.get(name=edit_pt[0])
-            data = dict()
-            data['product_name'] = pt.name
-            data['product_photo'] = pt.photo.url
-            data['product_quantity'] = edit_pt[1]
-            product.append(data)
+        if request.session.has_key("edit_id"):
+            cart_edit_id = request.session["edit_id"]
+            cart = Cart.objects.all()
+            item = list()
+            cart_list = list()
 
-        context = {
-            "product": product,
-            "number": number
-        }
-        return render(request, self.template_name, context)
+            for cart_obj in cart:
+                if cart_obj.id == int(cart_edit_id):
+                    items = OrderItem.objects.filter(cart=cart_obj).values()
+                    # print(items[1]['product_id'])
+                    cart_list.append(cart_obj)
+                    item.append(items)
 
+            context = {
+                "cart": cart_list[0].customer_number,
+                "items": item,
+            }
+            return render(request, self.template_name, context)
+        else:
+            return render(request, self.template_name)
+    
     def post(self, request):
         if "remove" in request.POST:
-            remove_product = request.POST["remove"]
-            remove_name = remove_product.split('-')[0]
-            number = remove_product.split('-')[1]
-            ord_for_edit = request.session["ord_for_edit"]
-            data = request.session["staff"]
-            ord_detail = list()
-            edited_list = list()
-            new_total = 0
+            cart_edit_id = request.session["edit_id"]
+            order_item_id = request.POST["remove"]
+            cart = Cart.objects.all()
+            item_list = list()
 
-            for edit_pt in ord_for_edit['ord_detail']:
-                if edit_pt[0] != remove_name:
-                    pt = Product.objects.get(name=edit_pt[0])
-                    new_quantity = request.POST[f"{edit_pt[0]}"]
-                    if new_quantity == '':
-                        new_total += int(pt.price) * int(edit_pt[1])
-                        ord_detail.append([edit_pt[0], edit_pt[1]])
-                    else:
-                        new_total += int(pt.price) * int(new_quantity)
-                        ord_detail.append([edit_pt[0], new_quantity])
-
-            for ord in data:
-                if ord['number'] == number:
-                    result = dict()
-                    result['number'] = ord['number']
-                    result['quantity'] = len(ord_detail)
-                    result['total'] = new_total
-                    result['ord_detail'] = ord_detail
-                    result['table'] = ord['table']
-                    result['refuse'] = False
-                    request.session["ord_for_edit"] = result
-                    edited_list.append(result)
-                else:
-                    if ord['refuse'] == True:
-                        result = dict()
-                        result['number'] = ord['number']
-                        result['quantity'] = ord['quantity']
-                        result['total'] = ord['total']
-                        result['ord_detail'] = ord['ord_detail']
-                        result['table'] = ord['table']
-                        result['refuse'] = True
-                        edited_list.append(result)
-                    else:
-                        result = dict()
-                        result['number'] = ord['number']
-                        result['quantity'] = ord['quantity']
-                        result['total'] = ord['total']
-                        result['ord_detail'] = ord['ord_detail']
-                        result['table'] = ord['table']
-                        result['refuse'] = False
-                        edited_list.append(result)
-
-            request.session["staff"] = edited_list
-            return redirect("edit_ord")
+            for cart_obj in cart:
+                if cart_obj.id == int(cart_edit_id):
+                    items = OrderItem.objects.get(cart=cart_obj)
+                    item_list.append(items)
+            
+            for item in item_list:
+                if item.id == int(order_item_id):
+                    OrderItem.objects.get(id=int(order_item_id)).delete()
+                    return redirect("staff")
 
         elif "done" in request.POST:
-            number = request.POST["done"]
-            ord_for_edit = request.session["ord_for_edit"]
-            data = request.session["staff"]
-            ord_detail = list()
-            edited_list = list()
-            new_total = 0
-            for edit_pt in ord_for_edit['ord_detail']:
-                if edit_pt[0] in request.POST:
-                    pt = Product.objects.get(name=edit_pt[0])
-                    new_quantity = request.POST[f"{edit_pt[0]}"]
-                    if new_quantity == '':
-                        new_total += int(pt.price) * int(edit_pt[1])
-                        ord_detail.append([edit_pt[0], edit_pt[1]])
-                    else:
-                        new_total += int(pt.price) * int(new_quantity)
-                        ord_detail.append([edit_pt[0], new_quantity])
-            
-            for ord in data:
-                if ord['number'] == number:
-                    result = dict()
-                    result['number'] = ord['number']
-                    result['quantity'] = len(ord_detail)
-                    result['total'] = new_total
-                    result['ord_detail'] = ord_detail
-                    result['table'] = ord['table']
-                    result['refuse'] = False
-                    edited_list.append(result)
-                else:
-                    if ord['refuse'] == True:
-                        result = dict()
-                        result['number'] = ord['number']
-                        result['quantity'] = ord['quantity']
-                        result['total'] = ord['total']
-                        result['ord_detail'] = ord['ord_detail']
-                        result['table'] = ord['table']
-                        result['refuse'] = True
-                        edited_list.append(result)
-                    else:
-                        result = dict()
-                        result['number'] = ord['number']
-                        result['quantity'] = ord['quantity']
-                        result['total'] = ord['total']
-                        result['ord_detail'] = ord['ord_detail']
-                        result['table'] = ord['table']
-                        result['refuse'] = False
-                        edited_list.append(result)
-
-            request.session["staff"] = edited_list
-            return redirect("staff")
-
+            order_items = OrderItem.objects.all()
+        
+            for ord in order_items:
+                if str(ord.id) in request.POST:
+                    new_quantity = request.POST[f"{ord.id}"]
+                    ord.quantity = int(new_quantity)
+                    ord.cart.total_price = ord.price * int(new_quantity)
+                    ord.save()
+                    return redirect("staff")
+        
         elif "add_ord" in request.POST:
             return redirect('add_ord')
 
@@ -364,7 +199,20 @@ class AddOrder(View):
         return render(request, self.template_name, context)
 
     def post(self, request):
-        if 'all' in request.POST:
+        if "add" in request.POST:
+            cart_edit_id = request.session["edit_id"]
+            new_product_id = request.POST["add"]
+            new_product_quantity = request.POST["quantity"]
+            new_product_obj = Product.objects.get(id=int(new_product_id))
+            cart = Cart.objects.all()
+
+            for cart_obj in cart:
+                if cart_obj.id == int(cart_edit_id):
+                    order_item = OrderItem.objects.create(product=new_product_obj, cart=cart_obj, 
+                                                            quantity=int(new_product_quantity), price=new_product_obj.price)
+                    order_item.save()
+
+        elif 'all' in request.POST:
             cat = Category.objects.all()
             product = Product.objects.all()
             context = {"category": cat, "product": product}
