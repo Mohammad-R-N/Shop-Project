@@ -289,3 +289,12 @@ def popular_items(request):
     )
 
     return render(request, "dashboard1.html", {"items": items})
+
+
+def sales_by_customer(request):
+    sales = (
+        Cart.objects.values("customer_number")
+        .annotate(total_sales=Sum("total_price"))
+        .order_by("-total_sales")[:3]
+    )
+    return render(request, "sales_by_customer.html"), {"sales": sales}
