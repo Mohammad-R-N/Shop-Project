@@ -11,14 +11,8 @@ from cart.models import Cart
 import datetime
 from .authentication import CustomAuthBackend
 import re
+from django.contrib import messages
 
-
-class UserView(View):
-    def get(self, request):
-        return render(request, "users/staff.html")
-
-    def post(self, request):
-        pass
 
 
 class StaffLogin(View):
@@ -39,6 +33,7 @@ class StaffLogin(View):
 
             user = CustomUser.objects.filter(phone_number=formatted_phone_number).first()
             if user is None:
+                messages.error(request, 'User not found!', 'danger')
                 return redirect("login")  # Redirect to signup page if user is not registered
             else: 
                 send_OTP(formatted_phone_number, random_code)
@@ -64,17 +59,19 @@ class CheckOtp(View):
 
             if user is not None:
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                messages.success(request, 'LogIn Successfully', 'success')
                 return redirect("staff")
+            messages.error(request, 'OTP code is NOT CORRECT!', 'danger')
             return redirect("home")
         return redirect('menu')
 
 class LogOutView(View):
     def get(self, request):
         logout(request)
+        messages.success(request, 'LogOut Successfully', 'success')
         return redirect("home")
 
-    def post(self, request):
-        pass
+
 
 
 class StaffPanelView(View):
