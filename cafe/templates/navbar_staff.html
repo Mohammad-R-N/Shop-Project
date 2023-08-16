@@ -1,12 +1,52 @@
+<header class="site-header black-bg">
+    <div class="menu-area custom-padding">
+        <div class="container-fluid custom-width">
 
+            <div class="row">
+                <div class="col-xl-8 col-lg-9 col-6">
+                    <div class="logo mm-only d-md-block d-lg-none">
+                        <a href="main.html">
+                            <img src="{{ site_config.logo.url }}" alt="logo">
+                        </a>
+                    </div>
+                    <div class="main-menu main-menu">
+                        <nav id="mobile-menu">
+                            <ul>
+                                <li><a href={% url 'menu' %}>menu</a></li>
+                                <li><a href={% url 'staff' %}>Incoming Order</a></li>
+                                <li><a href={% url 'logout_user' %}>Log Out</a></li>
+                            </ul>
 
+                        </nav>
 
-                        <div class="main-menu main-menu">
-                            <nav id="mobile-menu">
-                                <ul>
-                                    <li><a href={% url 'menu' %}>menu</a></li>
-                                    <li><a href={% url 'staff' %}>Incoming Order</a></li>
-                                    <li><a href={% url 'logout_user' %}>Log Out</a></li>
-                                </ul>
-                            </nav>
+                    </div>
+
+                </div>
+                <div class="col-xl-4 col-lg-3 col-6 align-self-end">
+                    <div class="menu-area__right d-flex justify-content-end ">
+                        <div class="search">
+                            <div class="search__trigger item">
+                                <span class="open"><i class="far fa-search"></i></span>
+                                <span class="close"><i class="fal fa-times"></i></span>
+                            </div>
+                            <div class="search__form">
+                                <form role="search" method="get" action="{% url 'search_products' %}">
+                                    <input type="search" name="query" value="" placeholder="Search Keywords">
+                                    <button type="submit"><i class="far fa-search"></i></button>
+                                </form>
+                            </div>
+
+                            <div class="hamburger-trigger item">
+                                <i class="far fa-bars"></i>
+                            </div>
+                            {% comment %} <div class="cart cart-trigger item position-relative">
+                                <i class="fa fa-shopping-basket"></i>
+                                <span class="cart__count">3</span>
+                            </div> {% endcomment %}
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

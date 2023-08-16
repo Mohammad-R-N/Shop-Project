@@ -51,33 +51,26 @@ class StaffLogin(View):
                 return redirect("check-otp")
 
 
-# class CheckOtp(View):
-#     form_otp = StaffOtpForm
+class CheckOtp(View):
+    form_otp = StaffOtpForm
 
-#     def get(self, request):
-#         form = self.form_otp()
-#         return render(request, "staff/otp.html", {"form": form})
+    def get(self, request):
+        form = self.form_otp()
+        return render(request, "staff/otp.html", {"form": form})
 
-#     def post(self, request):
-#         form = self.form_otp(request.POST)
-#         if form.is_valid():
-#             otp = form.cleaned_data["code"]
-#             user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
+    def post(self, request):
+        form = self.form_otp(request.POST)
+        if form.is_valid():
+            otp = form.cleaned_data["code"]
+            user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
+            if user is not None:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                messages.success(request, 'Loged In Successfully', 'success')
+                return redirect("staff")
+            messages.error(request, 'OTP code is NOT CORRECT!', 'danger')
+            return redirect("home")
+        return redirect('menu')
 
-#             if user is not None:
-#                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-#                 return redirect("staff")
-#             return redirect("home")
-#         return redirect('menu')
-
-
-        #     if user is not None:
-        #         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        #         messages.success(request, 'Loged In Successfully', 'success')
-        #         return redirect("staff")
-        #     messages.error(request, 'OTP code is NOT CORRECT!', 'danger')
-        #     return redirect("home")
-        # return redirect('menu')
 
 class LogOutView(View):
     def get(self, request):
