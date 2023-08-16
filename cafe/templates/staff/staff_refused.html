@@ -1,0 +1,93 @@
+{% extends 'baseAdmin.html' %}
+{% load static %}
+{% block content %}
+{% include 'cart/sidecart.html' %}
+<main>
+    <!-- breadcrumb area start -->
+    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static "images/bg/breadcrumb-bg-1.jpeg" %}"
+        data-overlay="dark" data-opacity="5">
+        <div class="shape shape__1"><img src="{% static "images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
+        <div class="shape shape__2"><img src="{% static "images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 text-center">
+                    <h2 class="page-title">Incoming Orders</h2>
+                    <div class="cafena-breadcrumb breadcrumbs">
+                        <ul class="list-unstyled d-flex align-items-center justify-content-center">
+                            <li class="cafenabcrumb-item duxinbcrumb-begin">
+                                <a href="{% url 'home' %}"><span>Home</span></a>
+                                <a href="{% url 'dashboard' %}"><span>/ Manager Dashboard</span></a>
+                            </li>
+                            <li class="cafenabcrumb-item duxinbcrumb-end">
+                                <span>Staff Panel</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb area end -->
+
+    <!-- orders area start -->
+    <div class="orders-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="orders-wrapper">
+                        <div class="table-responsive mobile-vertical-table">
+                            <div class="row">
+                                <div class="col-6">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <button class="btn btn-outline-success" type="submit" name="accepted_ord">Accepted orders</button>
+                                        <button class="btn btn-outline-danger" type="submit" name="refused_ord">Refused orders</button>
+                                        <button class="btn btn-outline-warning" type="submit" name="waiting_ord">Waiting for accept orders</button>
+                                    </form>
+                                </div>
+                                <div class="col-6">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <label for="search" style="color: aliceblue;">Search order by number</label>
+                                        <input type="text" name="phone_number" id="">
+                                        <button class="btn btn-danger" type="submit">Search</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="table mobile-table">
+                                <thead>
+                                    <tr>
+                                        <th class="cart-product-name">Phone number</th>
+                                        <th class="cart-product-name">Order Quantity</th>
+                                        <th class="cart-product-name">Table</th>
+                                        <th class="product-price">Total</th>
+                                        <th class="product-quantity">Detail</th>
+                                        <th class="product-actions">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cart in cart %}
+                                    <tr>
+                                        <td class="product-name"><a>{{ cart.customer_number }}</a></td>
+                                        <td class="product-name"><a>{{ cart.total_quantity }} orders</a></td>
+                                        <td class="product-name"><a>{{ cart.cart_table.table_name }}</a></td>
+                                        <td class="product-price"><span class="amount">$ {{ cart.total_price }}</span></td>
+                                        <td class="product-subtotal"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
+                                            {% for ord in item %}{% for i in ord %}{{ i.product.name }} {{ i.quantity }}<br>{% endfor %}{% endfor %}
+                                        </details></button></span></td>
+                                        <td class="product-actions">
+                                            <button type="button" class="btn btn-danger mx-1">Refused by {{ user.first_name }} {{ user.last_name }}</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- orders area end -->
+</main>
+{% endblock content %}
