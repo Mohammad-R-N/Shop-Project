@@ -81,12 +81,11 @@ class LogOutView(View):
 
 class StaffPanelView(View):
     template_staff = "staff/staff.html"
-    # template_staff_login = "staff/login.html"
+    template_staff_login = "staff/login.html"
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
 
-        # return redirect("staff_login")
             cart = Cart.objects.all()
             item = list()
             carts = list()
@@ -104,7 +103,7 @@ class StaffPanelView(View):
             return render(request, self.template_staff, context)
         else:
             messages.error(request,"You are NOT allowed to see staff panel",extra_tags="danger")
-            return render(request,"staff_login")
+            return redirect("staff_login")
 
     def post(self, request):
         user = request.user
