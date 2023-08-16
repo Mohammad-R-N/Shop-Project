@@ -19,8 +19,6 @@ from django.db.models import Sum
 from django.contrib import messages
 
 
-
-
 class StaffLogin(View):
     form_staff = StaffLoginForm
 
@@ -392,9 +390,10 @@ def popular_items_morning(request):
 
 
 def status_count(request):
+    today = timezone.now().today().date()
 
-    accepted_carts_count = Cart.objects.filter(status="a").count()
-    refused_carts_count = Cart.objects.filter(status="r").count()
+    accepted_carts_count = Cart.objects.filter(status="a", time = today).count()
+    refused_carts_count = Cart.objects.filter(status="r", time = today).count()
     total_carts_count = accepted_carts_count + refused_carts_count
 
     accepted_percentage = (accepted_carts_count / total_carts_count) * 100
