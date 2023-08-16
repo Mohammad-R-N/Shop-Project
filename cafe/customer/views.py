@@ -10,14 +10,11 @@ class CustomerView(View):
         pass
 
 class CustomerHistory(View):
-    template_login = "customer/history_login.html"
     template_history = "customer/history.html"
+
     def get(self, request):
-        return render(request, self.template_login)
-    
-    def post(self, request):
-        if 'tel' in request.POST:
-            number = request.POST['tel']
+        if request.COOKIES.get('number'):
+            number = request.COOKIES.get('number')
             cart = Cart.objects.all()
             item_list = list()
             cart_list = list()
