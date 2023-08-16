@@ -391,3 +391,20 @@ def popular_items_morning(request):
     return render(request, "popular_items_morning.html", {"items": items})
 
 
+def status_count(request):
+
+    accepted_carts_count = Cart.objects.filter(status="a").count()
+    refused_carts_count = Cart.objects.filter(status="r").count()
+    total_carts_count = accepted_carts_count + refused_carts_count
+
+    accepted_percentage = (accepted_carts_count / total_carts_count) * 100
+    refused_percentage = (refused_carts_count / total_carts_count) * 100
+
+    context = {
+        "accepted_count": accepted_carts_count,
+        "refused_count": refused_carts_count,
+        "accepted_percentage": accepted_percentage,
+        "refused_percentage": refused_percentage,
+    }
+
+    return render(request, "status_count.html", context)
