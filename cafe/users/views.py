@@ -283,11 +283,7 @@ class ManagerDashboard(View):
         total_sales = all_accepted_cart.aggregate(daily_sales=Sum("total_price"))["total_sales"]
         total_order_count = all_accepted_cart.count()
         
-        #Most_Popular_Product
-
-        #Peak_Business_hour
-
-        #Customer_Order_History
+       
         
         data = {
 
@@ -380,3 +376,18 @@ def customer_order_history(request):
         orders.append({"customer": customer, "orders": customer_orders})
     context = {"orders": orders}
     return render(request, "customer_order_history.html", context)
+
+def popular_items_morning(request):
+
+    start_time = timezone.datetime.now().replace(hour=8, minute=0, second=0, microsecond=0)
+    end_time = timezone.datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
+    items = (
+        OrderItem.objects.filter(cart__time__range=(start_time, end_time))
+        .values("product__name")
+        .annotate(total_ordered=Sum("quantity"))
+        .order_by("-total_ordered")[:2]
+    )
+
+    return render(request, "popular_items_morning.html", {"items": items})
+
+
