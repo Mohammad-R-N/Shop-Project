@@ -11,7 +11,7 @@ class ProductAdmin(admin.ModelAdmin):
     actions = ['make_inactive']
 
     @admin.action(description='Mark selected product as inactive')
-    def make_inactive(modeladmin, request, queryset):
+    def make_inactive(self, request, queryset):
         queryset.update(status='not_active')
 
     search_fields = ['name', 'description']
