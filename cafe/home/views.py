@@ -10,11 +10,8 @@ class HomeView(TemplateView):
     
 
 
-class DefaultView(View):
+class DefaultView(TemplateView):
     template_name = "main/main.html"
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
 
 
 class LogoView(View):
