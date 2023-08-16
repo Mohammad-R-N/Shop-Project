@@ -289,7 +289,10 @@ class AddOrder(View):
                     )
                     order_item.save()
             
-            return render(request, self.template_name)
+            return redirect('add_ord')
+        
+        elif "done" in request.POST:
+            return redirect("edit_ord")
 
         elif "all" in request.POST:
             cat = Category.objects.all()
