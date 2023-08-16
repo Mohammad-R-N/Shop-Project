@@ -92,13 +92,12 @@ class ReservationView(View):
         order = request.session['order']
         del request.session['order']
 
-        user = request.user
         table = request.POST['subject']
         phone_number = request.POST['tel']
 
         table_obj = Table.objects.get(table_name=table)          
         cart = Cart.objects.create(total_price=cost, total_quantity=len(order), 
-                                    customer_number=phone_number, cart_users=user, cart_table=table_obj)
+                                    customer_number=phone_number, cart_table=table_obj)
         cart.save()
 
         for ord in order:
@@ -108,7 +107,7 @@ class ReservationView(View):
             order_item.save()
 
         result = redirect('ord_detail')
-        result.set_cookie("number", phone_number, 365)
+        result.set_cookie("number", phone_number, 2630000)
         result.delete_cookie('product')
         return result
 
@@ -116,22 +115,29 @@ class OrdDetail(View):
     template_name = "customer/customer_ord_detail.html"
 
     def get(self, request):
-        if request.COOKIES('number') is not None:
-            # phone_number = request.session['number']
+        if request.COOKIES.get('number'):
+            phone_number = request.COOKIES.get('number')
             cart = Cart.objects.all()
             item = list()
             cart_list = list()
-            for cart in cart:
-                if cart.customer_number == phone_number:
-                    items = OrderItem.objects.filter(cart=cart)
-                    cart_list.append(cart)
-                    item.append(items)
+            status = list()
+            for cart_obj in cart:
+                if cart_obj.customer_number == phone_number:
+                    items = OrderItem.objects.filter(cart=cart_obj)
+                    cart_list.append(cart_obj)
 
+                    item.append(items[0])
+                    if cart_obj.status == "w":
+                        status.append("Waiting for accept from Admin")
+                    elif cart_obj.status == "a":
+                        status.append("Accepted from Admin")
+                    elif cart_obj.status == "r":
+                        status.append("Refused from Admin")
 
             context = {
                 "cart": cart_list,
                 "items": item,
-                "process": "Waiting for accepting from Staff"
+                "process": status
             }
             messages.success(request, 'Your ORDER has send successfully!', 'success')
             return render(request, self.template_name, context)

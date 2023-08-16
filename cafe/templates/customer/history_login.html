@@ -11,14 +11,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 text-center">
-                    <h2 class="page-title">Ord Detail</h2>
+                    <h2 class="page-title">Ord History</h2>
                     <div class="cafena-breadcrumb breadcrumbs">
                         <ul class="list-unstyled d-flex align-items-center justify-content-center">
                             <li class="cafenabcrumb-item duxinbcrumb-begin">
                                 <a href="{% url 'home' %}"><span>Home</span></a>
                             </li>
                             <li class="cafenabcrumb-item duxinbcrumb-end">
-                                <span>Ord Information</span>
+                                <span>Ord History</span>
                             </li>
                         </ul>
                     </div>
@@ -39,7 +39,7 @@
                                 <form action="" method="post">
                                     {% csrf_token %}
                                     <div class="row">
-                                        <div class="col-xl-6 col-lg-6">
+                                        <div class="col-xl-12 col-lg-12">
                                             <div class="from-group mt-30">
                                                 <input type="tel" name="tel" id="tel" placeholder="Enter your number">
                                             </div>
