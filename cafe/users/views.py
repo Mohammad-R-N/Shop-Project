@@ -40,7 +40,7 @@ class StaffLogin(View):
             ).first()
             if user is None:
                 messages.error(request, 'User not found!', 'danger')
-                return redirect("login")  # Redirect to signup page if user is not registered
+                return redirect("staff_login")  # Redirect to signup page if user is not registered
             else: 
 
                 send_OTP(formatted_phone_number, random_code)
