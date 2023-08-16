@@ -3,6 +3,7 @@ from menu.models import Product
 from cart.models import Table, Cart, OrderItem
 from django.views import View
 from django.contrib import messages
+from django.views.generic import TemplateView
 
 class CartView(View):
     cost = 0
@@ -112,29 +113,22 @@ class ReservationView(View):
         result.delete_cookie('product')
         return result
 
-class OrdDetail(View):
+class OrdDetail(TemplateView):
     template_name = "customer/customer_ord_detail.html"
 
-    def get(self, request):
-        if request.COOKIES('number') is not None:
-            # phone_number = request.session['number']
-            cart = Cart.objects.all()
-            item = list()
-            cart_list = list()
-            for cart in cart:
-                if cart.customer_number == phone_number:
-                    items = OrderItem.objects.filter(cart=cart)
-                    cart_list.append(cart)
-                    item.append(items)
-
-
-            context = {
-                "cart": cart_list,
-                "items": item,
-                "process": "Waiting for accepting from Staff"
-            }
-            messages.success(request, 'Your ORDER has send successfully!', 'success')
-            return render(request, self.template_name, context)
-        else:
-            return render(request, self.template_name)
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        phone_number = self.request.COOKIES.get('number')
+        if phone_number:
+            cart_list = []
+            item_list = []
+            carts = Cart.objects.filter(customer_number=phone_number)
+            for cart in carts:
+                items = OrderItem.objects.filter(cart=cart)
+                cart_list.append(cart)
+                item_list.append(items)
+            context["cart"] = cart_list
+            context["items"] = item_list
+            context["process"] = "Waiting for accepting from Staff"
+            messages.success(self.request, 'Your ORDER has been sent successfully!', 'success')
+        return context
