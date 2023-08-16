@@ -19,48 +19,12 @@
 
 <body class="dark-bg">
     <!-- header start -->
-    <header class="site-header black-bg">
-        <div class="menu-area custom-padding">
-            <div class="container-fluid custom-width">
-                <div class="row">
-                    <div class="col-xl-8 col-lg-9 col-6">
-                        <div class="logo mm-only d-md-block d-lg-none">
-                            <a href="main.html">
-                                <img src="{{ site_config.logo.url }}" alt="logo">
-                            </a>
-                        </div>
-                        {% include "navbar_customer.html" %}
-                    </div>
-                    <div>
-                        {% include 'messages.html' %}
-                    </div>
-                    <div class="col-xl-4 col-lg-3 col-6 align-self-center">
-                        <div class="menu-area__right menu-area__right d-flex justify-content-end align-items-center">
-                            <div class="search">
-                                <div class="search__trigger item">
-                                    <span class="open"><i class="far fa-search"></i></span>
-                                    <span class="close"><i class="fal fa-times"></i></span>
-                                </div>
-                                <div class="search__form">
-                                    <form role="search" method="get" action="{% url 'search_products' %}">
-                                        <input type="search" name="query" value="" placeholder="Search Keywords">
-                                        <button type="submit"><i class="far fa-search"></i></button>
-                                    </form>
-                                </div>
-
-                                <div class="hamburger-trigger item">
-                                    <i class="far fa-bars"></i>
-                                </div>
-                                {% comment %} <div class="cart cart-trigger item position-relative">
-                                    <i class="fa fa-shopping-basket"></i>
-                                    <span class="cart__count">3</span>
-                                </div> {% endcomment %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </header>
+    <div>
+        {%include 'navbar_customer.html'%}
+    </div>
+    <div>
+        {% include 'messages.html' %}
+    </div>
     <!-- header end -->
     <!-- side info for mobile view -->
     <aside class="side-info-wrapper mm-only">
@@ -159,7 +123,7 @@
     </footer>
 
     <!-- footer end -->
-    {% comment %}
+
     <script src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
@@ -167,7 +131,7 @@
     <script src="{% static 'js/lightcase.js' %}"></script>
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'js/sticky-header.js' %}"></script>
-    <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script> {% endcomment %}
+    <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
 
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

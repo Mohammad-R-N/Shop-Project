@@ -19,45 +19,12 @@
 
 <body class="dark-bg">
     <!-- header start -->
-    <header class="site-header black-bg">
-        <div class="menu-area custom-padding">
-            <div class="container-fluid custom-width">
-                <div class="row">
-                    <div class="col-xl-8 col-lg-9 col-6">
-                        <div class="logo mm-only d-md-block d-lg-none">
-                            <a href="main.html">
-                                <img src="{{ site_config.logo.url }}" alt="logo">
-                            </a>
-                        </div>
-                        {% include "navbar_staff.html" %}
-                    </div>
-                    <div>
-                        {% include 'messages.html' %}
-                    </div>
-                    <div class="col-xl-4 col-lg-3 col-6 align-self-center">
-                        <div class="menu-area__right menu-area__right d-flex justify-content-end align-items-center">
-                            <div class="search">
-                                <div class="search__trigger item">
-                                    <span class="open"><i class="far fa-search"></i></span>
-                                    <span class="close"><i class="fal fa-times"></i></span>
-                                </div>
-                                <div class="search__form">
-                                    <form role="search" method="get" action="{% url 'search_products' %}">
-                                        <input type="search" name="query" value="" placeholder="Search Keywords">
-                                        <button type="submit"><i class="far fa-search"></i></button>
-                                    </form>
-                                </div>
-
-
-                            <div class="hamburger-trigger item">
-                                <i class="far fa-bars"></i>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </header>
+    <div>
+        {% include "navbar_staff.html" %}
+    </div>
+    <div>
+        {% include 'messages.html' %}
+    </div>
     <!-- header end -->
     <!-- side info for mobile view -->
     <aside class="side-info-wrapper mm-only">
