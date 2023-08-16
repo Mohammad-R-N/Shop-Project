@@ -101,7 +101,7 @@ class StaffPanelView(View):
             for cart_obj in cart:
                 if cart_obj.status == "w":
                     items = OrderItem.objects.filter(cart=cart_obj)
-                    item.append(items)
+                    item.append(items[0])
                     carts.append(cart_obj)
 
             context = {
