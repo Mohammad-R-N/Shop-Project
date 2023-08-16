@@ -4,6 +4,7 @@ from . models import Product
 from . models import Category
 from django.views import View
 from django.db.models import Q
+from django.views.generic import DetailView
 
 # Create your views here.
 class MenuView(View):
@@ -71,8 +72,8 @@ class SearchProducts(View):
         )
     
 
-class ProductPopup(View):
-    def get(self, request, product_id):
-        product = Product.objects.get(id=product_id)
-        return render(request, "menu/product_detail.html", {"product": product})
+class ProductPopup(DetailView):
+    model = Product
+    template_name = "menu/product_detail.html"
+    context_object_name = "product"
     
