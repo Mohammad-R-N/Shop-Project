@@ -24,10 +24,10 @@ class CustomerHistory(View):
 
             for cart_obj in cart:
                 if cart_obj.customer_number == number:
-                    item = OrderItem.objects.get(cart=cart_obj)
+                    item = OrderItem.objects.filter(cart=cart_obj).values()
                     item_list.append(item)
                     cart_list.append(cart_obj)
-            print(item_list)
+
             context = {
                 "items": item_list,
                 "carts": cart_list

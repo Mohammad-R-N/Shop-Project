@@ -35,42 +35,56 @@
                 <div class="col-xl-12">
                     <div class="cart-wrapper">
                         <div class="table-content table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="product-thumbnail">Product Image</th>
-                                        <th class="cart-product-name">Product Name</th>
-                                        <th class="product-price">Price</th>
-                                        <th class="product-quantity">Quantity</th>
-                                        <th class="product-subtotal">Process</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="product-subtotal">Table</th>
-                                        <th class="product-subtotal">subTotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for item in items %}
-                                    <tr>
-                                        <td class="product-thumbnail">
-                                            <a href="#" class="img">
-                                                <img src="{{ item.product.photo.url}}" alt="">
-                                            </a>
-                                        </td>
-                                        <td class="product-name"><a href="#">{{ item.product.name }}</a></td>
-                                        <td class="product-price"><span class="amount">$ {{ item.price }}</span></td>
-                                        <td class="product-quantity"><span class="amount">{{ item.quantity }}</span></td>
-                                        <td class="product-subtotal"><span class="amount">{{ process }}</span></td>
-                                    </tr>
-                                    {% endfor %}
-                                    {% for cart in cart %}
-                                    <tr>
-                                        <td class="product-quantity"><span class="amount">{{ cart.cart_table }}</span></td>
-                                        <td class="product-subtotal"><span class="amount">$ {{ cart.total_price }}</span></td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                            <!-- <style>
+                                .table_row {
+                                    display: flex;
+                                    justify-content: space-around;
+                                }
+                            </style> -->
+                            <div class="table_row">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-thumbnail">Product Image</th>
+                                            <th class="cart-product-name">Product Name</th>
+                                            <th class="product-price">Price</th>
+                                            <th class="product-quantity">Quantity</th>
+                                            <th class="product-subtotal">Process</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in items %}
+                                        <tr>
+                                            <td class="product-thumbnail">
+                                                <a href="#" class="img">
+                                                    <img src="{{ item.product.photo.url}}" alt="">
+                                                </a>
+                                            </td>
+                                            <td class="product-name"><a href="#">{{ item.product.name }}</a></td>
+                                            <td class="product-price"><span class="amount">$ {{ item.price }}</span></td>
+                                            <td class="product-quantity"><span class="amount">{{ item.quantity }}</span></td>
+                                            <td class="product-subtotal"><span class="amount">{{ process }}</span></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-subtotal">Table</th>
+                                            <th class="product-subtotal">subTotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for cart in cart %}
+                                        <tr>
+                                            <td class="product-quantity"><span class="amount">{{ cart.cart_table }}</span></td>
+                                            <td class="product-subtotal"><span class="amount">$ {{ cart.total_price }}</span></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

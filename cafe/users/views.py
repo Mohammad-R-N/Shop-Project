@@ -76,7 +76,7 @@ class LogOutView(View):
     def get(self, request):
         logout(request)
         messages.success(request, 'LogOut Successfully!', 'success')
-        return redirect("home")
+        return redirect("staff_login")
 
 
 class StaffPanelView(View):
@@ -97,7 +97,6 @@ class StaffPanelView(View):
                     item.append(items)
                     carts.append(cart_obj)
 
-
             context = {
                 'item': item,
                 'cart': carts
@@ -108,7 +107,65 @@ class StaffPanelView(View):
             return render(request,"staff_login")
 
     def post(self, request):
-        if "refuse" in request.POST:
+        user = request.user
+
+        if "accepted_ord" in request.POST:
+            cart = Cart.objects.all()
+            item = list()
+            carts = list()
+
+            for cart_obj in cart:
+                if cart_obj.status == "a":
+                    items = OrderItem.objects.filter(cart=cart_obj)
+                    item.append(items)
+                    carts.append(cart_obj)
+
+            context = {
+                'item': item,
+                'cart': carts
+            }
+            return render(request, "staff/staff_accepted.html", context)
+        
+        elif "refused_ord" in request.POST:
+            cart = Cart.objects.all()
+            item = list()
+            carts = list()
+
+            for cart_obj in cart:
+                if cart_obj.status == "r":
+                    items = OrderItem.objects.filter(cart=cart_obj)
+                    item.append(items)
+                    carts.append(cart_obj)
+
+            context = {
+                'item': item,
+                'cart': carts
+            }
+            return render(request, "staff/staff_refused.html", context)
+        
+        elif "waiting_ord" in request.POST:
+            return redirect("staff")
+        
+        elif "phone_number" in request.POST:
+            phone = request.POST["phone_number"]
+
+            cart = Cart.objects.all()
+            item_list = list()
+            cart_list = list()
+
+            for cart_obj in cart:
+                if cart_obj.customer_number == phone:
+                    item = OrderItem.objects.filter(cart=cart_obj)
+                    item_list.append(item[0])
+                    cart_list.append(cart_obj)
+
+            context = {
+                "items": item_list,
+                "carts": cart_list
+                }
+            return render(request, "staff/staff_search_result.html", context)
+
+        elif "refuse" in request.POST:
             cart_refuse_id = request.POST["refuse"]
             cart = Cart.objects.all()
 
@@ -116,6 +173,7 @@ class StaffPanelView(View):
                 if cart_obj.id == int(cart_refuse_id):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "r"
+                    update_cart.cart_users = user
                     update_cart.save()
                     messages.success(request, 'Refused successfully!', 'warning')
             return redirect("staff")
@@ -128,6 +186,7 @@ class StaffPanelView(View):
                 if cart_obj.id == int(cart_accept_id):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "a"
+                    update_cart.cart_users = user
                     update_cart.save()
                     messages.success(request, 'Accepted successfully!', 'success')
             return redirect("staff")
@@ -150,7 +209,7 @@ class EditOrder(View):
 
             for cart_obj in cart:
                 if cart_obj.id == int(cart_edit_id):
-                    items = OrderItem.objects.filter(cart=cart_obj).values()
+                    items = OrderItem.objects.filter(cart=cart_obj)
                     # print(items[1]['product_id'])
                     cart_list.append(cart_obj)
                     item.append(items)
@@ -222,6 +281,8 @@ class AddOrder(View):
                         price=new_product_obj.price,
                     )
                     order_item.save()
+            
+            return render(request, self.template_name)
 
         elif "all" in request.POST:
             cat = Category.objects.all()
@@ -274,15 +335,15 @@ class ManagerDashboard(View):
         total_sales = all_accepted_cart.aggregate(daily_sales=Sum("total_price"))["total_sales"]
         total_order_count = all_accepted_cart.count()
         
-       
+    
         
         data = {
 
-            "avg_today_discount": avg_today_discount,
-            "today_order": today_order,
-            "today_sales": today_sales,
-            "total_sales": total_sales,
-            "total_order": total_order,
+            # "avg_today_discount": avg_today_discount,
+            # "today_order": today_order,
+            # "today_sales": today_sales,
+            # "total_sales": total_sales,
+            # "total_order": total_order,
             "daily_sales": daily_sales,
             "daily_order_count": daily_order_count,
             "weekly_sales": weekly_sales,

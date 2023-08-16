@@ -22,6 +22,7 @@
                             </li>
                         </ul>
                     </div>
+                    <h1 style="color: aliceblue;">Hi {{ user.first_name }} {{ user.last_name }}</h1>
                 </div>
             </div>
         </div>
@@ -76,8 +77,12 @@
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td><button data-filter=".cat1" type="submit" name="add_ord" value="" class="site-btn mt-30">Add Order</button></td>
-                                        
+                                        <td>
+                                            <form action="" method="post">
+                                                <input type="text" name="order_name">
+                                                <button data-filter=".cat1" type="submit" name="add_ord" value="" class="site-btn mt-30">Search Product</button>
+                                            </form>
+                                        </td>        
                                         <td></td>
                                         <td></td>
                                         <td></td>
