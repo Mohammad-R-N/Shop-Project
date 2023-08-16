@@ -19,8 +19,6 @@ from django.db.models import Sum
 from django.contrib import messages
 
 
-
-
 class StaffLogin(View):
     form_staff = StaffLoginForm
 
@@ -283,11 +281,7 @@ class ManagerDashboard(View):
         total_sales = all_accepted_cart.aggregate(daily_sales=Sum("total_price"))["total_sales"]
         total_order_count = all_accepted_cart.count()
         
-        #Most_Popular_Product
-
-        #Peak_Business_hour
-
-        #Customer_Order_History
+       
         
         data = {
 
@@ -358,3 +352,58 @@ def sales_by_category(request):
     )
     return render(request, "sales_by_category.html", {"categories": categories})
 
+
+def sales_by_employee(request):
+    sales = (
+        Cart.objects.values("cart_users__phone_number")
+        .annotate(total_sales=Sum("total_price"))
+        .order_by("-total_sales")[:3]
+    )
+    return render(request, "sales_by_employee.html"), {"sales": sales}
+
+def customer_order_history(request):
+    customers = CustomUser.objects.all()
+    orders = []
+    for customer in customers:
+        customer_orders = (
+            Cart.objects.filter(customer_number=customer.phone_number)
+            .prefetch_related("items__product")
+            .annotate(total_spent=Sum("items__price"))
+            .order_by("-time")
+        )
+        orders.append({"customer": customer, "orders": customer_orders})
+    context = {"orders": orders}
+    return render(request, "customer_order_history.html", context)
+
+def popular_items_morning(request):
+
+    start_time = timezone.datetime.now().replace(hour=8, minute=0, second=0, microsecond=0)
+    end_time = timezone.datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
+    items = (
+        OrderItem.objects.filter(cart__time__range=(start_time, end_time))
+        .values("product__name")
+        .annotate(total_ordered=Sum("quantity"))
+        .order_by("-total_ordered")[:2]
+    )
+
+    return render(request, "popular_items_morning.html", {"items": items})
+
+
+def status_count(request):
+    today = timezone.now().today().date()
+
+    accepted_carts_count = Cart.objects.filter(status="a", time = today).count()
+    refused_carts_count = Cart.objects.filter(status="r", time = today).count()
+    total_carts_count = accepted_carts_count + refused_carts_count
+
+    accepted_percentage = (accepted_carts_count / total_carts_count) * 100
+    refused_percentage = (refused_carts_count / total_carts_count) * 100
+
+    context = {
+        "accepted_count": accepted_carts_count,
+        "refused_count": refused_carts_count,
+        "accepted_percentage": accepted_percentage,
+        "refused_percentage": refused_percentage,
+    }
+
+    return render(request, "status_count.html", context)
