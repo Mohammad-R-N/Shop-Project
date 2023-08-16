@@ -23,6 +23,7 @@
                             </li>
                         </ul>
                     </div>
+                    <h1 style="color: aliceblue;">Hi {{ user.first_name }} {{ user.last_name }}</h1>
                 </div>
             </div>
         </div>
@@ -36,6 +37,25 @@
                 <div class="col-xl-12">
                     <div class="orders-wrapper">
                         <div class="table-responsive mobile-vertical-table">
+                            <div class="row">
+                                <div class="col-6">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <button class="btn btn-outline-success" type="submit" name="accepted_ord">Accepted orders</button>
+                                        <button class="btn btn-outline-danger" type="submit" name="refused_ord">Refused orders</button>
+                                        <button class="btn btn-outline-warning" type="submit" name="waiting_ord">Waiting for accept orders</button>
+                                    </form>
+                                </div>
+                                <div class="col-6">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <label for="search" style="color: aliceblue;">Search order by number</label>
+                                        <input type="text" name="phone_number" id="">
+                                        <button class="btn btn-danger" type="submit">Search</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <br>
                             <table class="table mobile-table">
                                 <thead>
                                     <tr>
