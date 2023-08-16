@@ -17,6 +17,7 @@ from django.db.models import Sum, Count
 from django.utils import timezone
 from django.db.models import Sum
 from django.contrib import messages
+from django.views.generic import TemplateView
 
 
 
@@ -81,10 +82,12 @@ class StaffLogin(View):
             return redirect("home")
         return redirect('menu')
 
-class LogOutView(View):
-    def get(self, request):
+class LogOutView(TemplateView):
+    template_name = "logout.html"
+
+    def dispatch(self, request, *args, **kwargs):
         logout(request)
-        messages.success(request, 'LogOut Successfully!', 'success')
+        messages.success(request, "LogOut Successfully!", "success")
         return redirect("home")
 
 
