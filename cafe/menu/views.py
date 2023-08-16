@@ -76,5 +76,4 @@ class ProductPopup(View):
     def get(self, request, product_id):
         product = Product.objects.get(id=product_id)
         return render(request, "menu/product_detail.html", {"product": product})
-    def post(self, request):
-        pass
+    
