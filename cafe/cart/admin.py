@@ -16,6 +16,12 @@ class CartAdmin(admin.ModelAdmin):
 
 
 class TableAdmin(admin.ModelAdmin):
+    actions = ['available']
+
+    @admin.action(description='Mark Selected Tables to Available')
+    def accept(self, request, queryset):
+        queryset.update(status='Available')
+
     list_display = ['table_name', 'status']
 
 admin.site.register(Cart, CartAdmin)
