@@ -26,7 +26,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     phone_number = PhoneNumberField(_("phone number"), max_length=14, unique=True, validators=[phone_number_validator])
     first_name = models.CharField(_("first name"), max_length=20)
-    last_name = models.CharField(_("first name"), max_length=30)
+    last_name = models.CharField(_("last name"), max_length=30)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
