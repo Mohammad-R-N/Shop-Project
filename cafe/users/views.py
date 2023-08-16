@@ -366,3 +366,17 @@ def sales_by_employee(request):
         .order_by("-total_sales")[:3]
     )
     return render(request, "sales_by_employee.html"), {"sales": sales}
+
+def customer_order_history(request):
+    customers = CustomUser.objects.all()
+    orders = []
+    for customer in customers:
+        customer_orders = (
+            Cart.objects.filter(customer_number=customer.phone_number)
+            .prefetch_related("items__product")
+            .annotate(total_spent=Sum("items__price"))
+            .order_by("-time")
+        )
+        orders.append({"customer": customer, "orders": customer_orders})
+    context = {"orders": orders}
+    return render(request, "customer_order_history.html", context)
