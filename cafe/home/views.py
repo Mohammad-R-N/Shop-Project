@@ -8,8 +8,7 @@ class HomeView(View):
     def get(self, request):
         return render(request, "main/main.html")
 
-    def post(self, request):
-        pass
+    
 
 
 class DefaultView(View):
