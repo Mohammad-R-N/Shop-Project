@@ -4,6 +4,12 @@ from datetime import datetime, time
 from .models import OrderItem, Table
 
 class CartAdmin(admin.ModelAdmin):
+
+    actions = ['accept']
+    @admin.action(description='Mark Selected Carts to Accept')
+    def accept(self, request, queryset):
+        queryset.update(status='a')
+
     list_display = ['customer_number', 'cart_users', 'time']
     list_filter = ['time']
     list_editable = ['cart_users']
