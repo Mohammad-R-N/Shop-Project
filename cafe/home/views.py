@@ -14,9 +14,11 @@ class DefaultView(TemplateView):
     template_name = "main/main.html"
 
 
-class LogoView(View):
+class LogoView(TemplateView):
     template_name = "base.html"
 
-    def get(self, request, *args, **kwargs):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         site_config = SiteConfig.objects.first()
-        return render(request, self.template_name, {"site_config": site_config})
+        context["site_config"] = site_config
+        return context
