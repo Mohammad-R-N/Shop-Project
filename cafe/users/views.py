@@ -358,3 +358,11 @@ def sales_by_category(request):
     )
     return render(request, "sales_by_category.html", {"categories": categories})
 
+
+def sales_by_employee(request):
+    sales = (
+        Cart.objects.values("cart_users__phone_number")
+        .annotate(total_sales=Sum("total_price"))
+        .order_by("-total_sales")[:3]
+    )
+    return render(request, "sales_by_employee.html"), {"sales": sales}
