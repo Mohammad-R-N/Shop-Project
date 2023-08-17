@@ -305,3 +305,25 @@ class PeakBusinessHourView(ListView):
         hours = context["object_list"]
         peak_hour = hours[:6] if hours else None
         return JsonResponse({"peak_hour": peak_hour})
+
+
+class SalesByCategoryView(ListView):
+    model = OrderItem
+
+    def get_queryset(self):
+        return (
+            OrderItem.objects.select_related("product")
+            .values("product__category_menu__name")
+            .annotate(total_sales=Sum("price"))
+            .order_by("-total_sales")
+        )
+
+    def render_to_response(self, context, **response_kwargs):
+        categories = context["object_list"]
+        category_names = [
+            category["product__category_menu__name"] for category in categories
+        ]
+        total_sales = [category["total_sales"] for category in categories]
+        return JsonResponse(
+            {"category_names": category_names, "total_sales": total_sales}
+        )
