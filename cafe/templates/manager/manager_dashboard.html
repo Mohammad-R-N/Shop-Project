@@ -1,55 +1,93 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
-{% include 'cart/sidecart.html' %}
-<main>
-    <!-- breadcrumb area start -->
-    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static "images/bg/breadcrumb-bg-1.jpeg" %}"
-        data-overlay="dark" data-opacity="5">
-        <div class="shape shape__1"><img src="{% static "images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
-        <div class="shape shape__2"><img src="{% static "images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 text-center">
-                    <h2 class="page-title">Sale Dashboard</h2>
-                    <div class="cafena-breadcrumb breadcrumbs">
-                        <ul class="list-unstyled d-flex align-items-center justify-content-center">
-                            <li class="cafenabcrumb-item duxinbcrumb-begin">
-                                <a href="{% url 'home' %}"><span>Home</span></a>
-                            </li>
-                            <li class="cafenabcrumb-item duxinbcrumb-end">
-                                <span>Manager Dashboard</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- breadcrumb area end -->
 
-    <!-- orders area start -->
-    <div class="orders-area pt-120 pb-120">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 l-item grid-item mt-35">
-                    {% for dt in data %}
-                    <form action="" method="post" class="l-item grid-item mt-35">
-                        {% csrf_token %}
-                        <div class="card">
-                            <div class="card__wrapper"></div>
-                            <div class="card__img">
-                                <h1 style="font-size: 150px;">{{ dt.key }}</h1>
-                            </div>
-                            <h3 class="view title border-effect"><a href="#">{{ dt.value }}</a></h3>
-                            <div class="card__subtitle">farzad</div>
-                            <button class="card__btn3" type="submit" name="farzad" value="farzad">Detail</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+
+{% block content %}
+
+
+    <div class="container mt-4">
+    <h2 class="text-center mb-4">Manager's Dashboard</h2>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="salesByCustomerChart"></canvas>
+            <a href="{% url 'sales_by_customer' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="popularItemsChart"></canvas>
+            <a href="{% url 'popular_items' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
         </div>
     </div>
-    <!-- orders area end -->
-</main>
-{% endblock content %}
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="peakBusinessHourChart"></canvas>
+            <a href="{% url 'peak_business_hour' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="salesByCategoryChart"></canvas>
+            <a href="{% url 'sales_by_category' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="salesByEmployeeChart"></canvas>
+            <a href="{% url 'sales_by_employee' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="popularItemsMorningChart"></canvas>
+            <a href="{% url 'popular_items_morning' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="statusCountChart"></canvas>
+            <a href="{% url 'status_count' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="orderStatusChart"></canvas>
+            <a href="{% url 'order_status_report' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <label for="datePicker">Select Date:</label>
+            <input type="date" id="datePicker" class="form-control">
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="topSellingItemsChart"></canvas>
+            <a href="{% url 'top_selling_items' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="totalSalesChart"></canvas>
+            <a href="{% url 'total_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="dailySalesChart"></canvas>
+            <a href="{% url 'total_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="monthlySalesChart"></canvas>
+            <a href="{% url 'monthly_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="yearlySalesChart"></canvas>
+            <a href="{% url 'yearly_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="{% url 'history_for_manager' %}" class="btn btn-primary">View Manager History</a>
+    </div >
+
+
+    <script src="{% static 'js/manager.js' %}"></script>
+
+
+
+    
+{% endblock %}
