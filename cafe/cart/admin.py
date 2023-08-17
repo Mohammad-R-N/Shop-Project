@@ -6,7 +6,7 @@ from .models import OrderItem, Table
 class CartAdmin(admin.ModelAdmin):
 
     actions = ['accept']
-    @admin.action(description='Mark Selected Carts to Accept')
+    @admin.action(description='Mark Selected Carts as Accept')
     def accept(self, request, queryset):
         queryset.update(status='a')
 
@@ -18,8 +18,8 @@ class CartAdmin(admin.ModelAdmin):
 class TableAdmin(admin.ModelAdmin):
     actions = ['available']
 
-    @admin.action(description='Mark Selected Tables to Available')
-    def accept(self, request, queryset):
+    @admin.action(description='Mark Selected Tables as Available')
+    def available(self, request, queryset):
         queryset.update(status='Available')
 
     list_display = ['table_name', 'status']
