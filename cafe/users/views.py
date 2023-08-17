@@ -375,3 +375,27 @@ class CustomerHistory(View):
             return render(request, self.template_history, context)
         else:
             return render(request, self.template_history)
+
+
+class PopularItemsMorningView(ListView):
+    model = OrderItem
+
+    def get_queryset(self):
+        start_time = timezone.datetime.now().replace(
+            hour=8, minute=0, second=0, microsecond=0
+        )
+        end_time = timezone.datetime.now().replace(
+            hour=12, minute=0, second=0, microsecond=0
+        )
+        return (
+            OrderItem.objects.filter(cart__time__range=(start_time, end_time))
+            .values("product__name")
+            .annotate(total_ordered=Sum("quantity"))
+            .order_by("-total_ordered")[:2]
+        )
+
+    def render_to_response(self, context, **response_kwargs):
+        items = context["object_list"]
+        product_names = [item["product__name"] for item in items]
+        quantities = [item["total_ordered"] for item in items]
+        return JsonResponse({"product_names": product_names, "quantities": quantities})
