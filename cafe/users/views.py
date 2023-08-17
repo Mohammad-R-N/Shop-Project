@@ -6,16 +6,24 @@ from .forms import StaffLoginForm, StaffOtpForm
 from django.views import View
 from cart.models import OrderItem
 import random
-from django.db.models.functions import ExtractHour
-from utils import send_OTP
+from django.http import JsonResponse
+from django.views.generic.list import ListView
+from django.db.models.functions import (
+    ExtractWeekDay,
+    ExtractMonth,
+    ExtractYear,
+    ExtractHour,
+)
+
+
+# from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
-from cart.models import Cart
+from cart.models import Cart, OrderItem
 from .authentication import CustomAuthBackend
 import re
 from django.db.models import Sum, Count
 from django.utils import timezone
-from django.db.models import Sum
 from django.contrib import messages
 
 
@@ -39,10 +47,11 @@ class StaffLogin(View):
                 phone_number=formatted_phone_number
             ).first()
             if user is None:
-                messages.error(request, 'User not found!', 'danger')
-                return redirect("login")  # Redirect to signup page if user is not registered
-            else: 
-
+                messages.error(request, "User not found!", "danger")
+                return redirect(
+                    "login"
+                )  # Redirect to signup page if user is not registered
+            else:
                 send_OTP(formatted_phone_number, random_code)
                 request.session["user_info"] = {
                     "phone_number": formatted_phone_number,
@@ -50,39 +59,40 @@ class StaffLogin(View):
                 }
                 return redirect("check-otp")
 
+            # class CheckOtp(View):
+            #     form_otp = StaffOtpForm
 
-# class CheckOtp(View):
-#     form_otp = StaffOtpForm
+            #     def get(self, request):
+            #         form = self.form_otp()
+            #         return render(request, "staff/otp.html", {"form": form})
 
-#     def get(self, request):
-#         form = self.form_otp()
-#         return render(request, "staff/otp.html", {"form": form})
+            #     def post(self, request):
+            #         form = self.form_otp(request.POST)
+            #         if form.is_valid():
+            #             otp = form.cleaned_data["code"]
+            #             user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
 
-#     def post(self, request):
-#         form = self.form_otp(request.POST)
-#         if form.is_valid():
-#             otp = form.cleaned_data["code"]
-#             user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
-
-#             if user is not None:
-#                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-#                 return redirect("staff")
-#             return redirect("home")
-#         return redirect('menu')
-
+            #             if user is not None:
+            #                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            #                 return redirect("staff")
+            #             return redirect("home")
+            #         return redirect('menu')
 
             if user is not None:
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                messages.success(request, 'Loged In Successfully', 'success')
+                login(
+                    request, user, backend="django.contrib.auth.backends.ModelBackend"
+                )
+                messages.success(request, "Loged In Successfully", "success")
                 return redirect("staff")
-            messages.error(request, 'OTP code is NOT CORRECT!', 'danger')
+            messages.error(request, "OTP code is NOT CORRECT!", "danger")
             return redirect("home")
-        return redirect('menu')
+        return redirect("menu")
+
 
 class LogOutView(View):
     def get(self, request):
         logout(request)
-        messages.success(request, 'LogOut Successfully!', 'success')
+        messages.success(request, "LogOut Successfully!", "success")
         return redirect("home")
 
 
@@ -92,8 +102,7 @@ class StaffPanelView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-
-        # return redirect("staff_login")
+            # return redirect("staff_login")
             cart = Cart.objects.all()
             item = list()
             carts = list()
@@ -104,15 +113,13 @@ class StaffPanelView(View):
                     item.append(items)
                     carts.append(cart_obj)
 
-
-            context = {
-                'item': item,
-                'cart': carts
-            }
+            context = {"item": item, "cart": carts}
             return render(request, self.template_staff, context)
         else:
-            messages.error(request,"You are NOT allowed to see staff panel",extra_tags="danger")
-            return render(request,"staff_login")
+            messages.error(
+                request, "You are NOT allowed to see staff panel", extra_tags="danger"
+            )
+            return render(request, "staff_login")
 
     def post(self, request):
         if "refuse" in request.POST:
@@ -124,7 +131,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "r"
                     update_cart.save()
-                    messages.success(request, 'Refused successfully!', 'warning')
+                    messages.success(request, "Refused successfully!", "warning")
             return redirect("staff")
 
         elif "accept" in request.POST:
@@ -136,7 +143,7 @@ class StaffPanelView(View):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "a"
                     update_cart.save()
-                    messages.success(request, 'Accepted successfully!', 'success')
+                    messages.success(request, "Accepted successfully!", "success")
             return redirect("staff")
 
         elif "edit" in request.POST:
@@ -185,7 +192,7 @@ class EditOrder(View):
             for item in item_list:
                 if item.id == int(order_item_id):
                     OrderItem.objects.get(id=int(order_item_id)).delete()
-                    messages.success(request, 'Deleted successfully!', 'warning')
+                    messages.success(request, "Deleted successfully!", "warning")
                     return redirect("staff")
 
         elif "done" in request.POST:
@@ -245,165 +252,19 @@ class AddOrder(View):
                     return render(request, self.template_name, context)
 
 
-class ManagerDashboard(View):
+class PopularItemsView(ListView):
+    model = OrderItem
 
-    template_name = 'manager/manager_dashboard.html'
-    today = timezone.now().today().date()
-    week = today - timezone.timedelta(days=7)
-    month = today - timezone.timedelta(days=30)
-    year = today - timezone.timedelta(days=365)
-
-    def get(self, request):
-        all_cart = Cart.objects.all()
-        all_accepted_cart = Cart.objects.filter(status="a")
-        daily_order = Cart.objects.filter(status="a").filter(time=self.today)
-        weekly_order = Cart.objects.filter(status="a").filter(time=self.week)
-        monthly_order = Cart.objects.filter(status="a").filter(time=self.month)
-        yearly_order = Cart.objects.filter(status="a").filter(time=self.year)
-
-        #Daily
-        daily_sales = daily_order.aggregate(daily_sales=Sum("total_price"))["daily_sales"]
-        daily_order_count = daily_order.count()
-
-        #Weekly
-        weekly_sales = daily_order.aggregate(weekly_sales=Sum("total_price"))["weekly_sales"]
-        weekly_order_count = weekly_order.count()
-
-        #Monthly
-        monthly_sales = daily_order.aggregate(monthly_sales=Sum("total_price"))["monthly_sales"]
-        monthly_order_count = monthly_order.count()
-
-        #Yearly
-        yearly_sales = daily_order.aggregate(yearly_sales=Sum("total_price"))["yearly_sales"]
-        yearly_order_count = yearly_order.count()
-
-        #Total
-        total_sales = all_accepted_cart.aggregate(daily_sales=Sum("total_price"))["total_sales"]
-        total_order_count = all_accepted_cart.count()
-        
-       
-        
-        data = {
-
-            "avg_today_discount": avg_today_discount,
-            "today_order": today_order,
-            "today_sales": today_sales,
-            "total_sales": total_sales,
-            "total_order": total_order,
-            "daily_sales": daily_sales,
-            "daily_order_count": daily_order_count,
-            "weekly_sales": weekly_sales,
-            "weekly_order_count": weekly_order_count,
-            "monthly_sales": monthly_sales,
-            "monthly_order_count": monthly_order_count,
-            "yearly_sales": yearly_sales,
-            "yearly_order_count": yearly_order_count,
-            "total_sales": total_sales,
-            "total_order_count": total_order_count,
-
-        }
-
-        context = {
-            "data": data,
-        }
-
-        return render(request, self.template_name, context)
-
-        # return render(request, self.template_name)
-
-
-def popular_items(request):
-    items = (
-        (OrderItem.objects.values("product__name"))
-        .annotate(total_ordered=Sum("quantity"))
-        .order_by("-total_ordered")[:5]
-    )
-
-    return render(request, "dashboard1.html", {"items": items})
-
-
-def sales_by_customer(request):
-    sales = (
-        Cart.objects.values("customer_number")
-        .annotate(total_sales=Sum("total_price"))
-        .order_by("-total_sales")[:3]
-    )
-    return render(request, "sales_by_customer.html"), {"sales": sales}
-
-
-def peak_business_hour(request):
-    hours = (
-        Cart.objects.annotate(hour=ExtractHour("time"))
-        .values("hour")
-        .annotate(order_count=Count("id"))
-        .order_by("-order_count")[:1]
-    )
-    peak_hour = hours[0] if hours else None
-
-    return render(request, "peak_hour", {"peak_hour": peak_hour})
-
-
-def sales_by_category(request):
-    categories = (
-        OrderItem.objects.select_related("product")
-        .values("product__category_menu__name")
-        .annotate(total_sales=Sum("price"))
-        .order_by("-total_sales")
-    )
-    return render(request, "sales_by_category.html", {"categories": categories})
-
-
-def sales_by_employee(request):
-    sales = (
-        Cart.objects.values("cart_users__phone_number")
-        .annotate(total_sales=Sum("total_price"))
-        .order_by("-total_sales")[:3]
-    )
-    return render(request, "sales_by_employee.html"), {"sales": sales}
-
-def customer_order_history(request):
-    customers = CustomUser.objects.all()
-    orders = []
-    for customer in customers:
-        customer_orders = (
-            Cart.objects.filter(customer_number=customer.phone_number)
-            .prefetch_related("items__product")
-            .annotate(total_spent=Sum("items__price"))
-            .order_by("-time")
+    def get_queryset(self):
+        return (
+            OrderItem.objects.values("product__name")
+            .annotate(total_ordered=Sum("quantity"))
+            .order_by("-total_ordered")[:5]
         )
-        orders.append({"customer": customer, "orders": customer_orders})
-    context = {"orders": orders}
-    return render(request, "customer_order_history.html", context)
 
-def popular_items_morning(request):
+    def render_to_response(self, context, **response_kwargs):
+        items = context["object_list"]
+        product_names = [item["product__name"] for item in items]
+        quantities = [item["total_ordered"] for item in items]
 
-    start_time = timezone.datetime.now().replace(hour=8, minute=0, second=0, microsecond=0)
-    end_time = timezone.datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
-    items = (
-        OrderItem.objects.filter(cart__time__range=(start_time, end_time))
-        .values("product__name")
-        .annotate(total_ordered=Sum("quantity"))
-        .order_by("-total_ordered")[:2]
-    )
-
-    return render(request, "popular_items_morning.html", {"items": items})
-
-
-def status_count(request):
-    today = timezone.now().today().date()
-
-    accepted_carts_count = Cart.objects.filter(status="a", time = today).count()
-    refused_carts_count = Cart.objects.filter(status="r", time = today).count()
-    total_carts_count = accepted_carts_count + refused_carts_count
-
-    accepted_percentage = (accepted_carts_count / total_carts_count) * 100
-    refused_percentage = (refused_carts_count / total_carts_count) * 100
-
-    context = {
-        "accepted_count": accepted_carts_count,
-        "refused_count": refused_carts_count,
-        "accepted_percentage": accepted_percentage,
-        "refused_percentage": refused_percentage,
-    }
-
-    return render(request, "status_count.html", context)
+        return JsonResponse({"product_names": product_names, "quantities": quantities})
