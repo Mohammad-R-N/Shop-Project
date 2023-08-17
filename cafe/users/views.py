@@ -68,7 +68,7 @@ class CheckOtp(View):
                 messages.success(request, 'Loged In Successfully', 'success')
                 return redirect("staff")
             messages.error(request, 'OTP code is NOT CORRECT!', 'danger')
-            return redirect("home")
+            return redirect("staff_login")
         return redirect('menu')
 
 
