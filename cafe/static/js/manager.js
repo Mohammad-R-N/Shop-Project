@@ -206,6 +206,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/status_count/')
+    .then(response => response.json())
+    .then(data => {
+        const ctx = document.getElementById('statusCountChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Accepted', 'Refused'],
+                datasets: [{
+                    label: 'Order Status Count',
+                    data: [data.accepted_count, data.refused_count],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',  
+                        'rgba(255, 99, 132, 0.2)'   
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',  
+                        'rgba(255, 99, 132, 1)'   
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+});
+
 
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/order_status_report/')  
