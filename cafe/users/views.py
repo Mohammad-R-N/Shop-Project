@@ -16,7 +16,7 @@ from django.db.models.functions import (
 )
 
 
-# from utils import send_OTP
+from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
 from cart.models import Cart, OrderItem
@@ -608,7 +608,15 @@ class TopSellingItemsView(ListView):
 
 
 def manager_dashboard(request):
-    return render(request, "manager/manager_dashboard.html")
+    if request.user.is_authenticated:
+
+        return render(request, "manager/manager_dashboard.html")
+    else:
+        messages.error(
+                request, "You are NOT allowed to see staff panel", extra_tags="danger"
+            )
+        return redirect("staff_login")
+
 
 
 class TotalSalesView(ListView):
