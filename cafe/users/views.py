@@ -399,3 +399,27 @@ class PopularItemsMorningView(ListView):
         product_names = [item["product__name"] for item in items]
         quantities = [item["total_ordered"] for item in items]
         return JsonResponse({"product_names": product_names, "quantities": quantities})
+
+
+class StatusCountView(View):
+    def get(self, request):
+        today = timezone.now().today().date()
+        accepted_carts_count = Cart.objects.filter(status="a", time=today).count()
+        refused_carts_count = Cart.objects.filter(status="r", time=today).count()
+        total_carts_count = accepted_carts_count + refused_carts_count
+
+        if total_carts_count == 0:
+            accepted_percentage = 0
+            refused_percentage = 0
+        else:
+            accepted_percentage = (accepted_carts_count / total_carts_count) * 100
+            refused_percentage = (refused_carts_count / total_carts_count) * 100
+
+        data = {
+            "accepted_count": accepted_carts_count,
+            "refused_count": refused_carts_count,
+            "accepted_percentage": accepted_percentage,
+            "refused_percentage": refused_percentage,
+        }
+
+        return JsonResponse(data)
