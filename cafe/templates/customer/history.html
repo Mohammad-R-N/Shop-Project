@@ -11,14 +11,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 text-center">
-                    <h2 class="page-title">Ord Detail</h2>
+                    <h2 class="page-title">Ord History</h2>
                     <div class="cafena-breadcrumb breadcrumbs">
                         <ul class="list-unstyled d-flex align-items-center justify-content-center">
                             <li class="cafenabcrumb-item duxinbcrumb-begin">
                                 <a href="{% url 'home' %}"><span>Home</span></a>
                             </li>
                             <li class="cafenabcrumb-item duxinbcrumb-end">
-                                <span>Ord Information</span>
+                                <span>Ord History</span>
                             </li>
                         </ul>
                     </div>
@@ -48,16 +48,20 @@
                                 </thead>
                                 <tbody>
                                     {% for cart in carts %}
+                                    {% for item in items %}
+                                    {% if forloop.first %}
                                     <tr>
                                         <td class="product-number" style="color: aliceblue;">{{ cart.customer_number }}</td>
                                         <td class="product-name"><a href="#">{{ cart.total_quantity }} orders</a></td>
                                         <td class="product-price"><span class="amount">Table {{ cart.cart_table.table_name }}</span></td>
                                         <td class="product-quantity"><span class="amount">$ {{ cart.total_price }}</span></td>
                                         <td class="product-quantity"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
-                                            {% for item in items %}{{ item.product.name }} {{ item.quantity }}<br>{% endfor %}
+                                            {{ item.product.name }} {{ item.quantity }}<br>
                                         </details></button></span></td>
                                         <td class="product-subtotal"><span class="amount">{{ cart.time }}</span></td>
                                     </tr>
+                                    {% endif %}
+                                    {% endfor %}
                                     {% endfor %}
                                 </tbody>
                             </table>

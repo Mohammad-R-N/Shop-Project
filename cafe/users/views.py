@@ -47,11 +47,10 @@ class StaffLogin(View):
                 phone_number=formatted_phone_number
             ).first()
             if user is None:
-                messages.error(request, "User not found!", "danger")
-                return redirect(
-                    "login"
-                )  # Redirect to signup page if user is not registered
-            else:
+                messages.error(request, 'User not found!', 'danger')
+                return redirect("staff_login")  # Redirect to signup page if user is not registered
+            else: 
+
                 send_OTP(formatted_phone_number, random_code)
                 request.session["user_info"] = {
                     "phone_number": formatted_phone_number,
@@ -59,50 +58,46 @@ class StaffLogin(View):
                 }
                 return redirect("check-otp")
 
-            # class CheckOtp(View):
-            #     form_otp = StaffOtpForm
 
-            #     def get(self, request):
-            #         form = self.form_otp()
-            #         return render(request, "staff/otp.html", {"form": form})
 
-            #     def post(self, request):
-            #         form = self.form_otp(request.POST)
-            #         if form.is_valid():
-            #             otp = form.cleaned_data["code"]
-            #             user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
 
-            #             if user is not None:
-            #                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            #                 return redirect("staff")
-            #             return redirect("home")
-            #         return redirect('menu')
+class CheckOtp(View):
+    form_otp = StaffOtpForm
 
+    def get(self, request):
+        form = self.form_otp()
+        return render(request, "staff/otp.html", {"form": form})
+
+    def post(self, request):
+        form = self.form_otp(request.POST)
+        if form.is_valid():
+            otp = form.cleaned_data["code"]
+            user = CustomAuthBackend.authenticate(request, phone_number=request.session["user_info"]["phone_number"], code=otp)
             if user is not None:
                 login(
                     request, user, backend="django.contrib.auth.backends.ModelBackend"
                 )
                 messages.success(request, "Loged In Successfully", "success")
                 return redirect("staff")
-            messages.error(request, "OTP code is NOT CORRECT!", "danger")
-            return redirect("home")
-        return redirect("menu")
+
+            messages.error(request, 'OTP code is NOT CORRECT!', 'danger')
+            return redirect("staff_login")
+        return redirect('menu')
 
 
 class LogOutView(View):
     def get(self, request):
         logout(request)
-        messages.success(request, "LogOut Successfully!", "success")
-        return redirect("home")
+        messages.success(request, 'LogOut Successfully!', 'success')
+        return redirect("staff_login")
 
 
 class StaffPanelView(View):
     template_staff = "staff/staff.html"
-    # template_staff_login = "staff/login.html"
+    template_staff_login = "staff/login.html"
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            # return redirect("staff_login")
             cart = Cart.objects.all()
             item = list()
             carts = list()
@@ -110,19 +105,80 @@ class StaffPanelView(View):
             for cart_obj in cart:
                 if cart_obj.status == "w":
                     items = OrderItem.objects.filter(cart=cart_obj)
+                    item.append(items[0])
+                    carts.append(cart_obj)
+
+
+            context = {
+                'item': item,
+                'cart': carts
+            }
+            return render(request, self.template_staff, context)
+        else:
+            messages.error(request,"You are NOT allowed to see staff panel",extra_tags="danger")
+            return redirect("staff_login")
+
+
+    def post(self, request):
+        user = request.user
+
+        if "accepted_ord" in request.POST:
+            cart = Cart.objects.all()
+            item = list()
+            carts = list()
+
+            for cart_obj in cart:
+                if cart_obj.status == "a":
+                    items = OrderItem.objects.filter(cart=cart_obj)
                     item.append(items)
                     carts.append(cart_obj)
 
-            context = {"item": item, "cart": carts}
-            return render(request, self.template_staff, context)
-        else:
-            messages.error(
-                request, "You are NOT allowed to see staff panel", extra_tags="danger"
-            )
-            return render(request, "staff_login")
+            context = {
+                'item': item,
+                'cart': carts
+            }
+            return render(request, "staff/staff_accepted.html", context)
+        
+        elif "refused_ord" in request.POST:
+            cart = Cart.objects.all()
+            item = list()
+            carts = list()
 
-    def post(self, request):
-        if "refuse" in request.POST:
+            for cart_obj in cart:
+                if cart_obj.status == "r":
+                    items = OrderItem.objects.filter(cart=cart_obj)
+                    item.append(items)
+                    carts.append(cart_obj)
+
+            context = {
+                'item': item,
+                'cart': carts
+            }
+            return render(request, "staff/staff_refused.html", context)
+        
+        elif "waiting_ord" in request.POST:
+            return redirect("staff")
+        
+        elif "phone_number" in request.POST:
+            phone = request.POST["phone_number"]
+
+            cart = Cart.objects.all()
+            item_list = list()
+            cart_list = list()
+
+            for cart_obj in cart:
+                if cart_obj.customer_number == phone:
+                    item = OrderItem.objects.filter(cart=cart_obj)
+                    item_list.append(item[0])
+                    cart_list.append(cart_obj)
+
+            context = {
+                "items": item_list,
+                "carts": cart_list
+                }
+            return render(request, "staff/staff_search_result.html", context)
+
+        elif "refuse" in request.POST:
             cart_refuse_id = request.POST["refuse"]
             cart = Cart.objects.all()
 
@@ -130,6 +186,7 @@ class StaffPanelView(View):
                 if cart_obj.id == int(cart_refuse_id):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "r"
+                    update_cart.cart_users = user
                     update_cart.save()
                     messages.success(request, "Refused successfully!", "warning")
             return redirect("staff")
@@ -142,6 +199,7 @@ class StaffPanelView(View):
                 if cart_obj.id == int(cart_accept_id):
                     update_cart = Cart.objects.get(id=cart_obj.id)
                     update_cart.status = "a"
+                    update_cart.cart_users = user
                     update_cart.save()
                     messages.success(request, "Accepted successfully!", "success")
             return redirect("staff")
@@ -164,7 +222,7 @@ class EditOrder(View):
 
             for cart_obj in cart:
                 if cart_obj.id == int(cart_edit_id):
-                    items = OrderItem.objects.filter(cart=cart_obj).values()
+                    items = OrderItem.objects.filter(cart=cart_obj)
                     # print(items[1]['product_id'])
                     cart_list.append(cart_obj)
                     item.append(items)
@@ -186,8 +244,8 @@ class EditOrder(View):
 
             for cart_obj in cart:
                 if cart_obj.id == int(cart_edit_id):
-                    items = OrderItem.objects.get(cart=cart_obj)
-                    item_list.append(items)
+                    items = OrderItem.objects.filter(cart=cart_obj)
+                    item_list.append(items[0])
 
             for item in item_list:
                 if item.id == int(order_item_id):
@@ -201,8 +259,11 @@ class EditOrder(View):
             for ord in order_items:
                 if str(ord.id) in request.POST:
                     new_quantity = request.POST[f"{ord.id}"]
+                    old_quantity = ord.quantity
+                    total_quantity = int(old_quantity) - int(new_quantity)
                     ord.quantity = int(new_quantity)
                     ord.cart.total_price = ord.price * int(new_quantity)
+                    ord.cart.total_quantity = abs(total_quantity)
                     ord.save()
                     return redirect("staff")
 
@@ -236,6 +297,14 @@ class AddOrder(View):
                         price=new_product_obj.price,
                     )
                     order_item.save()
+                    cart_obj.total_price = cart_obj.total_price + int(new_product_obj.price) * int(new_product_quantity)
+                    cart_obj.total_quantity += 1
+                    cart_obj.save()
+            
+            return redirect('add_ord')
+        
+        elif "done" in request.POST:
+            return redirect("edit_ord")
 
         elif "all" in request.POST:
             cat = Category.objects.all()
@@ -393,6 +462,7 @@ class PopularItemsMorningView(ListView):
             .annotate(total_ordered=Sum("quantity"))
             .order_by("-total_ordered")[:2]
         )
+
 
     def render_to_response(self, context, **response_kwargs):
         items = context["object_list"]

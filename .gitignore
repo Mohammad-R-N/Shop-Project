@@ -1,6 +1,6 @@
 # Ignore migration files
 **/migrations/
-
+migrations
 # Ignore pycache directories
 **/__pycache__/
 .DS_Store
