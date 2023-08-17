@@ -469,3 +469,95 @@ class TopSellingItemsView(ListView):
         data = {"product_names": product_names, "quantities": quantities}
 
         return JsonResponse(data)
+
+
+def manager_dashboard(request):
+    return render(request, "manager/manager_dashboard.html")
+
+
+class TotalSalesView(ListView):
+    model = Cart
+
+    def render_to_response(self, context, **response_kwargs):
+        total_sales = Cart.objects.aggregate(total_sales=Sum("total_price"))[
+            "total_sales"
+        ]
+        return JsonResponse({"total_sales": total_sales})
+
+
+class DailySalesView(ListView):
+    model = Cart
+
+    def render_to_response(self, context, **response_kwargs):
+        daily_sales_data = (
+            Cart.objects.annotate(day_of_week=ExtractWeekDay("time"))
+            .values("day_of_week")
+            .annotate(total_sales=Sum("total_price"))
+            .order_by("day_of_week")
+        )
+
+        days = [item["day_of_week"] for item in daily_sales_data]
+        sales = [item["total_sales"] for item in daily_sales_data]
+
+        days_of_week = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+        ]
+        day_labels = [days_of_week[day - 1] for day in days]
+
+        return JsonResponse({"days": day_labels, "daily_sales": sales})
+
+
+class YearlySalesView(ListView):
+    model = Cart
+
+    def render_to_response(self, context, **response_kwargs):
+        yearly_sales_data = (
+            Cart.objects.annotate(year=ExtractYear("time"))
+            .values("year")
+            .annotate(total_sales=Sum("total_price"))
+            .order_by("year")
+        )
+
+        years = [item["year"] for item in yearly_sales_data]
+        sales = [item["total_sales"] for item in yearly_sales_data]
+
+        return JsonResponse({"years": years, "yearly_sales": sales})
+
+
+class MonthlySalesView(ListView):
+    model = Cart
+
+    def render_to_response(self, context, **response_kwargs):
+        monthly_sales_data = (
+            Cart.objects.annotate(month=ExtractMonth("time"))
+            .values("month")
+            .annotate(total_sales=Sum("total_price"))
+            .order_by("month")
+        )
+
+        months = [item["month"] for item in monthly_sales_data]
+        sales = [item["total_sales"] for item in monthly_sales_data]
+
+        month_labels = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ]
+        month_names = [month_labels[month - 1] for month in months]
+
+        return JsonResponse({"months": month_names, "monthly_sales": sales})
