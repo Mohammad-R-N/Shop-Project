@@ -446,3 +446,26 @@ class OrderStatusReportView(View):
         }
 
         return JsonResponse(data)
+
+
+class TopSellingItemsView(ListView):
+    model = OrderItem
+
+    def get_queryset(self):
+        date_filter = self.request.GET.get("date", timezone.now().date())
+
+        return (
+            OrderItem.objects.filter(cart__time__date=date_filter)
+            .values("product__name")
+            .annotate(total_ordered=Sum("quantity"))
+            .order_by("-total_ordered")
+        )
+
+    def render_to_response(self, context, **response_kwargs):
+        items = context["object_list"]
+        product_names = [item["product__name"] for item in items]
+        quantities = [item["total_ordered"] for item in items]
+
+        data = {"product_names": product_names, "quantities": quantities}
+
+        return JsonResponse(data)
