@@ -1,13 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'baseAdmin.html' %}
 {% load static %}
 {% block content %}
 {% include 'cart/sidecart.html' %}
 <main>
     <!-- breadcrumb area start -->
-    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static "images/bg/breadcrumb-bg-1.jpeg" %}"
-        data-overlay="dark" data-opacity="5">
-        <div class="shape shape__1"><img src="{% static "images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
-        <div class="shape shape__2"><img src="{% static "images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
+    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static " images/bg/breadcrumb-bg-1.jpeg"
+        %}" data-overlay="dark" data-opacity="5">
+        <div class="shape shape__1"><img src="{% static " images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
+        <div class="shape shape__2"><img src="{% static " images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 text-center">
@@ -49,13 +49,20 @@
                                 <tbody>
                                     {% for cart in carts %}
                                     <tr>
-                                        <td class="product-number" style="color: aliceblue;">{{ cart.customer_number }}</td>
+                                        <td class="product-number" style="color: aliceblue;">{{ cart.customer_number }}
+                                        </td>
                                         <td class="product-name"><a href="#">{{ cart.total_quantity }} orders</a></td>
-                                        <td class="product-price"><span class="amount">Table {{ cart.cart_table.table_name }}</span></td>
-                                        <td class="product-quantity"><span class="amount">$ {{ cart.total_price }}</span></td>
-                                        <td class="product-quantity"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
-                                            {% for item in items %}{{ item.product.name }} {{ item.quantity }}<br>{% endfor %}
-                                        </details></button></span></td>
+                                        <td class="product-price"><span class="amount">Table {{
+                                                cart.cart_table.table_name }}</span></td>
+                                        <td class="product-quantity"><span class="amount">$ {{ cart.total_price
+                                                }}</span></td>
+                                        <td class="product-quantity"><span class="amount"><button
+                                                    class="btn btn-warning" style="color: black;">
+                                                    <details>
+                                                        {% for item in items %}{{ item.product.name }} {{ item.quantity
+                                                        }}<br>{% endfor %}
+                                                    </details>
+                                                </button></span></td>
                                         <td class="product-subtotal"><span class="amount">{{ cart.time }}</span></td>
                                     </tr>
                                     {% endfor %}
