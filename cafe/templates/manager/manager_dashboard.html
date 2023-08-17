@@ -1,55 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
-{% include 'cart/sidecart.html' %}
-<main>
-    <!-- breadcrumb area start -->
-    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static "images/bg/breadcrumb-bg-1.jpeg" %}"
-        data-overlay="dark" data-opacity="5">
-        <div class="shape shape__1"><img src="{% static "images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
-        <div class="shape shape__2"><img src="{% static "images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 text-center">
-                    <h2 class="page-title">Sale Dashboard</h2>
-                    <div class="cafena-breadcrumb breadcrumbs">
-                        <ul class="list-unstyled d-flex align-items-center justify-content-center">
-                            <li class="cafenabcrumb-item duxinbcrumb-begin">
-                                <a href="{% url 'home' %}"><span>Home</span></a>
-                            </li>
-                            <li class="cafenabcrumb-item duxinbcrumb-end">
-                                <span>Manager Dashboard</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- breadcrumb area end -->
 
-    <!-- orders area start -->
-    <div class="orders-area pt-120 pb-120">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 l-item grid-item mt-35">
-                    {% for dt in data %}
-                    <form action="" method="post" class="l-item grid-item mt-35">
-                        {% csrf_token %}
-                        <div class="card">
-                            <div class="card__wrapper"></div>
-                            <div class="card__img">
-                                <h1 style="font-size: 150px;">{{ dt.key }}</h1>
-                            </div>
-                            <h3 class="view title border-effect"><a href="#">{{ dt.value }}</a></h3>
-                            <div class="card__subtitle">farzad</div>
-                            <button class="card__btn3" type="submit" name="farzad" value="farzad">Detail</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- orders area end -->
-</main>
-{% endblock content %}
+{% block extra_head %}
+    
+{% endblock %}
+
+{% block content %}
+    <h2>Manager's Dashboard</h2>
+
+    <canvas id="salesByCustomerChart" width="400" height="200 "></canvas>
+    <canvas id="popularItemsChart" width="400" height="200"></canvas>
+    <canvas id="peakBusinessHourChart" width="400" height="200"></canvas>
+    <canvas id="salesByCategoryChart" width="400" height="200"></canvas>
+    <canvas id="salesByEmployeeChart" width="400" height="200"></canvas>
+    <canvas id="popularItemsMorningChart" width="400" height="200"></canvas>
+    <canvas id="orderStatusChart" width="400" height="200"></canvas>
+    <label for="datePicker">Select Date:</label>
+    <input type="date" id="datePicker">
+    <canvas id="topSellingItemsChart" width="400" height="200"></canvas>
+    <canvas id="totalSalesChart" width="400" height="200"></canvas>
+    <canvas id="dailySalesChart" width="400" height="200"></canvas>
+    <canvas id="monthlySalesChart" width="400" height="200"></canvas>
+    <canvas id="yearlySalesChart" width="400" height="200"></canvas>
+    <a href="{% url 'history_for_manager' %}">View Manager History</a>
+    <script src="{% static 'js/manager.js' %}"></script>
+
+
+
+    
+{% endblock %}
