@@ -288,3 +288,20 @@ class SalesByCustomerView(ListView):
         return JsonResponse(
             {"customer_numbers": customer_numbers, "total_sales": total_sales}
         )
+
+
+class PeakBusinessHourView(ListView):
+    model = Cart
+
+    def get_queryset(self):
+        return (
+            Cart.objects.annotate(hour=ExtractHour("time"))
+            .values("hour")
+            .annotate(order_count=Count("id"))
+            .order_by("-order_count")[:6]
+        )
+
+    def render_to_response(self, context, **response_kwargs):
+        hours = context["object_list"]
+        peak_hour = hours[:6] if hours else None
+        return JsonResponse({"peak_hour": peak_hour})
