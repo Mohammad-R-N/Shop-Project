@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'cart/sidecart.html' %}
+<main>
+    <!-- breadcrumb area start -->
+    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static "images/bg/breadcrumb-bg-1.jpeg" %}"
+        data-overlay="dark" data-opacity="5">
+        <div class="shape shape__1"><img src="{% static "images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
+        <div class="shape shape__2"><img src="{% static "images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 text-center">
+                    <h2 class="page-title">Ord Detail</h2>
+                    <div class="cafena-breadcrumb breadcrumbs">
+                        <ul class="list-unstyled d-flex align-items-center justify-content-center">
+                            <li class="cafenabcrumb-item duxinbcrumb-begin">
+                                <a href="{% url 'home' %}"><span>Home</span></a>
+                            </li>
+                            <li class="cafenabcrumb-item duxinbcrumb-end">
+                                <span>Ord Information</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb area end -->
+
+    <!-- cart area start -->
+    <div class="cart-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="cart-wrapper">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">Phone Number</th>
+                                        <th class="cart-product-name">Quantity</th>
+                                        <th class="product-price">table</th>
+                                        <th class="product-quantity">Total</th>
+                                        <th class="product-subtotal">Detail</th>
+                                        <th class="product-subtotal">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cart in carts %}
+                                    <tr>
+                                        <td class="product-number" style="color: aliceblue;">{{ cart.customer_number }}</td>
+                                        <td class="product-name"><a href="#">{{ cart.total_quantity }} orders</a></td>
+                                        <td class="product-price"><span class="amount">Table {{ cart.cart_table.table_name }}</span></td>
+                                        <td class="product-quantity"><span class="amount">$ {{ cart.total_price }}</span></td>
+                                        <td class="product-quantity"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
+                                            {% for item in items %}{{ item.product.name }} {{ item.quantity }}<br>{% endfor %}
+                                        </details></button></span></td>
+                                        <td class="product-subtotal"><span class="amount">{{ cart.time }}</span></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- cart area end -->
+</main>
+{% endblock content %}
