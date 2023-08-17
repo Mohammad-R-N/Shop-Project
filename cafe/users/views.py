@@ -423,3 +423,26 @@ class StatusCountView(View):
         }
 
         return JsonResponse(data)
+
+
+class OrderStatusReportView(View):
+    def get(self, request):
+        today = timezone.now().today().date()
+
+        accepted_carts_count = Cart.objects.filter(
+            status=Cart.ACCEPT, time__date=today
+        ).count()
+        refused_carts_count = Cart.objects.filter(
+            status=Cart.REFUSE, time__date=today
+        ).count()
+        waiting_carts_count = Cart.objects.filter(
+            status=Cart.WAITING, time__date=today
+        ).count()
+
+        data = {
+            "accepted_count": accepted_carts_count,
+            "refused_count": refused_carts_count,
+            "waiting_count": waiting_carts_count,
+        }
+
+        return JsonResponse(data)
