@@ -268,3 +268,23 @@ class PopularItemsView(ListView):
         quantities = [item["total_ordered"] for item in items]
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
+
+
+class SalesByCustomerView(ListView):
+    model = Cart
+
+    def get_queryset(self):
+        return (
+            Cart.objects.values("customer_number")
+            .annotate(total_sales=Sum("total_price"))
+            .order_by("-total_sales")[:3]
+        )
+
+    def render_to_response(self, context, **response_kwargs):
+        sales = context["object_list"]
+        customer_numbers = [sale["customer_number"] for sale in sales]
+        total_sales = [sale["total_sales"] for sale in sales]
+
+        return JsonResponse(
+            {"customer_numbers": customer_numbers, "total_sales": total_sales}
+        )
