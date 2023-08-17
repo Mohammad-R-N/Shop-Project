@@ -327,3 +327,25 @@ class SalesByCategoryView(ListView):
         return JsonResponse(
             {"category_names": category_names, "total_sales": total_sales}
         )
+
+
+class SalesByEmployeeView(ListView):
+    model = Cart
+
+    def get_queryset(self):
+        return (
+            Cart.objects.values("cart_users__phone_number")
+            .annotate(total_sales=Sum("total_price"))
+            .order_by("-total_sales")[:3]
+        )
+
+    def render_to_response(self, context, **response_kwargs):
+        sales = context["object_list"]
+        phone_numbers = [sale["cart_users__phone_number"] for sale in sales]
+        total_sales = [sale["total_sales"] for sale in sales]
+        return JsonResponse(
+            {
+                "phone_numbers": phone_numbers,
+                "total_sales": total_sales,
+            }
+        )
