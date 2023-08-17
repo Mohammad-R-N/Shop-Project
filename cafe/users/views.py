@@ -93,7 +93,7 @@ class StaffPanelView(View):
             for cart_obj in cart:
                 if cart_obj.status == "w":
                     items = OrderItem.objects.filter(cart=cart_obj)
-                    item.append(items)
+                    item.append(items[0])
                     carts.append(cart_obj)
 
             context = {
@@ -245,8 +245,11 @@ class EditOrder(View):
             for ord in order_items:
                 if str(ord.id) in request.POST:
                     new_quantity = request.POST[f"{ord.id}"]
+                    old_quantity = ord.quantity
+                    total_quantity = old_quantity - new_quantity
                     ord.quantity = int(new_quantity)
                     ord.cart.total_price = ord.price * int(new_quantity)
+                    ord.cart.total_quantity = abs(total_quantity)
                     ord.save()
                     return redirect("staff")
 
@@ -280,6 +283,9 @@ class AddOrder(View):
                         price=new_product_obj.price,
                     )
                     order_item.save()
+                    cart_obj.total_price = cart_obj.total_price + new_product_obj.price * new_product_quantity
+                    cart_obj.total_quantity += 1
+                    cart_obj.save()
             
             return redirect('add_ord')
         

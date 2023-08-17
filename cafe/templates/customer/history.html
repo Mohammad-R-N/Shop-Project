@@ -48,16 +48,20 @@
                                 </thead>
                                 <tbody>
                                     {% for cart in carts %}
+                                    {% for item in items %}
+                                    {% if forloop.first %}
                                     <tr>
                                         <td class="product-number" style="color: aliceblue;">{{ cart.customer_number }}</td>
                                         <td class="product-name"><a href="#">{{ cart.total_quantity }} orders</a></td>
                                         <td class="product-price"><span class="amount">Table {{ cart.cart_table.table_name }}</span></td>
                                         <td class="product-quantity"><span class="amount">$ {{ cart.total_price }}</span></td>
                                         <td class="product-quantity"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
-                                            {% for item in items %}{{ item.product.name }} {{ item.quantity }}<br>{% endfor %}
+                                            {{ item.product.name }} {{ item.quantity }}<br>
                                         </details></button></span></td>
                                         <td class="product-subtotal"><span class="amount">{{ cart.time }}</span></td>
                                     </tr>
+                                    {% endif %}
+                                    {% endfor %}
                                     {% endfor %}
                                 </tbody>
                             </table>
