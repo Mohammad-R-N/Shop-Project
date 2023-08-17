@@ -238,8 +238,8 @@ class EditOrder(View):
 
             for cart_obj in cart:
                 if cart_obj.id == int(cart_edit_id):
-                    items = OrderItem.objects.get(cart=cart_obj)
-                    item_list.append(items)
+                    items = OrderItem.objects.filter(cart=cart_obj)
+                    item_list.append(items[0])
 
             for item in item_list:
                 if item.id == int(order_item_id):
@@ -254,7 +254,7 @@ class EditOrder(View):
                 if str(ord.id) in request.POST:
                     new_quantity = request.POST[f"{ord.id}"]
                     old_quantity = ord.quantity
-                    total_quantity = old_quantity - new_quantity
+                    total_quantity = int(old_quantity) - int(new_quantity)
                     ord.quantity = int(new_quantity)
                     ord.cart.total_price = ord.price * int(new_quantity)
                     ord.cart.total_quantity = abs(total_quantity)
@@ -291,7 +291,7 @@ class AddOrder(View):
                         price=new_product_obj.price,
                     )
                     order_item.save()
-                    cart_obj.total_price = cart_obj.total_price + new_product_obj.price * new_product_quantity
+                    cart_obj.total_price = cart_obj.total_price + int(new_product_obj.price) * int(new_product_quantity)
                     cart_obj.total_quantity += 1
                     cart_obj.save()
             
