@@ -1,28 +1,90 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block extra_head %}
-    
-{% endblock %}
 
 {% block content %}
-    <h2>Manager's Dashboard</h2>
 
-    <canvas id="salesByCustomerChart" width="400" height="200 "></canvas>
-    <canvas id="popularItemsChart" width="400" height="200"></canvas>
-    <canvas id="peakBusinessHourChart" width="400" height="200"></canvas>
-    <canvas id="salesByCategoryChart" width="400" height="200"></canvas>
-    <canvas id="salesByEmployeeChart" width="400" height="200"></canvas>
-    <canvas id="popularItemsMorningChart" width="400" height="200"></canvas>
-    <canvas id="orderStatusChart" width="400" height="200"></canvas>
-    <label for="datePicker">Select Date:</label>
-    <input type="date" id="datePicker">
-    <canvas id="topSellingItemsChart" width="400" height="200"></canvas>
-    <canvas id="totalSalesChart" width="400" height="200"></canvas>
-    <canvas id="dailySalesChart" width="400" height="200"></canvas>
-    <canvas id="monthlySalesChart" width="400" height="200"></canvas>
-    <canvas id="yearlySalesChart" width="400" height="200"></canvas>
-    <a href="{% url 'history_for_manager' %}">View Manager History</a>
+
+    <div class="container mt-4">
+    <h2 class="text-center mb-4">Manager's Dashboard</h2>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="salesByCustomerChart"></canvas>
+            <a href="{% url 'sales_by_customer' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="popularItemsChart"></canvas>
+            <a href="{% url 'popular_items' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="peakBusinessHourChart"></canvas>
+            <a href="{% url 'peak_business_hour' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="salesByCategoryChart"></canvas>
+            <a href="{% url 'sales_by_category' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="salesByEmployeeChart"></canvas>
+            <a href="{% url 'sales_by_employee' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="popularItemsMorningChart"></canvas>
+            <a href="{% url 'popular_items_morning' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="statusCountChart"></canvas>
+            <a href="{% url 'status_count' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="orderStatusChart"></canvas>
+            <a href="{% url 'order_status_report' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <label for="datePicker">Select Date:</label>
+            <input type="date" id="datePicker" class="form-control">
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="topSellingItemsChart"></canvas>
+            <a href="{% url 'top_selling_items' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="totalSalesChart"></canvas>
+            <a href="{% url 'total_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="dailySalesChart"></canvas>
+            <a href="{% url 'total_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <canvas id="monthlySalesChart"></canvas>
+            <a href="{% url 'monthly_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+        <div class="col-md-6 mb-4">
+            <canvas id="yearlySalesChart"></canvas>
+            <a href="{% url 'yearly_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="{% url 'history_for_manager' %}" class="btn btn-primary">View Manager History</a>
+    </div >
+
+
     <script src="{% static 'js/manager.js' %}"></script>
 
 
