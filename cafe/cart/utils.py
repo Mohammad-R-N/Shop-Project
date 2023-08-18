@@ -61,6 +61,34 @@ class ProductOption:
             else:
                 return redirect('cart')
 
+class Reservation:
+    def checkout(request, product_m, table_m, cart_m, orderItem_m):
+        cost = request.session['cost']
+        del request.session['cost']
+
+        order = request.session['order']
+        del request.session['order']
+
+        table = request.POST['subject']
+        phone_number = request.POST['tel']
+
+        table_obj = table_m.objects.get(table_name=table)          
+        cart = cart_m.objects.create(total_price=cost, total_quantity=len(order), 
+                                    customer_number=phone_number, cart_table=table_obj)
+        cart.save()
+
+        for ord in order:
+            pt_name = ord.split('=')
+            pt = product_m.objects.get(name=pt_name[0])
+            order_item = orderItem_m.objects.create(product=pt, cart=cart, quantity=pt_name[1], price=pt.price)
+            order_item.save()
+
+        result = redirect('ord_detail')
+        result.set_cookie("number", phone_number, 2630000)
+        result.delete_cookie('product')
+        return result
+
+class 
 
 
 
