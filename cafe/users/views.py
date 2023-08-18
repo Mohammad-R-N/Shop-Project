@@ -8,14 +8,7 @@ from cart.models import OrderItem
 import random
 from django.http import JsonResponse, HttpResponse
 from django.views.generic.list import ListView
-from django.db.models.functions import (
-    ExtractWeekDay,
-    ExtractMonth,
-    ExtractYear,
-    ExtractHour,
-)
-
-
+from django.db.models.functions import ExtractWeekDay, ExtractMonth, ExtractYear, ExtractHour
 from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
@@ -25,7 +18,7 @@ import re
 from django.db.models import Sum, Count
 from django.utils import timezone
 from django.contrib import messages
-
+from . utils import StaffPanel
 
 class StaffLogin(View):
     form_staff = StaffLoginForm
@@ -59,7 +52,6 @@ class StaffLogin(View):
                 }
                 return redirect("check-otp")
 
-
 class CheckOtp(View):
     form_otp = StaffOtpForm
 
@@ -87,119 +79,58 @@ class CheckOtp(View):
             return redirect("staff_login")
         return redirect("menu")
 
-
 class LogOutView(View):
     def get(self, request):
         logout(request)
         messages.success(request, "LogOut Successfully!", "success")
         return redirect("staff_login")
 
-
 class StaffPanelView(View):
     template_staff = "staff/staff.html"
     template_staff_login = "staff/login.html"
+    con = StaffPanel
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            cart = Cart.objects.all()
-            item = list()
-            carts = list()
-
-            for cart_obj in cart:
-                if cart_obj.status == "w":
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    item.append(items[0])
-                    carts.append(cart_obj)
-
-            context = {"item": item, "cart": carts}
+            result = self.con.waiting_post(Cart)
+            context = {"item": result[0], "cart": result[1]}
             return render(request, self.template_staff, context)
         else:
-            messages.error(
-                request, "You are NOT allowed to see staff panel", extra_tags="danger"
-            )
+            messages.error(request, "You are NOT allowed to see staff panel", extra_tags="danger")
             return redirect("staff_login")
 
     def post(self, request):
         user = request.user
-
         if "accepted_ord" in request.POST:
-            cart = Cart.objects.all()
-            item = list()
-            carts = list()
-
-            for cart_obj in cart:
-                if cart_obj.status == "a":
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    item.append(items)
-                    carts.append(cart_obj)
-
-            context = {"item": item, "cart": carts}
+            result = self.con.accept_ord(request)
+            context = {"item": result[0], "cart": result[1]}
             return render(request, "staff/staff_accepted.html", context)
 
         elif "refused_ord" in request.POST:
-            cart = Cart.objects.all()
-            item = list()
-            carts = list()
-
-            for cart_obj in cart:
-                if cart_obj.status == "r":
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    item.append(items)
-                    carts.append(cart_obj)
-
-            context = {"item": item, "cart": carts}
+            result = self.con.refuse_ord(request)
+            context = {"item": result[0], "cart": result[1]}
             return render(request, "staff/staff_refused.html", context)
 
         elif "waiting_ord" in request.POST:
             return redirect("staff")
 
         elif "phone_number" in request.POST:
-            phone = request.POST["phone_number"]
-
-            cart = Cart.objects.all()
-            item_list = list()
-            cart_list = list()
-
-            for cart_obj in cart:
-                if cart_obj.customer_number == phone:
-                    item = OrderItem.objects.filter(cart=cart_obj)
-                    item_list.append(item[0])
-                    cart_list.append(cart_obj)
-
-            context = {"items": item_list, "carts": cart_list}
+            result = self.con.get_ord_by_phone(request)
+            context = {"items": result[0], "carts": result[1]}
             return render(request, "staff/staff_search_result.html", context)
 
         elif "refuse" in request.POST:
-            cart_refuse_id = request.POST["refuse"]
-            cart = Cart.objects.all()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_refuse_id):
-                    update_cart = Cart.objects.get(id=cart_obj.id)
-                    update_cart.status = "r"
-                    update_cart.cart_users = user
-                    update_cart.save()
-                    messages.success(request, "Refused successfully!", "warning")
+            self.con.make_refuse(request, Cart)
             return redirect("staff")
 
         elif "accept" in request.POST:
-            cart_accept_id = request.POST["accept"]
-            cart = Cart.objects.all()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_accept_id):
-                    update_cart = Cart.objects.get(id=cart_obj.id)
-                    update_cart.status = "a"
-                    update_cart.cart_users = user
-                    update_cart.save()
-                    messages.success(request, "Accepted successfully!", "success")
+            self.con.make_accept(request, Cart)
             return redirect("staff")
 
         elif "edit" in request.POST:
             cart_edit_id = request.POST["edit"]
             request.session["edit_id"] = cart_edit_id
             return redirect("edit_ord")
-
 
 class EditOrder(View):
     template_name = "staff/edit_ord.html"
@@ -468,7 +399,7 @@ class CustomerHistory(View):
                     item = OrderItem.objects.filter(cart=cart_obj).values()
                     item_list.append(item)
                     cart_list.append(cart_obj)
-            print(item_list)
+
             context = {"items": item_list, "carts": cart_list}
             return render(request, self.template_history, context)
         else:
