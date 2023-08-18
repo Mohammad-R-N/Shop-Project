@@ -1,6 +1,5 @@
 from multiprocessing import context
-from urllib import request
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .forms import StaffLoginForm, StaffOtpForm
 from django.views import View
@@ -369,7 +368,7 @@ class OrderStatusReportView(View):
 
 class TopSellingItemsView(ListView):
     model = OrderItem
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         date_filter = self.request.GET.get("date", timezone.now().date())
 
@@ -388,22 +387,17 @@ class TopSellingItemsView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(product_names, quantities))
             header = ["Product Name", "Quantity Ordered"]
-            return generate_csv_response(data, header, "top_selling_items")
+            return self.csv(data, header, "top_selling_items")
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
 
-
-def manager_dashboard(request):
-    if request.user.is_authenticated:
-
-        return render(request, "manager/manager_dashboard.html")
-    else:
-        messages.error(
-                request, "You are NOT allowed to see staff panel", extra_tags="danger"
-            )
-        return redirect("staff_login")
-
-
+class ManagerDashboard(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            return render(request, "manager/manager_dashboard.html")
+        else:
+            messages.error(request, "You are NOT allowed to see staff panel", extra_tags="danger")
+            return redirect("staff_login")
 
 class TotalSalesView(ListView):
     model = Cart
@@ -420,7 +414,6 @@ class TotalSalesView(ListView):
             return response
 
         return JsonResponse({"total_sales": total_sales})
-
 
 class DailySalesView(ListView):
     model = Cart
@@ -449,7 +442,6 @@ class DailySalesView(ListView):
 
         return JsonResponse({"days": day_labels, "daily_sales": sales})
 
-
 class YearlySalesView(ListView):
     model = Cart
 
@@ -465,7 +457,6 @@ class YearlySalesView(ListView):
         sales = [item["total_sales"] for item in yearly_sales_data]
 
         return JsonResponse({"years": years, "yearly_sales": sales})
-
 
 class MonthlySalesView(ListView):
     model = Cart
