@@ -88,6 +88,9 @@ class LogOutView(View):
 class StaffPanelView(View):
     template_staff = "staff/staff.html"
     template_staff_login = "staff/login.html"
+    template_staff_accept_ord = "staff/staff_accepted.html"
+    template_staff_refuse_ord = "staff/staff_refused.html"
+    template_staff_search = "staff/staff_search_result.html"
     con = StaffPanel
 
     def get(self, request, *args, **kwargs):
@@ -104,12 +107,12 @@ class StaffPanelView(View):
         if "accepted_ord" in request.POST:
             result = self.con.accept_ord(request)
             context = {"item": result[0], "cart": result[1]}
-            return render(request, "staff/staff_accepted.html", context)
+            return render(request, self.template_staff_accept_ord, context)
 
         elif "refused_ord" in request.POST:
             result = self.con.refuse_ord(request)
             context = {"item": result[0], "cart": result[1]}
-            return render(request, "staff/staff_refused.html", context)
+            return render(request, self.template_staff_refuse_ord, context)
 
         elif "waiting_ord" in request.POST:
             return redirect("staff")
@@ -117,7 +120,7 @@ class StaffPanelView(View):
         elif "phone_number" in request.POST:
             result = self.con.get_ord_by_phone(request)
             context = {"items": result[0], "carts": result[1]}
-            return render(request, "staff/staff_search_result.html", context)
+            return render(request, self.template_staff_search, context)
 
         elif "refuse" in request.POST:
             self.con.make_refuse(request, Cart)
