@@ -28,3 +28,7 @@ class TestTableModel(TestCase):
     def test_table_name_max_length(self):
         max_length = Table._meta.get_field('table_name').max_length
         self.assertEqual(max_length, 100)
+
+    def test_table_status_choices(self):
+        choices = [choice[0] for choice in Table.STATUS_CHOICES]
+        self.assertListEqual(choices, ['Available', 'unavailable'])
