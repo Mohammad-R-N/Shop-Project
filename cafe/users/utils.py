@@ -80,7 +80,8 @@ class StaffPanel:
                 update_cart.save()
                 messages.success(request, "Accepted successfully!", "success")
         return None
-    
+
+class StaffEditOrd:
     def get_ord_for_edit(request, model):
         cart_edit_id = request.session["edit_id"]
         cart = model.objects.all()
@@ -126,5 +127,36 @@ class StaffPanel:
                 ord.save()
                 return True
         return False
-    
-    
+
+class StaffAddOrd:
+    def show_product_in_cat(request, model, category_m):
+        cat = category_m.objects.all()
+        product = model.objects.all()
+        for cat_obj in cat:
+            if cat_obj.name in request.POST:
+                product_cat = model.objects.filter(category_menu=cat_obj)
+        return cat, product_cat
+
+    def add_ord_to_shop_cart(request, model):
+        cart_edit_id = request.session["edit_id"]
+        new_product_id = request.POST["add"]
+        new_product_quantity = request.POST["quantity"]
+        new_product_obj = model.objects.get(id=int(new_product_id))
+        cart = Cart.objects.all()
+
+        for cart_obj in cart:
+            if cart_obj.id == int(cart_edit_id):
+                order_item = OrderItem.objects.create(
+                    product=new_product_obj,
+                    cart=cart_obj,
+                    quantity=int(new_product_quantity),
+                    price=new_product_obj.price,
+                )
+                order_item.save()
+                cart_obj.total_price = cart_obj.total_price + int(
+                    new_product_obj.price
+                ) * int(new_product_quantity)
+                cart_obj.total_quantity += 1
+                cart_obj.save()
+                return True
+        return False
