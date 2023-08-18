@@ -10,4 +10,8 @@ class TestTableModel(TestCase):
 
     def test_table_status_default(self):
         table2 = Table.objects.create(table_name= 'Table 2')
-        self.assertAlmostEquals(table2.status, 'unavailable')
+        self.assertEquals(table2.status, 'unavailable')
+
+    def test_table_status(self):
+        table2 = Table.objects.create(table_name= 'Table 2', status = 'Available')
+        self.assertEquals(table2.status, 'Available')
