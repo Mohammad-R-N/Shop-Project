@@ -18,7 +18,7 @@ import re
 from django.db.models import Sum, Count
 from django.utils import timezone
 from django.contrib import messages
-from . utils import StaffPanel, StaffEditOrd, StaffAddOrd
+from . utils import StaffPanel, StaffEditOrd, StaffAddOrd, ExportCsv, Customer, Manager
 
 class StaffLogin(View):
     form_staff = StaffLoginForm
@@ -191,20 +191,9 @@ class AddOrder(View):
             context = {"category": result[0], "product": result[1]}
             return render(request, self.template_name, context)
 
-
-def generate_csv_response(data, header, filename):
-    csv_content = ",".join(header) + "\n"
-    for row in data:
-        csv_content += ",".join(map(str, row)) + "\n"
-
-    response = HttpResponse(csv_content, content_type="text/csv")
-    response["Content-Disposition"] = f'attachment; filename="{filename}.csv"'
-    return response
-
-
 class PopularItemsView(ListView):
     model = OrderItem
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             OrderItem.objects.values("product__name")
@@ -220,14 +209,13 @@ class PopularItemsView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(product_names, quantities))
             header = ["Product Name", "Quantity Ordered"]
-            return generate_csv_response(data, header, "popular_items")
+            return self.csv(data, header, "popular_items")
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
 
-
 class SalesByCustomerView(ListView):
     model = Cart
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             Cart.objects.values("customer_number")
@@ -243,16 +231,15 @@ class SalesByCustomerView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(customer_numbers, total_sales))
             header = ["Customer Number", "Total Sales"]
-            return generate_csv_response(data, header, "sales_by_customer")
+            return self.csv(data, header, "sales_by_customer")
 
         return JsonResponse(
             {"customer_numbers": customer_numbers, "total_sales": total_sales}
         )
 
-
 class PeakBusinessHourView(ListView):
     model = Cart
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             Cart.objects.annotate(hour=ExtractHour("time"))
@@ -269,14 +256,13 @@ class PeakBusinessHourView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(peak_hour, order_counts))
             header = ["Hour", "Order Count"]
-            return generate_csv_response(data, header, "peak_business_hours")
+            return self.csv(data, header, "peak_business_hours")
 
         return JsonResponse({"peak_hour": peak_hour})
 
-
 class SalesByCategoryView(ListView):
     model = OrderItem
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             OrderItem.objects.select_related("product")
@@ -295,16 +281,15 @@ class SalesByCategoryView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(category_names, total_sales))
             header = ["Category Name", "Total Sales"]
-            return generate_csv_response(data, header, "sales_by_category")
+            return self.csv(data, header, "sales_by_category")
 
         return JsonResponse(
             {"category_names": category_names, "total_sales": total_sales}
         )
 
-
 class SalesByEmployeeView(ListView):
     model = Cart
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             Cart.objects.values("cart_users__phone_number")
@@ -320,42 +305,30 @@ class SalesByEmployeeView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(phone_numbers, total_sales))
             header = ["Employee Phone Number", "Total Sales"]
-            return generate_csv_response(data, header, "sales_by_employee")
+            return self.csv(data, header, "sales_by_employee")
 
         return JsonResponse(
             {"phone_numbers": phone_numbers, "total_sales": total_sales}
         )
 
-
 class CustomerHistory(View):
     template_login = "manager/history_login_manager.html"
     template_history = "manager/history_for_manager.html"
-
+    con = Customer
     def get(self, request):
         return render(request, self.template_login)
 
     def post(self, request):
         if "tel" in request.POST:
-            number = request.POST["tel"]
-            cart = Cart.objects.all()
-            item_list = list()
-            cart_list = list()
-
-            for cart_obj in cart:
-                if cart_obj.customer_number == number:
-                    item = OrderItem.objects.filter(cart=cart_obj).values()
-                    item_list.append(item)
-                    cart_list.append(cart_obj)
-
-            context = {"items": item_list, "carts": cart_list}
+            result = self.con.get_ord_by_phone(request, Cart)
+            context = {"items": result[0], "carts": result[1]}
             return render(request, self.template_history, context)
         else:
             return render(request, self.template_history)
 
-
 class PopularItemsMorningView(ListView):
     model = OrderItem
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         start_time = timezone.datetime.now().replace(
             hour=8, minute=0, second=0, microsecond=0
@@ -378,86 +351,21 @@ class PopularItemsMorningView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(product_names, quantities))
             header = ["Product Name", "Quantity Ordered (Morning)"]
-            return generate_csv_response(data, header, "popular_items_morning")
+            return self.csv(data, header, "popular_items_morning")
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
-
 
 class StatusCountView(View):
     def get(self, request):
         today = timezone.now().date()  # Just to ensure it's a date object without time
-        accepted_carts_count = Cart.objects.filter(
-            status=Cart.ACCEPT, time__date=today
-        ).count()
-        refused_carts_count = Cart.objects.filter(
-            status=Cart.REFUSE, time__date=today
-        ).count()
-        total_carts_count = accepted_carts_count + refused_carts_count
-
-        if total_carts_count == 0:
-            accepted_percentage = 0
-            refused_percentage = 0
-        else:
-            accepted_percentage = (accepted_carts_count / total_carts_count) * 100
-            refused_percentage = (refused_carts_count / total_carts_count) * 100
-
-        data = {
-            "accepted_count": accepted_carts_count,
-            "refused_count": refused_carts_count,
-            "accepted_percentage": accepted_percentage,
-            "refused_percentage": refused_percentage,
-        }
-
-        if request.GET.get("format") == "csv":
-            csv_content = "Status, Count, Percentage\n"
-            csv_content += (
-                f"Accepted,{accepted_carts_count},{accepted_percentage:.2f}%\n"
-            )
-            csv_content += f"Refused,{refused_carts_count},{refused_percentage:.2f}%\n"
-
-            response = HttpResponse(csv_content, content_type="text/csv")
-            response[
-                "Content-Disposition"
-            ] = 'attachment; filename="status_count_report.csv"'
-            return response
-
-        return JsonResponse(data)
-
+        result = Manager.status_count(request, today, Cart)
+        return JsonResponse(result)
 
 class OrderStatusReportView(View):
     def get(self, request):
         today = timezone.now().today().date()
-
-        accepted_carts_count = Cart.objects.filter(
-            status=Cart.ACCEPT, time__date=today
-        ).count()
-        refused_carts_count = Cart.objects.filter(
-            status=Cart.REFUSE, time__date=today
-        ).count()
-        waiting_carts_count = Cart.objects.filter(
-            status=Cart.WAITING, time__date=today
-        ).count()
-
-        data = {
-            "accepted_count": accepted_carts_count,
-            "refused_count": refused_carts_count,
-            "waiting_count": waiting_carts_count,
-        }
-
-        if request.GET.get("format") == "csv":
-            csv_content = "Order Status, Count\n"
-            csv_content += f"Accepted,{accepted_carts_count}\n"
-            csv_content += f"Refused,{refused_carts_count}\n"
-            csv_content += f"Waiting,{waiting_carts_count}\n"
-
-            response = HttpResponse(csv_content, content_type="text/csv")
-            response[
-                "Content-Disposition"
-            ] = 'attachment; filename="order_status_report.csv"'
-            return response
-
-        return JsonResponse(data)
-
+        result = Manager.status_order(request, today, Cart)
+        return JsonResponse(result)
 
 class TopSellingItemsView(ListView):
     model = OrderItem
