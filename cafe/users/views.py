@@ -18,7 +18,7 @@ import re
 from django.db.models import Sum, Count
 from django.utils import timezone
 from django.contrib import messages
-from . utils import StaffPanel
+from . utils import StaffPanel, StaffEditOrd, StaffAddOrd
 
 class StaffLogin(View):
     form_staff = StaffLoginForm
@@ -137,7 +137,7 @@ class StaffPanelView(View):
 
 class EditOrder(View):
     template_name = "staff/edit_ord.html"
-    con = StaffPanel
+    con = StaffEditOrd
 
     def get(self, request):
         if request.session.has_key("edit_id"):
@@ -164,6 +164,7 @@ class EditOrder(View):
 
 class AddOrder(View):
     template_name = "staff/staff_add_order.html"
+    con = StaffAddOrd
 
     def get(self, request):
         cat = Category.objects.all()
@@ -173,28 +174,9 @@ class AddOrder(View):
 
     def post(self, request):
         if "add" in request.POST:
-            cart_edit_id = request.session["edit_id"]
-            new_product_id = request.POST["add"]
-            new_product_quantity = request.POST["quantity"]
-            new_product_obj = Product.objects.get(id=int(new_product_id))
-            cart = Cart.objects.all()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_edit_id):
-                    order_item = OrderItem.objects.create(
-                        product=new_product_obj,
-                        cart=cart_obj,
-                        quantity=int(new_product_quantity),
-                        price=new_product_obj.price,
-                    )
-                    order_item.save()
-                    cart_obj.total_price = cart_obj.total_price + int(
-                        new_product_obj.price
-                    ) * int(new_product_quantity)
-                    cart_obj.total_quantity += 1
-                    cart_obj.save()
-
-            return redirect("add_ord")
+            result = self.con.add_ord_to_shop_cart(request, Product)
+            if result:
+                return redirect("add_ord")
 
         elif "done" in request.POST:
             return redirect("edit_ord")
@@ -205,13 +187,9 @@ class AddOrder(View):
             context = {"category": cat, "product": product}
             return render(request, self.template_name, context)
         else:
-            cat = Category.objects.all()
-            product = Product.objects.all()
-            for cat_obj in cat:
-                if cat_obj.name in request.POST:
-                    product_cat = Product.objects.filter(category_menu=cat_obj)
-                    context = {"category": cat, "product": product_cat}
-                    return render(request, self.template_name, context)
+            result = self.con.show_product_in_cat(request, Product, Category)
+            context = {"category": result[0], "product": result[1]}
+            return render(request, self.template_name, context)
 
 
 def generate_csv_response(data, header, filename):
