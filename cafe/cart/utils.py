@@ -57,9 +57,9 @@ class ProductOption:
                 request.session['order'] = result
                 request.session['cost'] = request.session['total']
                 del request.session['total']
-                return redirect('reservation')
+                return True
             else:
-                return redirect('cart')
+                return False
 
 class Reservation:
     def checkout(request, product_m, table_m, cart_m, orderItem_m):
@@ -83,10 +83,7 @@ class Reservation:
             order_item = orderItem_m.objects.create(product=pt, cart=cart, quantity=pt_name[1], price=pt.price)
             order_item.save()
 
-        result = redirect('ord_detail')
-        result.set_cookie("number", phone_number, 2630000)
-        result.delete_cookie('product')
-        return result
+        return phone_number
 
 class OrderDetail:
     def show_cart_detail(request, cart_m, orderItem_m):
