@@ -7,17 +7,12 @@ from .models import SiteConfig
 class HomeView(View):
     def get(self, request):
         return render(request, "main/main.html")
-
-    def post(self, request):
-        pass
-
-
+    
 class DefaultView(View):
     template_name = "main/main.html"
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
-
 
 class LogoView(View):
     template_name = "base.html"
