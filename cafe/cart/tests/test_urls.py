@@ -13,4 +13,9 @@ class TestUrls(SimpleTestCase):
         url = reverse('reservation')
         self.assertEquals(resolve(url).func.view_class, ReservationView)
 
+    def test_orddetail_url_is_resolved(self):
+
+        url = reverse('ord_detail')
+        self.assertEquals(resolve(url).func.view_class, OrdDetail)
+
     
