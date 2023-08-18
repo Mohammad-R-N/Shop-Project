@@ -7,3 +7,7 @@ class TestTableModel(TestCase):
 
     def test_table_str(self):
         self.assertEquals(str(self.table1), 'Table: Table 1')
+
+    def test_table_status_default(self):
+        table2 = Table.objects.create(table_name= 'Table 2')
+        self.assertAlmostEquals(table2.status, 'unavailable')
