@@ -88,7 +88,26 @@ class Reservation:
         result.delete_cookie('product')
         return result
 
-class 
+class OrderDetail:
+    def show_cart_detail(request, cart_m, orderItem_m):
+        phone_number = request.COOKIES.get('number')
+        cart = cart_m.objects.all()
+        item = list()
+        cart_list = list()
+        status = list()
+        for cart_obj in cart:
+            if cart_obj.customer_number == phone_number:
+                items = orderItem_m.objects.filter(cart=cart_obj)
+                cart_list.append(cart_obj)
+
+                item.append(items[0])
+                if cart_obj.status == "w":
+                    status.append("Waiting for accept from Admin")
+                elif cart_obj.status == "a":
+                    status.append("Accepted from Admin")
+                elif cart_obj.status == "r":
+                    status.append("Refused from Admin")
+        return item, cart_list, status
 
 
 
