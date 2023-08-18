@@ -3,7 +3,7 @@ from menu.models import Product
 from cart.models import Table, Cart, OrderItem
 from django.views import View
 from django.contrib import messages
-from .utils import ProductOption
+from .utils import ProductOption, Reservation
 
 class CartView(View):
     def get(self, request):
@@ -23,38 +23,14 @@ class CartView(View):
             return redirect('home')
         
 class ReservationView(View):
+    template_name = "customer/reserve.html"
     def get(self, request):
         tables = Table.objects.all()
-        context = {
-            'table': tables,
-            'total': request.session['cost']
-        }
-        return render(request, "customer/reserve.html", context)
+        context = {'table': tables, 'total': request.session['cost']}
+        return render(request, self.template_name, context)
     
     def post(self, request):
-        cost = request.session['cost']
-        del request.session['cost']
-
-        order = request.session['order']
-        del request.session['order']
-
-        table = request.POST['subject']
-        phone_number = request.POST['tel']
-
-        table_obj = Table.objects.get(table_name=table)          
-        cart = Cart.objects.create(total_price=cost, total_quantity=len(order), 
-                                    customer_number=phone_number, cart_table=table_obj)
-        cart.save()
-
-        for ord in order:
-            pt_name = ord.split('=')
-            pt = Product.objects.get(name=pt_name[0])
-            order_item = OrderItem.objects.create(product=pt, cart=cart, quantity=pt_name[1], price=pt.price)
-            order_item.save()
-
-        result = redirect('ord_detail')
-        result.set_cookie("number", phone_number, 2630000)
-        result.delete_cookie('product')
+        result = Reservation.checkout(request, Product, Table, Cart, OrderItem)
         return result
 
 class OrdDetail(View):
