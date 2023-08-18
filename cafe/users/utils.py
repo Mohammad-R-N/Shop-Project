@@ -1,5 +1,6 @@
 from cart.models import OrderItem, Cart, Table
 from django.contrib import messages
+from django.http import JsonResponse, HttpResponse
 
 class StaffPanel:
     def waiting_post(model):
@@ -160,3 +161,96 @@ class StaffAddOrd:
                 cart_obj.save()
                 return True
         return False
+    
+class ExportCsv:
+    def generate_csv_response(data, header, filename):
+        csv_content = ",".join(header) + "\n"
+        for row in data:
+            csv_content += ",".join(map(str, row)) + "\n"
+
+        response = HttpResponse(csv_content, content_type="text/csv")
+        response["Content-Disposition"] = f'attachment; filename="{filename}.csv"'
+        return response
+
+class Customer:
+    def get_ord_by_phone(request, model):
+        number = request.POST["tel"]
+        cart = model.objects.all()
+        item_list = list()
+        cart_list = list()
+
+        for cart_obj in cart:
+            if cart_obj.customer_number == number:
+                item = OrderItem.objects.filter(cart=cart_obj).values()
+                item_list.append(item)
+                cart_list.append(cart_obj)
+        return item_list, cart_list
+
+class Manager:
+    def status_count(request, today, model):
+        accepted_carts_count = model.objects.filter(
+            status=model.ACCEPT, time__date=today
+        ).count()
+        refused_carts_count = model.objects.filter(
+            status=model.REFUSE, time__date=today
+        ).count()
+        total_carts_count = accepted_carts_count + refused_carts_count
+
+        if total_carts_count == 0:
+            accepted_percentage = 0
+            refused_percentage = 0
+        else:
+            accepted_percentage = (accepted_carts_count / total_carts_count) * 100
+            refused_percentage = (refused_carts_count / total_carts_count) * 100
+
+        data = {
+            "accepted_count": accepted_carts_count,
+            "refused_count": refused_carts_count,
+            "accepted_percentage": accepted_percentage,
+            "refused_percentage": refused_percentage,
+        }
+
+        if request.GET.get("format") == "csv":
+            csv_content = "Status, Count, Percentage\n"
+            csv_content += (
+                f"Accepted,{accepted_carts_count},{accepted_percentage:.2f}%\n"
+            )
+            csv_content += f"Refused,{refused_carts_count},{refused_percentage:.2f}%\n"
+
+            response = HttpResponse(csv_content, content_type="text/csv")
+            response[
+                "Content-Disposition"
+            ] = 'attachment; filename="status_count_report.csv"'
+            return response
+        return data
+
+    def status_order(request, today, model):
+        accepted_carts_count = model.objects.filter(
+            status=model.ACCEPT, time__date=today
+        ).count()
+        refused_carts_count = model.objects.filter(
+            status=model.REFUSE, time__date=today
+        ).count()
+        waiting_carts_count = model.objects.filter(
+            status=model.WAITING, time__date=today
+        ).count()
+
+        data = {
+            "accepted_count": accepted_carts_count,
+            "refused_count": refused_carts_count,
+            "waiting_count": waiting_carts_count,
+        }
+
+        if request.GET.get("format") == "csv":
+            csv_content = "Order Status, Count\n"
+            csv_content += f"Accepted,{accepted_carts_count}\n"
+            csv_content += f"Refused,{refused_carts_count}\n"
+            csv_content += f"Waiting,{waiting_carts_count}\n"
+
+            response = HttpResponse(csv_content, content_type="text/csv")
+            response[
+                "Content-Disposition"
+            ] = 'attachment; filename="order_status_report.csv"'
+            return response
+        return data
+
