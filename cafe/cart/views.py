@@ -3,7 +3,7 @@ from menu.models import Product
 from cart.models import Table, Cart, OrderItem
 from django.views import View
 from django.contrib import messages
-from .utils import ProductOption, Reservation
+from .utils import ProductOption, Reservation, OrderDetail
 
 class CartView(View):
     def get(self, request):
@@ -38,29 +38,8 @@ class OrdDetail(View):
 
     def get(self, request):
         if request.COOKIES.get('number'):
-            phone_number = request.COOKIES.get('number')
-            cart = Cart.objects.all()
-            item = list()
-            cart_list = list()
-            status = list()
-            for cart_obj in cart:
-                if cart_obj.customer_number == phone_number:
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    cart_list.append(cart_obj)
-
-                    item.append(items[0])
-                    if cart_obj.status == "w":
-                        status.append("Waiting for accept from Admin")
-                    elif cart_obj.status == "a":
-                        status.append("Accepted from Admin")
-                    elif cart_obj.status == "r":
-                        status.append("Refused from Admin")
-
-            context = {
-                "cart": cart_list,
-                "items": item,
-                "process": status
-            }
+            result = OrderDetail.show_cart_detail(request, Cart, OrderItem)
+            context = {"cart": result[1], "items": result[0], "process": result[2]}
             messages.success(request, 'Your ORDER has send successfully!', 'success')
             return render(request, self.template_name, context)
         else:
