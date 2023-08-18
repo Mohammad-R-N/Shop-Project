@@ -36,3 +36,5 @@ class TestTableModel(TestCase):
     def test_table_each_status(self):
         self.assertEqual(Table.Available, 'Available')
         self.assertEqual(Table.unavailable, 'unavailable')
+
+#testing git
