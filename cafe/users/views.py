@@ -137,64 +137,30 @@ class StaffPanelView(View):
 
 class EditOrder(View):
     template_name = "staff/edit_ord.html"
+    con = StaffPanel
 
     def get(self, request):
         if request.session.has_key("edit_id"):
-            cart_edit_id = request.session["edit_id"]
-            cart = Cart.objects.all()
-            item = list()
-            cart_list = list()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_edit_id):
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    # print(items[1]['product_id'])
-                    cart_list.append(cart_obj)
-                    item.append(items)
-
-            context = {
-                "cart": cart_list[0].customer_number,
-                "items": item,
-            }
+            result = self.con.get_ord_for_edit(request, Cart)
+            context = {"items": result[0], "cart": result[1],}
             return render(request, self.template_name, context)
+        
         else:
             return render(request, self.template_name)
 
     def post(self, request):
         if "remove" in request.POST:
-            cart_edit_id = request.session["edit_id"]
-            order_item_id = request.POST["remove"]
-            cart = Cart.objects.all()
-            item_list = list()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_edit_id):
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    item_list.append(items[0])
-
-            for item in item_list:
-                if item.id == int(order_item_id):
-                    OrderItem.objects.get(id=int(order_item_id)).delete()
-                    messages.success(request, "Deleted successfully!", "warning")
-                    return redirect("staff")
+            result = self.con.remove_ord(request, Cart)
+            if result:
+                return redirect("staff")
 
         elif "done" in request.POST:
-            order_items = OrderItem.objects.all()
-
-            for ord in order_items:
-                if str(ord.id) in request.POST:
-                    new_quantity = request.POST[f"{ord.id}"]
-                    old_quantity = ord.quantity
-                    total_quantity = int(old_quantity) - int(new_quantity)
-                    ord.quantity = int(new_quantity)
-                    ord.cart.total_price = ord.price * int(new_quantity)
-                    ord.cart.total_quantity = abs(total_quantity)
-                    ord.save()
-                    return redirect("staff")
+            result = self.con.save_new_quantity(request, OrderItem)
+            if result:
+                return redirect("staff")
 
         elif "add_ord" in request.POST:
             return redirect("add_ord")
-
 
 class AddOrder(View):
     template_name = "staff/staff_add_order.html"
