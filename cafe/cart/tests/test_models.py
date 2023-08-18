@@ -32,3 +32,7 @@ class TestTableModel(TestCase):
     def test_table_status_choices(self):
         choices = [choice[0] for choice in Table.STATUS_CHOICES]
         self.assertListEqual(choices, ['Available', 'unavailable'])
+
+    def test_table_each_status(self):
+        self.assertEqual(Table.Available, 'Available')
+        self.assertEqual(Table.unavailable, 'unavailable')
