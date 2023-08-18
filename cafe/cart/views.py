@@ -18,7 +18,11 @@ class CartView(View):
         if "remove" in request.POST:
             ProductOption.remove_from_shop_cart(request)
         elif "done" in request.POST:
-            ProductOption.accept_shop_cart(request)
+            res = ProductOption.accept_shop_cart(request)
+            if res:
+                return redirect('reservation')
+            else:
+                return redirect('cart')
         else:
             return redirect('home')
         
@@ -30,7 +34,10 @@ class ReservationView(View):
         return render(request, self.template_name, context)
     
     def post(self, request):
-        result = Reservation.checkout(request, Product, Table, Cart, OrderItem)
+        phone = Reservation.checkout(request, Product, Table, Cart, OrderItem)
+        result = redirect('ord_detail')
+        result.set_cookie("number", phone, 2630000)
+        result.delete_cookie('product')
         return result
 
 class OrdDetail(View):
