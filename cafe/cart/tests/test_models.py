@@ -158,7 +158,7 @@ class TestCartModel(TestCase):
 class TestOrderItemModel(TestCase):
     def setUp(self):
         self.cart1 = Cart.objects.create(
-                total_price=Decimal('00.00'),
+                total_price= Decimal('00.00'),
                 total_quantity=0,
                 customer_number='09123456789',
                 cart_users=None,
@@ -167,10 +167,10 @@ class TestOrderItemModel(TestCase):
             )
         self.category1 = Category.objects.create(name = 'food')
         self.orditem = OrderItem.objects.create(
-            product=Product.objects.create(name = 'pizza', price = '10.00', category_menu = self.category1),
+            product=Product.objects.create(name = 'pizza', price = Decimal('10.00'), category_menu = self.category1),
             cart = self.cart1,
             quantity = 1,
-            price = '10.00'
+            price = Decimal('10.00')
         )
 
     def test_cart_update_with_orditem_quantity(self):
@@ -178,3 +178,9 @@ class TestOrderItemModel(TestCase):
         self.orditem.cart.save()
 
         self.assertEquals(self.cart1.total_quantity, 1)
+
+    def test_cart_update_with_orditem_price(self):
+        self.orditem.cart.total_price = self.orditem.price
+        self.orditem.cart.save()
+
+        self.assertEquals(self.cart1.total_price, Decimal('10.00'))
