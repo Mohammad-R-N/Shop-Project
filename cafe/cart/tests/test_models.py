@@ -70,3 +70,8 @@ class TestCartModel(TestCase):
     def test_cart_customer_number_max_length(self):
         max_length = Cart._meta.get_field('customer_number').max_length
         self.assertEqual(max_length, 14)
+
+    def test_cart_update_status(self):
+        self.cart1.status = 'a'
+        self.cart1.save()
+        self.assertEqual(self.cart1.status, 'a')
