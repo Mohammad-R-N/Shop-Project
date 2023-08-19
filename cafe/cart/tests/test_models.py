@@ -3,7 +3,7 @@ from cart.models import *
 from decimal import Decimal
 from django.core.exceptions import ValidationError
 from datetime import datetime
-
+from menu.models import Category
 
 """
     Table Model Tests
@@ -150,3 +150,26 @@ class TestCartModel(TestCase):
     def test_total_price_is_decimal_with_two_decimal_places(self):
         self.assertIsInstance(self.cart1.total_price, Decimal)
         self.assertEqual(self.cart1.total_price.as_tuple().exponent, -2)
+
+
+"""
+    OrderItem Model Tests
+"""
+class TestOrderItemModel(TestCase):
+    def setUp(self):
+        self.cart1 = Cart.objects.create(
+                total_price=Decimal('00.00'),
+                total_quantity=0,
+                customer_number='09123456789',
+                cart_users=None,
+                cart_table=Table.objects.create(table_name = "test table"),
+            
+            )
+        self.category1 = Category.objects.create(name = 'food')
+        self.orditem = OrderItem.objects.create(
+            product=Product.objects.create(name = 'pizza', price = '10.00', category_menu = self.category1),
+            cart = self.cart1,
+            quantity = 1,
+            price = '10.00'
+        )
+
