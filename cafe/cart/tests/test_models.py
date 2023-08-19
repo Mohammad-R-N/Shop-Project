@@ -86,3 +86,18 @@ class TestCartModel(TestCase):
             status=Cart.ACCEPT,
         )
         self.assertEqual(cart2.status, Cart.ACCEPT)
+
+    def test_cart_can_have_user(self):
+        user2 = CustomUser.objects.create(
+            phone_number = "09191234567",
+            
+        )
+        cart2 = Cart.objects.create(
+                total_price=Decimal('0.00'),
+                total_quantity=0,
+                customer_number='09123456789',
+                cart_users=user2,
+                cart_table=Table.objects.create(table_name = "test table"),
+            )
+        
+        self.assertEquals(cart2.cart_users , user2)
