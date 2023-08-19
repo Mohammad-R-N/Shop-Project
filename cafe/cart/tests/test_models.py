@@ -63,3 +63,7 @@ class TestCartModel(TestCase):
         max_length = Cart._meta.get_field('status').max_length
         self.assertEqual(max_length, 1)
 
+    def test_cart_total_price_max_length(self):
+        max_digits = Cart._meta.get_field('total_price').max_digits
+        self.assertEqual(max_digits, 6)
+
