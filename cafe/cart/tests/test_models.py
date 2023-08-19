@@ -101,3 +101,14 @@ class TestCartModel(TestCase):
             )
         
         self.assertEquals(cart2.cart_users , user2)
+
+    def test_cart_can_have_table(self):
+        table2 = Table.objects.create(table_name = "test table")
+        cart2 = Cart.objects.create(
+            total_price=Decimal('0.00'),
+            total_quantity=0,
+            customer_number='09123456789',
+            cart_users=None,
+            cart_table=table2,
+        )
+        self.assertEqual(cart2.cart_table, table2)
