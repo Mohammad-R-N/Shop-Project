@@ -3,6 +3,10 @@ from cart.models import *
 from decimal import Decimal
 from django.core.exceptions import ValidationError
 
+
+"""
+    Table Model Tests
+"""
 class TestTableModel(TestCase):
     def setUp(self):
         self.table1 = Table.objects.create(table_name='Table 1', status='Available')
@@ -39,6 +43,10 @@ class TestTableModel(TestCase):
         self.assertEqual(Table.Available, 'Available')
         self.assertEqual(Table.unavailable, 'unavailable')
 
+
+"""
+    Cart Model Tests
+"""
 class TestCartModel(TestCase):
     def setUp(self):
         self.cart1 = Cart.objects.create(
