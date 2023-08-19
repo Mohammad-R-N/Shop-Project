@@ -2,6 +2,7 @@ from django.test import TestCase
 from cart.models import *
 from decimal import Decimal
 from django.core.exceptions import ValidationError
+from datetime import datetime
 
 
 """
@@ -141,3 +142,7 @@ class TestCartModel(TestCase):
                 self.assertEquals(f.remote_field.on_delete, models.PROTECT,
                                 '{} failed, value was {}'.format(
                                     f.name, f.remote_field.on_delete))
+                
+    
+    def test_cart_time_auto_add(self):
+        self.assertAlmostEqual(self.cart1.time.timestamp(), datetime.now().timestamp())
