@@ -40,10 +40,13 @@ class TestTableModel(TestCase):
 
 class TestCartModel(TestCase):
     def setUp(self):
-        self.cart = Cart.objects.create(
+        self.cart1 = Cart.objects.create(
             total_price=Decimal('0.00'),
             total_quantity=0,
             customer_number='+989123456789',
             cart_users=None,
             cart_table=Table.objects.create(table_name = 'test table'),
         )
+
+    def test_cart_str(self):
+        self.assertEquals(str(self.cart1), "0 order ")
