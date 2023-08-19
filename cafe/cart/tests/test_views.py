@@ -9,3 +9,4 @@ class TestCartView(TestCase):
         response = client.get(reverse('cart'))
 
         self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'cart/cart.html')
