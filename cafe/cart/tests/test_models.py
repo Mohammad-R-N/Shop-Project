@@ -134,4 +134,10 @@ class TestCartModel(TestCase):
             cart.full_clean() #when i dont wanna validate data in forms and only if i wanna handle exceptions myself
         self.assertEqual(err.exception.message_dict['customer_number'], ["Phone number must be entered in the format: '09XXXXXXXXX', '00989XXXXXXXXX' or '+989XXXXXXXXX'."])
 
-        
+    def test_cart_foreignkey_protect(self):
+   
+        for f in self.cart1._meta.get_fields():
+            if isinstance(f, models.ForeignKey):
+                self.assertEquals(f.remote_field.on_delete, models.PROTECT,
+                                '{} failed, value was {}'.format(
+                                    f.name, f.remote_field.on_delete))
