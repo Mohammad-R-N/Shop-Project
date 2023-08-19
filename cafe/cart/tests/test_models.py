@@ -75,3 +75,14 @@ class TestCartModel(TestCase):
         self.cart1.status = 'a'
         self.cart1.save()
         self.assertEqual(self.cart1.status, 'a')
+
+    def test_new_cart_has_custom_status(self):
+        cart2 = Cart.objects.create(
+            total_price=Decimal('0.00'),
+            total_quantity=0,
+            customer_number='09123456789',
+            cart_users=None,
+            cart_table=Table.objects.create(table_name = "test table"),
+            status=Cart.ACCEPT,
+        )
+        self.assertEqual(cart2.status, Cart.ACCEPT)
