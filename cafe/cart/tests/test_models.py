@@ -1,6 +1,7 @@
 from django.test import TestCase
 from cart.models import *
 from decimal import Decimal
+from django.core.exceptions import ValidationError
 
 class TestTableModel(TestCase):
     def setUp(self):
@@ -112,3 +113,17 @@ class TestCartModel(TestCase):
             cart_table=table2,
         )
         self.assertEqual(cart2.cart_table, table2)
+
+    def test_customer_number_validation(self):
+        cart = Cart(
+            total_price=Decimal('0.00'),
+            total_quantity=0,
+            customer_number='123',  
+            cart_users=None,
+            cart_table=Table.objects.create(table_name = "test table"),
+        )
+        with self.assertRaises(ValidationError) as err:
+            cart.full_clean() #when i dont wanna validate data in forms and only if i wanna handle exceptions myself
+        self.assertEqual(err.exception.message_dict['customer_number'], ["Phone number must be entered in the format: '09XXXXXXXXX', '00989XXXXXXXXX' or '+989XXXXXXXXX'."])
+
+        
