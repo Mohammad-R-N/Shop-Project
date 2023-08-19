@@ -173,7 +173,7 @@ class TestOrderItemModel(TestCase):
             price = '10.00'
         )
 
-    def test_cart_update_wit_orditem_quantity(self):
+    def test_cart_update_with_orditem_quantity(self):
         self.orditem.cart.total_quantity = self.orditem.quantity
         self.orditem.cart.save()
 
