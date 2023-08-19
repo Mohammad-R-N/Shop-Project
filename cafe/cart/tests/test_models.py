@@ -194,9 +194,21 @@ class TestOrderItemModel(TestCase):
         self.assertEqual(max_digits, 6)
 
     def test_order_item_foreignkey_cascade(self):
-   
         for f in self.orditem._meta.get_fields():
             if isinstance(f, models.ForeignKey):
                 self.assertEquals(f.remote_field.on_delete, models.CASCADE,
                                 '{} failed, value was {}'.format(
                                     f.name, f.remote_field.on_delete))
+                
+    def test_product_foreign_key(self):
+        category2 = Category.objects.create(name = 'drinks')
+        product2 = Product.objects.create(name='Mocha', price=Decimal('10.00'), category_menu = category2)
+        order_item2 = OrderItem.objects.create(
+            product=product2,
+            cart=Cart.objects.create(total_price=Decimal('0.00'), total_quantity=0, customer_number = "09191234567", cart_table=Table.objects.create(table_name = "test table"),),
+            quantity=1,
+            price=Decimal('10.00')
+        )
+        
+        self.assertEqual(order_item2.product, product2)
+
