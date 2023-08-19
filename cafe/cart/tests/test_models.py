@@ -50,3 +50,8 @@ class TestCartModel(TestCase):
 
     def test_cart_str(self):
         self.assertEquals(str(self.cart1), "0 order ")
+
+    def test_cart_each_status(self):
+        self.assertEqual(Cart.ACCEPT, 'a')
+        self.assertEqual(Cart.REFUSE, 'r')
+        self.assertEqual(Cart.WAITING, 'w')
