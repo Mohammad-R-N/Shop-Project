@@ -55,3 +55,6 @@ class TestCartModel(TestCase):
         self.assertEqual(Cart.ACCEPT, 'a')
         self.assertEqual(Cart.REFUSE, 'r')
         self.assertEqual(Cart.WAITING, 'w')
+
+    def test_cart_status_default(self):
+        self.assertEquals(self.cart1.status, 'w')
