@@ -212,3 +212,15 @@ class TestOrderItemModel(TestCase):
         
         self.assertEqual(order_item2.product, product2)
 
+    def test_cart_foreign_key(self):
+        category2 = Category.objects.create(name = 'drinks')
+        product2 = Product.objects.create(name='Mocha', price=Decimal('10.00'), category_menu = category2)
+        cart2 = Cart.objects.create(total_price=Decimal('0.00'), total_quantity=0, customer_number = "09191234567", cart_table=Table.objects.create(table_name = "test table"),)
+        order_item2 = OrderItem.objects.create(
+            product=product2,
+            cart=cart2,
+            quantity=1,
+            price=Decimal('10.00')
+        )
+        
+        self.assertEqual(order_item2.cart, cart2)
