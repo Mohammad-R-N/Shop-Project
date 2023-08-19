@@ -192,3 +192,11 @@ class TestOrderItemModel(TestCase):
     def test_order_item_price_max_length(self):
         max_digits = OrderItem._meta.get_field('price').max_digits
         self.assertEqual(max_digits, 6)
+
+    def test_order_item_foreignkey_cascade(self):
+   
+        for f in self.orditem._meta.get_fields():
+            if isinstance(f, models.ForeignKey):
+                self.assertEquals(f.remote_field.on_delete, models.CASCADE,
+                                '{} failed, value was {}'.format(
+                                    f.name, f.remote_field.on_delete))
