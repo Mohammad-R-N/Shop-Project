@@ -146,3 +146,7 @@ class TestCartModel(TestCase):
     
     def test_cart_time_auto_add(self):
         self.assertAlmostEqual(self.cart1.time.timestamp(), datetime.now().timestamp())
+
+    def test_total_price_is_decimal_with_two_decimal_places(self):
+        self.assertIsInstance(self.cart1.total_price, Decimal)
+        self.assertEqual(self.cart1.total_price.as_tuple().exponent, -2)
