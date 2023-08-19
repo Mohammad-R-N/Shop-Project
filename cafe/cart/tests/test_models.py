@@ -1,5 +1,6 @@
 from django.test import TestCase
 from cart.models import *
+from decimal import Decimal
 
 class TestTableModel(TestCase):
     def setUp(self):
@@ -37,4 +38,12 @@ class TestTableModel(TestCase):
         self.assertEqual(Table.Available, 'Available')
         self.assertEqual(Table.unavailable, 'unavailable')
 
-#testing git
+class TestCartModel(TestCase):
+    def setUp(self):
+        self.cart = Cart.objects.create(
+            total_price=Decimal('0.00'),
+            total_quantity=0,
+            customer_number='+989123456789',
+            cart_users=None,
+            cart_table=Table.objects.create(table_name = 'test table'),
+        )
