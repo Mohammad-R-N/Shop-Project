@@ -185,10 +185,10 @@ class TestOrderItemModel(TestCase):
 
         self.assertEquals(self.cart1.total_price, Decimal('10.00'))
 
-    def test__price_is_decimal_with_two_decimal_places(self):
+    def test_price_is_decimal_with_two_decimal_places(self):
         self.assertIsInstance(self.orditem.price, Decimal)
         self.assertEqual(self.orditem.price.as_tuple().exponent, -2)
 
-    def test_cart_total_price_max_length(self):
+    def test_order_item_price_max_length(self):
         max_digits = OrderItem._meta.get_field('price').max_digits
         self.assertEqual(max_digits, 6)
