@@ -184,3 +184,7 @@ class TestOrderItemModel(TestCase):
         self.orditem.cart.save()
 
         self.assertEquals(self.cart1.total_price, Decimal('10.00'))
+
+    def test__price_is_decimal_with_two_decimal_places(self):
+        self.assertIsInstance(self.orditem.price, Decimal)
+        self.assertEqual(self.orditem.price.as_tuple().exponent, -2)
