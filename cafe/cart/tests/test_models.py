@@ -173,3 +173,8 @@ class TestOrderItemModel(TestCase):
             price = '10.00'
         )
 
+    def test_cart_update_wit_orditem_quantity(self):
+        self.orditem.cart.total_quantity = self.orditem.quantity
+        self.orditem.cart.save()
+
+        self.assertEquals(self.cart1.total_quantity, 1)
