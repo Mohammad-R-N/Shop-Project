@@ -22,3 +22,9 @@ class TestCustomerView(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'customer/history.html')
 
+    def test_get_with_cookies(self):
+        self.client.cookies['number'] = '12345'
+        response = self.client.get(self.customer_history_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('items', response.context)
+        self.assertIn('carts', response.context)
