@@ -33,3 +33,9 @@ class TestCustomerModel(TestCase):
         self.customer1.save()
         
         self.assertEquals(self.customer1.order , 2)
+
+    def test_point_update(self):
+        self.customer1.point = 30
+        self.customer1.save()
+        
+        self.assertEquals(self.customer1.point , 30)
