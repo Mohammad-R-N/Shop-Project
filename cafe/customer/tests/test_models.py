@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 class TestCustomerModel(TestCase):
     def setUp(self) -> None:
-        self.customer1 = Customer.objects.create( phone_number = "09123456789", order = 0, point = 0)
+        self.customer1 = Customer.objects.create( phone_number = "09123456789")
 
 
     def test_customer_str(self):
@@ -23,6 +23,5 @@ class TestCustomerModel(TestCase):
         self.assertEqual(err.exception.message_dict['phone_number'], ["Phone number must be entered in the format: '09XXXXXXXXX', '00989XXXXXXXXX' or '+989XXXXXXXXX'."])
 
     def test_order_default(self):
-        customer3 = Customer( phone_number = "09123456789", point = 2)
+        self.assertEquals(self.customer1.order , 0)
 
-        self.assertEquals(customer3.order , 0)
