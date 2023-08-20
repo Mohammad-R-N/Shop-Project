@@ -28,3 +28,8 @@ class TestCustomerModel(TestCase):
     def test_point_default(self):
         self.assertEquals(self.customer1.point , 0)
 
+    def test_order_update(self):
+        self.customer1.order = 2
+        self.customer1.save()
+        
+        self.assertEquals(self.customer1.order , 2)
