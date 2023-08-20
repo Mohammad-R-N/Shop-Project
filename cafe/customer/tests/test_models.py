@@ -25,3 +25,6 @@ class TestCustomerModel(TestCase):
     def test_order_default(self):
         self.assertEquals(self.customer1.order , 0)
 
+    def test_point_default(self):
+        self.assertEquals(self.customer1.point , 0)
+
