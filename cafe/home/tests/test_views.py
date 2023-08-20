@@ -8,7 +8,6 @@ class TestHomerView(TestCase):
 
     def setUp(self):
         self.client= Client()
-        self.home_url = reverse('main/main.html')
+        self.home_url = reverse('home')
 
 
-    
