@@ -17,3 +17,12 @@ class CartAdminTest(TestCase):
         updated_cart = Cart.objects.get(id=cart.id)
         self.assertEqual(updated_cart.status, 'a')
 
+
+class TableAdminTest(TestCase):
+    def test_accept_action(self):
+        table = Table.objects.create(status='Reserved')
+        queryset = Table.objects.filter(id=table.id)
+        table_admin = TableAdmin(Table, admin.site)
+        table_admin.accept(None, queryset)
+        updated_table = Table.objects.get(id=table.id)
+        self.assertEqual(updated_table.status, 'Available')
