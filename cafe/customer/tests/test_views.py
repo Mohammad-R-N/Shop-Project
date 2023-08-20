@@ -52,3 +52,11 @@ class TestCustomerView(TestCase):
         self.assertNotIn('items', response.context)
         self.assertNotIn('carts', response.context)
 
+    def test_get_filter_items_and_carts(self):
+        self.client.cookies['number'] = '09123456789'
+        response = self.client.get(self.customer_history_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context['items']), 1)
+        self.assertEqual(len(response.context['carts']), 1)
+        self.assertEqual(response.context['items'][0], self.item1)
+        self.assertEqual(response.context['carts'][0], self.cart1)
