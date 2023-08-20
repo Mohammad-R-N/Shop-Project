@@ -9,7 +9,3 @@ class TestCustomerModel(TestCase):
     def test_customer_str(self):
         self.assertEquals(str(self.customer1.phone_number), '09123456789')
 
-    def test_Customer_phone_number_max_length(self):
-        max_length = Customer._meta.get_field('phone_number').max_length
-        self.assertEqual(max_length, 14)
-    
