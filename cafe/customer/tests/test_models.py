@@ -1,6 +1,5 @@
 from django.test import TestCase
 from customer.models import *
-from decimal import Decimal
 from django.core.exceptions import ValidationError
 
 class TestCustomerModel(TestCase):
