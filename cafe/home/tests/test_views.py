@@ -9,9 +9,16 @@ class TestHomerView(TestCase):
     def setUp(self):
         self.client= Client()
         self.home_url = reverse('home')
+        self.default_view_url = reverse('main')
 
     def test_home_view_GET(self):
         response = self.client.get(self.home_url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/main.html')
+
+    def test_default_view_GET(self):
+        response = self.client.get(self.default_view_url)
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'main/main.html')
