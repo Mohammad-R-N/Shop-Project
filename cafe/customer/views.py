@@ -6,8 +6,7 @@ from cart.models import Cart, OrderItem
 class CustomerView(View):
     def get(self, request):
         return render(request,"customer/customer.html")
-    def post(self, request):
-        pass
+    
 
 class CustomerHistory(View):
     template_history = "customer/history.html"
