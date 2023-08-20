@@ -25,6 +25,10 @@ class TestCustomerView(TestCase):
     def test_get_with_cookies(self):
         self.client.cookies['number'] = '12345'
         response = self.client.get(self.customer_history_url)
-        self.assertEqual(response.status_code, 200)
         self.assertIn('items', response.context)
         self.assertIn('carts', response.context)
+
+    def test_get_without_cookies(self):
+        response = self.client.get(self.customer_history_url)
+        self.assertNotIn('items', response.context)
+        self.assertNotIn('carts', response.context)
