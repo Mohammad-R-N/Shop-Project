@@ -26,4 +26,4 @@ class TestSearchProducts(TestCase):
         response = self.client.get(self.search_product_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'menu/menu.html')
+        self.assertTemplateUsed(response, 'menu/search_results.html')
