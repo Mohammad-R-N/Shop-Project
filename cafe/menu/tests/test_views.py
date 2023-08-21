@@ -41,6 +41,11 @@ class TestSearchProducts(TestCase):
         self.assertNotIn(self.product2, response.context["results"])
 
 
+    def test_search_product_with_empty_query_context(self):
+        query1 = ""
+        response = self.client.get(self.search_product_url, {"query": query1 })
+        self.assertEqual(len(response.context["results"]), 0)
+
 
 
 class TestProductPopup(TestCase):
