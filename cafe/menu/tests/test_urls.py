@@ -9,4 +9,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('menu')
         self.assertEquals(resolve(url).func.view_class, MenuView)
 
+    def test_search_products_url_is_resolved(self):
+
+        url = reverse('search_products')
+        self.assertEquals(resolve(url).func.view_class, SearchProducts)
+
+
 
