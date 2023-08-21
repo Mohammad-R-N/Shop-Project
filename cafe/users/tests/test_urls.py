@@ -33,6 +33,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('dashboard')
         self.assertEquals(resolve(url).func.view_class, manager_dashboard)
 
+    def test_popular_items_url_is_resolved(self):
+        url = reverse('popular_items')
+        self.assertEquals(resolve(url).func.view_class, PopularItemsView)
+
 
 
 
