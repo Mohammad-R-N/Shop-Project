@@ -12,3 +12,4 @@ class CustomUserManagerTests(TestCase):
         self.assertEqual(self.user.phone_number, '09123456789')
         self.assertTrue(self.user.check_password('pass'))
         self.assertFalse(self.user.is_staff)
+        self.assertFalse(self.user.is_superuser)
