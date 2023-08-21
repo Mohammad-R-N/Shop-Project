@@ -1,21 +1,41 @@
-from django.test import TestCase
-from menu.models import Product, Category
-from menu.admin import ProductAdmin
-from django.contrib import admin
+from django.test import TestCase, RequestFactory
+from django.contrib.auth.models import User
+from django.contrib.admin.sites import AdminSite
+from menu.admin import ProductAdmin, CategoryAdmin
+from menu.models import Category, Product
 
-
-class TestMenuAdmin(TestCase):
-
+class ProductAdminTest(TestCase):
     def setUp(self):
-        self.category = Category.objects.create( name = "category 1")
-        self.product = Product.objects.create( name = "product 1", price = 10.00 , category_menu = self.category, status = 'active')
+        self.factory = RequestFactory()
+        self.user = User.objects.create_superuser(
+            username='admin',
+            email='admin@admin.com',
+            password='admin'
+        )
 
     def test_make_inactive_action(self):
-         
-        queryset = Product.objects.filter(id=self.product.id)
-        product_admin = ProductAdmin(Product, admin.site)
-        product_admin.make_inactive(None, queryset)
-        updated_product = Product.objects.get(id=self.product.id)
-        self.assertEqual(updated_product.status, 'not_active')
+        category = Category.objects.create(name='Test Category')
+        product = Product.objects.create(
+            name='Test Product',
+            price=10.0,
+            category_menu=category,
+            status='active'
+        )
+        product_admin = ProductAdmin(Product, AdminSite())
+        request = self.factory.post('/admin/myapp/product/', {'action': 'make_inactive', '_selected_action': [product.id]})
+        request.user = self.user
 
+        queryset = Product.objects.filter(id__in=[product.id])
+        product_admin.make_inactive(request, queryset)
 
+        product = Product.objects.get(id=product.id)
+        self.assertEqual(product.status, 'not_active')
+
+class CategoryAdminTest(TestCase):
+    def test_search_fields(self):
+        category_admin = CategoryAdmin(Category, AdminSite())
+        self.assertEqual(category_admin.search_fields, ['name'])
+
+    def test_list_display(self):
+        category_admin = CategoryAdmin(Category, AdminSite())
+        self.assertEqual(category_admin.list_display, ['name'])
