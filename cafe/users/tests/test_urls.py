@@ -37,6 +37,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('popular_items')
         self.assertEquals(resolve(url).func.view_class, PopularItemsView)
 
+    def test_sales_by_customer_url_is_resolved(self):
+        url = reverse('sales_by_customer')
+        self.assertEquals(resolve(url).func.view_class, SalesByCustomerView)
+
 
 
 
