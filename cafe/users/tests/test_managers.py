@@ -1,5 +1,6 @@
 from django.test import TestCase
 from users.models import CustomUser
+from django.utils.translation import gettext_lazy as _
 
 class CustomUserManagerTests(TestCase):
 
@@ -23,3 +24,9 @@ class CustomUserManagerTests(TestCase):
         self.assertTrue(self.user2.is_staff)
         self.assertTrue(self.user2.is_superuser)
         self.assertTrue(self.user2.is_active)
+
+    def test_create_user_no_phone_number(self):
+        
+        with self.assertRaises(ValueError) as cm:
+            user1 = CustomUser.objects.create_user(phone_number='', password='pass')
+        self.assertEqual(str(cm.exception), str(_("The Phone Number must be set")))
