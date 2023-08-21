@@ -10,5 +10,12 @@ class TestMenuAdmin(TestCase):
         self.category = Category.objects.create( name = "category 1")
         self.product = Product.objects.create( name = "product 1", price = 10.00 , category_menu = self.category, status = 'active')
 
+    def test_make_inactive_action(self):
+         
+        queryset = Product.objects.filter(id=self.product.id)
+        product_admin = ProductAdmin(Product, admin.site)
+        product_admin.make_inactive(None, queryset)
+        updated_product = Product.objects.get(id=self.product.id)
+        self.assertEqual(updated_product.status, 'not_active')
 
 
