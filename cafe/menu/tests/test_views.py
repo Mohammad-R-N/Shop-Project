@@ -10,8 +10,11 @@ class TestMenuView(TestCase):
         self.client= Client()
         self.menu_url = reverse('menu')
         self.category = Category.objects.create( name = "category 1", photo = 'test.png')
-        self.product = Product.objects.create( name = "product 1", price = 10.12 , category_menu = self.category,photo = 'product.png', status = 'active', )
-
+        self.category2 = Category.objects.create( name = "category 2", photo = 'test.png')
+        self.product = Product.objects.create( name = "product 1", price = 10.12 , category_menu = self.category, photo = 'product.png', status = 'active', )
+        self.product2 = Product.objects.create( name = "product 2", price = 10.12 , category_menu = self.category, photo = 'product.png', status = 'active', )
+        self.product3 = Product.objects.create( name = "product 3", price = 10.12 , category_menu = self.category2, photo = 'product.png', status = 'active', )
+    
     def test_menu_view_GET(self):
         response = self.client.get(self.menu_url)
 
@@ -26,8 +29,15 @@ class TestMenuView(TestCase):
     def test_menu_view_POST_context_if_all(self):
         response = self.client.post(self.menu_url, {"all": "true"})
         
-        self.assertEqual(response.context["category"].count(), 1)
-        self.assertEqual(response.context["product"].count(), 1)
+        self.assertEqual(response.context["category"].count(), 2)
+        self.assertEqual(response.context["product"].count(), 3)
+
+    def test_menu_view_POST_context_if_not_all(self):
+        response = self.client.post(self.menu_url, {"category 1": "true"})
+        print (response)
+
+        self.assertEqual(response.context["category"].count(), 2)
+        self.assertEqual(response.context["product"].count(), 2)
 
 
 
