@@ -13,6 +13,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('edit_ord')
         self.assertEquals(resolve(url).func.view_class, EditOrder)
 
+    def test_add_ord_url_is_resolved(self):
+        url = reverse('add_ord')
+        self.assertEquals(resolve(url).func.view_class, AddOrder)
+
 
 
 
