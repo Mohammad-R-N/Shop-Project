@@ -25,6 +25,12 @@ class TestUrls(SimpleTestCase):
         url = reverse('check-otp')
         self.assertEquals(resolve(url).func.view_class, CheckOtp)
 
+    def test_logout_user_url_is_resolved(self):
+        url = reverse('logout_user')
+        self.assertEquals(resolve(url).func.view_class, LogOutView)
+
+
+
 
 
 
