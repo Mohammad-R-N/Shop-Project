@@ -14,5 +14,8 @@ class TestUrls(SimpleTestCase):
         url = reverse('search_products')
         self.assertEquals(resolve(url).func.view_class, SearchProducts)
 
+    def test_product_popup_url_is_resolved(self):
 
+        url = reverse('product_popup')
+        self.assertEquals(resolve(url).func.view_class, ProductPopup)
 
