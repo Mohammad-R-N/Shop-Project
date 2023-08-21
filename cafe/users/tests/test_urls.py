@@ -57,6 +57,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('popular_items_morning')
         self.assertEquals(resolve(url).func.view_class, PopularItemsMorningView)
 
+    def test_status_count_url_is_resolved(self):
+        url = reverse('status_count')
+        self.assertEquals(resolve(url).func.view_class, StatusCountView)
+
 
 
 
