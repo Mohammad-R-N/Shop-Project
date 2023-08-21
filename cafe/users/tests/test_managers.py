@@ -26,7 +26,16 @@ class CustomUserManagerTests(TestCase):
         self.assertTrue(self.user2.is_active)
 
     def test_create_user_no_phone_number(self):
-        
+
         with self.assertRaises(ValueError) as cm:
             user1 = CustomUser.objects.create_user(phone_number='', password='pass')
         self.assertEqual(str(cm.exception), str(_("The Phone Number must be set")))
+
+    def test_is_staff_not_true_value_error(self):
+        
+        with self.assertRaises(ValueError) as cm:
+            self.user2 = CustomUser.objects.create_superuser(phone_number="09191234567", password='pass', is_staff = "false")
+
+        self.assertEqual(str(cm.exception), str(_("Superuser must have is_staff=True.")))
+
+    
