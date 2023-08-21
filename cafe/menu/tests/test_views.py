@@ -21,3 +21,9 @@ class TestSearchProducts(TestCase):
     def setUp(self):
         self.client= Client() 
         self.search_product_url = reverse('search_products')
+
+    def test_search_product_GET(self):
+        response = self.client.get(self.search_product_url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'menu/menu.html')
