@@ -17,6 +17,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('add_ord')
         self.assertEquals(resolve(url).func.view_class, AddOrder)
 
+    def test_staff_login_url_is_resolved(self):
+        url = reverse('staff_login')
+        self.assertEquals(resolve(url).func.view_class, StaffLogin)
+
 
 
 
