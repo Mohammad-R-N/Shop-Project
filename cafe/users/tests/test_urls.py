@@ -61,6 +61,9 @@ class TestUrls(SimpleTestCase):
         url = reverse('status_count')
         self.assertEquals(resolve(url).func.view_class, StatusCountView)
 
+    def test_order_status_report_url_is_resolved(self):
+        url = reverse('order_status_report')
+        self.assertEquals(resolve(url).func.view_class, OrderStatusReportView)
 
 
 
