@@ -23,6 +23,11 @@ class TestMenuView(TestCase):
         self.assertIn(self.product, response.context["product"])
         self.assertIn(self.category, response.context["category"])
 
+    def test_menu_view_POST_context_if_all(self):
+        response = self.client.post(self.menu_url, {"all": "true"})
+        
+        self.assertEqual(response.context["category"].count(), 1)
+        self.assertEqual(response.context["product"].count(), 1)
 
 
 
