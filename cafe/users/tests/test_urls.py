@@ -73,6 +73,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('total_sales')
         self.assertEquals(resolve(url).func.view_class, TotalSalesView)
 
+    def test_daily_sales_url_is_resolved(self):
+        url = reverse('daily_sales')
+        self.assertEquals(resolve(url).func.view_class, DailySalesView)
+
 
 
 
