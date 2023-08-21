@@ -49,6 +49,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('sales_by_employee')
         self.assertEquals(resolve(url).func.view_class, SalesByEmployeeView)
 
+    def test_history_for_manager_url_is_resolved(self):
+        url = reverse('history_for_manager')
+        self.assertEquals(resolve(url).func.view_class, CustomerHistory)
+
 
 
 
