@@ -9,6 +9,11 @@ class TestUrls(SimpleTestCase):
         url = reverse('staff')
         self.assertEquals(resolve(url).func.view_class, StaffPanelView)
 
+    def test_edit_ord_url_is_resolved(self):
+        url = reverse('edit_ord')
+        self.assertEquals(resolve(url).func.view_class, EditOrder)
+
+
 
 
 
