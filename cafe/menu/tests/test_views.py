@@ -34,7 +34,6 @@ class TestMenuView(TestCase):
 
     def test_menu_view_POST_context_if_not_all(self):
         response = self.client.post(self.menu_url, {"category 1": "true"})
-        print (response)
 
         self.assertEqual(response.context["category"].count(), 2)
         self.assertEqual(response.context["product"].count(), 2)
