@@ -29,6 +29,12 @@ class TestUrls(SimpleTestCase):
         url = reverse('logout_user')
         self.assertEquals(resolve(url).func.view_class, LogOutView)
 
+    def test_dashboard_url_is_resolved(self):
+        url = reverse('dashboard')
+        self.assertEquals(resolve(url).func.view_class, manager_dashboard)
+
+
+
 
 
 
