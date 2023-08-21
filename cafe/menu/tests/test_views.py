@@ -45,6 +45,13 @@ class TestMenuView(TestCase):
         self.assertEqual(response.context["category"].count(), 2)
         self.assertEqual(response.context["product"].count(), 3)
 
+    def test_menu_view_post_context_with_cookie(self):
+        response = self.client.post(self.menu_url, {"product 3": "true", "quantity": 4})
+        
+        self.assertTemplateUsed(response, 'menu/menu.html')
+        self.assertEqual(response.context["category"].count(), 2)
+        self.assertEqual(response.context["product"].count(), 3)
+
 
 class TestSearchProducts(TestCase):
     def setUp(self):
