@@ -42,3 +42,6 @@ class TestProductPopup(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'menu/product_detail.html')
 
+    def test_product_popup_context(self):
+        response = self.client.get(self.product_popup_url)
+        self.assertEqual(response.context['product'], self.product)
