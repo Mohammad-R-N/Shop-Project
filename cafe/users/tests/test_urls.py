@@ -1,0 +1,15 @@
+from django.test import SimpleTestCase
+from django.urls import reverse, resolve
+from users.views import *
+
+
+class TestUrls(SimpleTestCase):
+    def test_staff_url_is_resolved(self):
+
+        url = reverse('staff')
+        self.assertEquals(resolve(url).func.view_class, StaffPanelView)
+
+
+
+
+
