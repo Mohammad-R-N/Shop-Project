@@ -9,12 +9,21 @@ class TestMenuView(TestCase):
     def setUp(self):
         self.client= Client()
         self.menu_url = reverse('menu')
+        self.category = Category.objects.create( name = "category 1", photo = 'test.png')
+        self.product = Product.objects.create( name = "product 1", price = 10.12 , category_menu = self.category,photo = 'product.png', status = 'active', )
 
     def test_menu_view_GET(self):
         response = self.client.get(self.menu_url)
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'menu/menu.html')
+
+    def test_menu_view_GET_context(self):
+        response = self.client.get(self.menu_url)
+        self.assertIn(self.product, response.context["product"])
+        self.assertIn(self.category, response.context["category"])
+
+
 
 
 class TestSearchProducts(TestCase):
