@@ -69,12 +69,10 @@ class SearchProducts(View):
         return render(
             request, "menu/search_results.html", {"results": results, "query": query}
         )
-    def post(self, request):
-        pass
+    
 
 class ProductPopup(View):
     def get(self, request, product_id):
         product = Product.objects.get(id=product_id)
         return render(request, "menu/product_detail.html", {"product": product})
-    def post(self, request):
-        pass
+   
