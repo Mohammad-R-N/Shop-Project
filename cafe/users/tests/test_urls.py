@@ -41,6 +41,9 @@ class TestUrls(SimpleTestCase):
         url = reverse('sales_by_customer')
         self.assertEquals(resolve(url).func.view_class, SalesByCustomerView)
 
+    def test_peak_business_hour_url_is_resolved(self):
+        url = reverse('peak_business_hour')
+        self.assertEquals(resolve(url).func.view_class, PeakBusinessHourView)
 
 
 
