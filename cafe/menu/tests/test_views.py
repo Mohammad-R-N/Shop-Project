@@ -58,6 +58,14 @@ class TestMenuView(TestCase):
        
         self.assertEqual(response.cookies['product'].value, '-product 3=4')
 
+    def test_menu_view_post_set_cookie_with_multiple_products(self):
+        context = {"product 3": "true", "quantity": 4}
+        context1 = {"product 2": "true", "quantity": 3}
+
+        response = self.client.post(self.menu_url, context )
+        response = self.client.post(self.menu_url, context1 )
+       
+        self.assertEqual(response.cookies['product'].value, '-product 3=4-product 2=3')
  
 
 class TestSearchProducts(TestCase):
