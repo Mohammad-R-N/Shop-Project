@@ -21,6 +21,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('staff_login')
         self.assertEquals(resolve(url).func.view_class, StaffLogin)
 
+    def test_check_otp_url_is_resolved(self):
+        url = reverse('check-otp')
+        self.assertEquals(resolve(url).func.view_class, CheckOtp)
+
 
 
 
