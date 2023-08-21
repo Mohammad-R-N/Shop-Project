@@ -36,8 +36,9 @@ class TestProductPopup(TestCase):
         self.product = Product.objects.create( name = "product 1", price = 10.12 , category_menu = self.category,photo = 'product.png', status = 'active', )
         self.product_popup_url = reverse('product_popup', kwargs={'product_id': 1})
 
-    def test_search_product_GET(self):
+    def test_product_popup_GET(self):
         response = self.client.get(self.product_popup_url)
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'menu/product_detail.html')
+
