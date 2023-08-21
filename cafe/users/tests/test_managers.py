@@ -7,3 +7,7 @@ class CustomUserManagerTests(TestCase):
         self.user = CustomUser.objects.create_user(phone_number="09123456789", password='pass')
 
 
+    def test_create_user(self):
+        
+        self.assertEqual(self.user.phone_number, '09123456789')
+        self.assertTrue(self.user.check_password('pass'))
