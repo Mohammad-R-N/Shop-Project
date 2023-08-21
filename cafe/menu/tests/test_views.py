@@ -27,3 +27,12 @@ class TestSearchProducts(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'menu/search_results.html')
+
+
+class TestProductPopup(TestCase):
+    def setUp(self):
+        self.client= Client() 
+        self.category = Category.objects.create( name = "category 1", photo = 'test.png')
+        self.product = Product.objects.create( name = "product 1", price = 10.12 , category_menu = self.category,photo = 'product.png', status = 'active', )
+        self.product_popup_url = reverse('product_popup', kwargs={'product_id': 1})
+
