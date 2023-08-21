@@ -22,4 +22,4 @@ class CustomUserManagerTests(TestCase):
         self.assertTrue(self.user2.check_password('pass'))
         self.assertTrue(self.user2.is_staff)
         self.assertTrue(self.user2.is_superuser)
-        
+        self.assertTrue(self.user2.is_active)
