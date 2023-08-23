@@ -34,8 +34,13 @@ class TestOrdDetailView(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'customer/customer_ord_detail.html')
-        
+    
 
+    def test_ord_deatil_view_GET_with_cookie(self):
+        self.client.cookies['number'] = '09123456789'
+        response = self.client.get(self.ord_detail_url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'customer/customer_ord_detail.html')
 
 
 
