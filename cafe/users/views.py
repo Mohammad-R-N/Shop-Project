@@ -1,6 +1,5 @@
 from multiprocessing import context
-from urllib import request
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .forms import StaffLoginForm, StaffOtpForm
 from django.views import View
@@ -8,14 +7,7 @@ from cart.models import OrderItem
 import random
 from django.http import JsonResponse, HttpResponse
 from django.views.generic.list import ListView
-from django.db.models.functions import (
-    ExtractWeekDay,
-    ExtractMonth,
-    ExtractYear,
-    ExtractHour,
-)
-
-
+from django.db.models.functions import ExtractWeekDay, ExtractMonth, ExtractYear, ExtractHour
 from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
@@ -25,7 +17,7 @@ import re
 from django.db.models import Sum, Count
 from django.utils import timezone
 from django.contrib import messages
-
+from . utils import StaffPanel, StaffEditOrd, StaffAddOrd, ExportCsv, Customer, Manager
 
 class StaffLogin(View):
     form_staff = StaffLoginForm
@@ -59,7 +51,6 @@ class StaffLogin(View):
                 }
                 return redirect("check-otp")
 
-
 class CheckOtp(View):
     form_otp = StaffOtpForm
 
@@ -87,112 +78,55 @@ class CheckOtp(View):
             return redirect("staff_login")
         return redirect("menu")
 
-
 class LogOutView(View):
     def get(self, request):
         logout(request)
         messages.success(request, "LogOut Successfully!", "success")
         return redirect("staff_login")
 
-
 class StaffPanelView(View):
     template_staff = "staff/staff.html"
     template_staff_login = "staff/login.html"
+    template_staff_accept_ord = "staff/staff_accepted.html"
+    template_staff_refuse_ord = "staff/staff_refused.html"
+    template_staff_search = "staff/staff_search_result.html"
+    con = StaffPanel
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            cart = Cart.objects.all()
-            item = list()
-            carts = list()
-
-            for cart_obj in cart:
-                if cart_obj.status == "w":
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    item.append(items[0])
-                    carts.append(cart_obj)
-
-            context = {"item": item, "cart": carts}
+            result = self.con.waiting_post(Cart)
+            context = {"item": result[0], "cart": result[1]}
             return render(request, self.template_staff, context)
         else:
-            messages.error(
-                request, "You are NOT allowed to see staff panel", extra_tags="danger"
-            )
+            messages.error(request, "You are NOT allowed to see staff panel", extra_tags="danger")
             return redirect("staff_login")
 
     def post(self, request):
         user = request.user
-
         if "accepted_ord" in request.POST:
-            cart = Cart.objects.all()
-            item = list()
-            carts = list()
-
-            for cart_obj in cart:
-                if cart_obj.status == "a":
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    item.append(items)
-                    carts.append(cart_obj)
-
-            context = {"item": item, "cart": carts}
-            return render(request, "staff/staff_accepted.html", context)
+            result = self.con.accept_ord(request)
+            context = {"item": result[0], "cart": result[1]}
+            return render(request, self.template_staff_accept_ord, context)
 
         elif "refused_ord" in request.POST:
-            cart = Cart.objects.all()
-            item = list()
-            carts = list()
-
-            for cart_obj in cart:
-                if cart_obj.status == "r":
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    item.append(items)
-                    carts.append(cart_obj)
-
-            context = {"item": item, "cart": carts}
-            return render(request, "staff/staff_refused.html", context)
+            result = self.con.refuse_ord(request)
+            context = {"item": result[0], "cart": result[1]}
+            return render(request, self.template_staff_refuse_ord, context)
 
         elif "waiting_ord" in request.POST:
             return redirect("staff")
 
         elif "phone_number" in request.POST:
-            phone = request.POST["phone_number"]
-
-            cart = Cart.objects.all()
-            item_list = list()
-            cart_list = list()
-
-            for cart_obj in cart:
-                if cart_obj.customer_number == phone:
-                    item = OrderItem.objects.filter(cart=cart_obj)
-                    item_list.append(item[0])
-                    cart_list.append(cart_obj)
-
-            context = {"items": item_list, "carts": cart_list}
-            return render(request, "staff/staff_search_result.html", context)
+            result = self.con.get_ord_by_phone(request)
+            context = {"items": result[0], "carts": result[1]}
+            return render(request, self.template_staff_search, context)
 
         elif "refuse" in request.POST:
-            cart_refuse_id = request.POST["refuse"]
-            cart = Cart.objects.all()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_refuse_id):
-                    update_cart = Cart.objects.get(id=cart_obj.id)
-                    update_cart.status = "r"
-                    update_cart.cart_users = user
-                    update_cart.save()
-                    messages.success(request, "Refused successfully!", "warning")
+            self.con.make_refuse(request, Cart)
             return redirect("staff")
 
         elif "accept" in request.POST:
-            cart_accept_id = request.POST["accept"]
-            cart = Cart.objects.all()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_accept_id):
-                    update_cart = Cart.objects.get(id=cart_obj.id)
-                    update_cart.status = "a"
-                    update_cart.cart_users = user
-                    update_cart.save()
-                    messages.success(request, "Accepted successfully!", "success")
+            self.con.make_accept(request, Cart)
             return redirect("staff")
 
         elif "edit" in request.POST:
@@ -200,70 +134,36 @@ class StaffPanelView(View):
             request.session["edit_id"] = cart_edit_id
             return redirect("edit_ord")
 
-
 class EditOrder(View):
     template_name = "staff/edit_ord.html"
+    con = StaffEditOrd
 
     def get(self, request):
         if request.session.has_key("edit_id"):
-            cart_edit_id = request.session["edit_id"]
-            cart = Cart.objects.all()
-            item = list()
-            cart_list = list()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_edit_id):
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    # print(items[1]['product_id'])
-                    cart_list.append(cart_obj)
-                    item.append(items)
-
-            context = {
-                "cart": cart_list[0].customer_number,
-                "items": item,
-            }
+            result = self.con.get_ord_for_edit(request, Cart)
+            context = {"items": result[0], "cart": result[1],}
             return render(request, self.template_name, context)
+        
         else:
             return render(request, self.template_name)
 
     def post(self, request):
         if "remove" in request.POST:
-            cart_edit_id = request.session["edit_id"]
-            order_item_id = request.POST["remove"]
-            cart = Cart.objects.all()
-            item_list = list()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_edit_id):
-                    items = OrderItem.objects.filter(cart=cart_obj)
-                    item_list.append(items[0])
-
-            for item in item_list:
-                if item.id == int(order_item_id):
-                    OrderItem.objects.get(id=int(order_item_id)).delete()
-                    messages.success(request, "Deleted successfully!", "warning")
-                    return redirect("staff")
+            result = self.con.remove_ord(request, Cart)
+            if result:
+                return redirect("staff")
 
         elif "done" in request.POST:
-            order_items = OrderItem.objects.all()
-
-            for ord in order_items:
-                if str(ord.id) in request.POST:
-                    new_quantity = request.POST[f"{ord.id}"]
-                    old_quantity = ord.quantity
-                    total_quantity = int(old_quantity) - int(new_quantity)
-                    ord.quantity = int(new_quantity)
-                    ord.cart.total_price = ord.price * int(new_quantity)
-                    ord.cart.total_quantity = abs(total_quantity)
-                    ord.save()
-                    return redirect("staff")
+            result = self.con.save_new_quantity(request, OrderItem)
+            if result:
+                return redirect("staff")
 
         elif "add_ord" in request.POST:
             return redirect("add_ord")
 
-
 class AddOrder(View):
     template_name = "staff/staff_add_order.html"
+    con = StaffAddOrd
 
     def get(self, request):
         cat = Category.objects.all()
@@ -273,28 +173,9 @@ class AddOrder(View):
 
     def post(self, request):
         if "add" in request.POST:
-            cart_edit_id = request.session["edit_id"]
-            new_product_id = request.POST["add"]
-            new_product_quantity = request.POST["quantity"]
-            new_product_obj = Product.objects.get(id=int(new_product_id))
-            cart = Cart.objects.all()
-
-            for cart_obj in cart:
-                if cart_obj.id == int(cart_edit_id):
-                    order_item = OrderItem.objects.create(
-                        product=new_product_obj,
-                        cart=cart_obj,
-                        quantity=int(new_product_quantity),
-                        price=new_product_obj.price,
-                    )
-                    order_item.save()
-                    cart_obj.total_price = cart_obj.total_price + int(
-                        new_product_obj.price
-                    ) * int(new_product_quantity)
-                    cart_obj.total_quantity += 1
-                    cart_obj.save()
-
-            return redirect("add_ord")
+            result = self.con.add_ord_to_shop_cart(request, Product)
+            if result:
+                return redirect("add_ord")
 
         elif "done" in request.POST:
             return redirect("edit_ord")
@@ -305,28 +186,13 @@ class AddOrder(View):
             context = {"category": cat, "product": product}
             return render(request, self.template_name, context)
         else:
-            cat = Category.objects.all()
-            product = Product.objects.all()
-            for cat_obj in cat:
-                if cat_obj.name in request.POST:
-                    product_cat = Product.objects.filter(category_menu=cat_obj)
-                    context = {"category": cat, "product": product_cat}
-                    return render(request, self.template_name, context)
-
-
-def generate_csv_response(data, header, filename):
-    csv_content = ",".join(header) + "\n"
-    for row in data:
-        csv_content += ",".join(map(str, row)) + "\n"
-
-    response = HttpResponse(csv_content, content_type="text/csv")
-    response["Content-Disposition"] = f'attachment; filename="{filename}.csv"'
-    return response
-
+            result = self.con.show_product_in_cat(request, Product, Category)
+            context = {"category": result[0], "product": result[1]}
+            return render(request, self.template_name, context)
 
 class PopularItemsView(ListView):
     model = OrderItem
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             OrderItem.objects.values("product__name")
@@ -342,14 +208,13 @@ class PopularItemsView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(product_names, quantities))
             header = ["Product Name", "Quantity Ordered"]
-            return generate_csv_response(data, header, "popular_items")
+            return self.csv(data, header, "popular_items")
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
 
-
 class SalesByCustomerView(ListView):
     model = Cart
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             Cart.objects.values("customer_number")
@@ -365,16 +230,15 @@ class SalesByCustomerView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(customer_numbers, total_sales))
             header = ["Customer Number", "Total Sales"]
-            return generate_csv_response(data, header, "sales_by_customer")
+            return self.csv(data, header, "sales_by_customer")
 
         return JsonResponse(
             {"customer_numbers": customer_numbers, "total_sales": total_sales}
         )
 
-
 class PeakBusinessHourView(ListView):
     model = Cart
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             Cart.objects.annotate(hour=ExtractHour("time"))
@@ -391,14 +255,13 @@ class PeakBusinessHourView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(peak_hour, order_counts))
             header = ["Hour", "Order Count"]
-            return generate_csv_response(data, header, "peak_business_hours")
+            return self.csv(data, header, "peak_business_hours")
 
         return JsonResponse({"peak_hour": peak_hour})
 
-
 class SalesByCategoryView(ListView):
     model = OrderItem
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             OrderItem.objects.select_related("product")
@@ -417,16 +280,15 @@ class SalesByCategoryView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(category_names, total_sales))
             header = ["Category Name", "Total Sales"]
-            return generate_csv_response(data, header, "sales_by_category")
+            return self.csv(data, header, "sales_by_category")
 
         return JsonResponse(
             {"category_names": category_names, "total_sales": total_sales}
         )
 
-
 class SalesByEmployeeView(ListView):
     model = Cart
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         return (
             Cart.objects.values("cart_users__phone_number")
@@ -442,42 +304,30 @@ class SalesByEmployeeView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(phone_numbers, total_sales))
             header = ["Employee Phone Number", "Total Sales"]
-            return generate_csv_response(data, header, "sales_by_employee")
+            return self.csv(data, header, "sales_by_employee")
 
         return JsonResponse(
             {"phone_numbers": phone_numbers, "total_sales": total_sales}
         )
 
-
 class CustomerHistory(View):
     template_login = "manager/history_login_manager.html"
     template_history = "manager/history_for_manager.html"
-
+    con = Customer
     def get(self, request):
         return render(request, self.template_login)
 
     def post(self, request):
         if "tel" in request.POST:
-            number = request.POST["tel"]
-            cart = Cart.objects.all()
-            item_list = list()
-            cart_list = list()
-
-            for cart_obj in cart:
-                if cart_obj.customer_number == number:
-                    item = OrderItem.objects.filter(cart=cart_obj).values()
-                    item_list.append(item)
-                    cart_list.append(cart_obj)
-            print(item_list)
-            context = {"items": item_list, "carts": cart_list}
+            result = self.con.get_ord_by_phone(request, Cart)
+            context = {"items": result[0], "carts": result[1]}
             return render(request, self.template_history, context)
         else:
             return render(request, self.template_history)
 
-
 class PopularItemsMorningView(ListView):
     model = OrderItem
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         start_time = timezone.datetime.now().replace(
             hour=8, minute=0, second=0, microsecond=0
@@ -500,90 +350,25 @@ class PopularItemsMorningView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(product_names, quantities))
             header = ["Product Name", "Quantity Ordered (Morning)"]
-            return generate_csv_response(data, header, "popular_items_morning")
+            return self.csv(data, header, "popular_items_morning")
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
-
 
 class StatusCountView(View):
     def get(self, request):
         today = timezone.now().date()  # Just to ensure it's a date object without time
-        accepted_carts_count = Cart.objects.filter(
-            status=Cart.ACCEPT, time__date=today
-        ).count()
-        refused_carts_count = Cart.objects.filter(
-            status=Cart.REFUSE, time__date=today
-        ).count()
-        total_carts_count = accepted_carts_count + refused_carts_count
-
-        if total_carts_count == 0:
-            accepted_percentage = 0
-            refused_percentage = 0
-        else:
-            accepted_percentage = (accepted_carts_count / total_carts_count) * 100
-            refused_percentage = (refused_carts_count / total_carts_count) * 100
-
-        data = {
-            "accepted_count": accepted_carts_count,
-            "refused_count": refused_carts_count,
-            "accepted_percentage": accepted_percentage,
-            "refused_percentage": refused_percentage,
-        }
-
-        if request.GET.get("format") == "csv":
-            csv_content = "Status, Count, Percentage\n"
-            csv_content += (
-                f"Accepted,{accepted_carts_count},{accepted_percentage:.2f}%\n"
-            )
-            csv_content += f"Refused,{refused_carts_count},{refused_percentage:.2f}%\n"
-
-            response = HttpResponse(csv_content, content_type="text/csv")
-            response[
-                "Content-Disposition"
-            ] = 'attachment; filename="status_count_report.csv"'
-            return response
-
-        return JsonResponse(data)
-
+        result = Manager.status_count(request, today, Cart)
+        return JsonResponse(result)
 
 class OrderStatusReportView(View):
     def get(self, request):
         today = timezone.now().today().date()
-
-        accepted_carts_count = Cart.objects.filter(
-            status=Cart.ACCEPT, time__date=today
-        ).count()
-        refused_carts_count = Cart.objects.filter(
-            status=Cart.REFUSE, time__date=today
-        ).count()
-        waiting_carts_count = Cart.objects.filter(
-            status=Cart.WAITING, time__date=today
-        ).count()
-
-        data = {
-            "accepted_count": accepted_carts_count,
-            "refused_count": refused_carts_count,
-            "waiting_count": waiting_carts_count,
-        }
-
-        if request.GET.get("format") == "csv":
-            csv_content = "Order Status, Count\n"
-            csv_content += f"Accepted,{accepted_carts_count}\n"
-            csv_content += f"Refused,{refused_carts_count}\n"
-            csv_content += f"Waiting,{waiting_carts_count}\n"
-
-            response = HttpResponse(csv_content, content_type="text/csv")
-            response[
-                "Content-Disposition"
-            ] = 'attachment; filename="order_status_report.csv"'
-            return response
-
-        return JsonResponse(data)
-
+        result = Manager.status_order(request, today, Cart)
+        return JsonResponse(result)
 
 class TopSellingItemsView(ListView):
     model = OrderItem
-
+    csv = ExportCsv.generate_csv_response
     def get_queryset(self):
         date_filter = self.request.GET.get("date", timezone.now().date())
 
@@ -602,22 +387,17 @@ class TopSellingItemsView(ListView):
         if self.request.GET.get("format") == "csv":
             data = list(zip(product_names, quantities))
             header = ["Product Name", "Quantity Ordered"]
-            return generate_csv_response(data, header, "top_selling_items")
+            return self.csv(data, header, "top_selling_items")
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
 
-
-def manager_dashboard(request):
-    if request.user.is_authenticated:
-
-        return render(request, "manager/manager_dashboard.html")
-    else:
-        messages.error(
-                request, "You are NOT allowed to see staff panel", extra_tags="danger"
-            )
-        return redirect("staff_login")
-
-
+class ManagerDashboard(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            return render(request, "manager/manager_dashboard.html")
+        else:
+            messages.error(request, "You are NOT allowed to see staff panel", extra_tags="danger")
+            return redirect("staff_login")
 
 class TotalSalesView(ListView):
     model = Cart
@@ -634,7 +414,6 @@ class TotalSalesView(ListView):
             return response
 
         return JsonResponse({"total_sales": total_sales})
-
 
 class DailySalesView(ListView):
     model = Cart
@@ -663,7 +442,6 @@ class DailySalesView(ListView):
 
         return JsonResponse({"days": day_labels, "daily_sales": sales})
 
-
 class YearlySalesView(ListView):
     model = Cart
 
@@ -679,7 +457,6 @@ class YearlySalesView(ListView):
         sales = [item["total_sales"] for item in yearly_sales_data]
 
         return JsonResponse({"years": years, "yearly_sales": sales})
-
 
 class MonthlySalesView(ListView):
     model = Cart
