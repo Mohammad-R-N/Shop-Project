@@ -68,17 +68,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for ord in item %}
                                     {% for cart in cart %}
+                                    {% for ord in item %}
+                                    
                                     {% if forloop.first %}
                                     <tr>
                                         <td class="product-name"><a>{{ cart.customer_number }}</a></td>
                                         <td class="product-name"><a>{{ cart.total_quantity }} orders</a></td>
                                         <td class="product-name"><a>{{ cart.cart_table.table_name }}</a></td>
                                         <td class="product-price"><span class="amount">$ {{ cart.total_price }}</span></td>
-                                        <td class="product-subtotal"><span class="amount"><button class="btn btn-warning" style="color: black;"><details>
-                                            {{ ord.product.name }} {{ ord.quantity }}<br>
-                                        </details></button></span></td>
+                                        <td class="product-subtotal"><span class="amount"><button class="btn btn-warning" style="color: black;">
+                                        <details>{{ ord.product.name }} {{ ord.quantity }}<br></details></button></span>
+                                        </td>
                                         <td class="product-actions">
                                             <form action="" method="post">
                                                 {% csrf_token %}
