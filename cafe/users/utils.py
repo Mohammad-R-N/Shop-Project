@@ -120,13 +120,16 @@ class StaffEditOrd:
         for ord in order_items:
             if str(ord.id) in request.POST:
                 new_quantity = request.POST[f"{ord.id}"]
-                old_quantity = ord.quantity
-                total_quantity = int(old_quantity) - int(new_quantity)
-                ord.quantity = int(new_quantity)
-                ord.cart.total_price = ord.price * int(new_quantity)
-                ord.cart.total_quantity = abs(total_quantity)
-                ord.save()
-                return True
+                if new_quantity == "":
+                    return True
+                else:
+                    old_quantity = ord.quantity
+                    total_quantity = int(old_quantity) - int(new_quantity)
+                    ord.quantity = int(new_quantity)
+                    ord.cart.total_price = ord.price * int(new_quantity)
+                    ord.cart.total_quantity = abs(total_quantity)
+                    ord.save()
+                    return True
         return False
 
 class StaffAddOrd:
