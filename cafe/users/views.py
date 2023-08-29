@@ -102,7 +102,6 @@ class StaffPanelView(View):
             return redirect("staff_login")
 
     def post(self, request):
-        user = request.user
         if "accepted_ord" in request.POST:
             result = self.con.accept_ord(request)
             context = {"item": result[0], "cart": result[1]}
@@ -151,7 +150,9 @@ class EditOrder(View):
         if "remove" in request.POST:
             result = self.con.remove_ord(request, Cart)
             if result:
-                return redirect("staff")
+                return redirect("edit_ord")
+            else:
+                return HttpResponse('hi')
 
         elif "done" in request.POST:
             result = self.con.save_new_quantity(request, OrderItem)
@@ -487,5 +488,4 @@ class MonthlySalesView(ListView):
             "December",
         ]
         month_names = [month_labels[month - 1] for month in months]
-
         return JsonResponse({"months": month_names, "monthly_sales": sales})
