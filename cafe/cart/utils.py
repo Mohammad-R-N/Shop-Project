@@ -39,14 +39,8 @@ class ProductOption:
                 pass
             else:
                 new_cookie += f"-{pt_name[0]}={pt_name[1]}"
-        try:
-            response = redirect("cart")
-            response.set_cookie(key='product', value=new_cookie)
-            return response
-        except:
-            response = redirect("cart")
-            response.set_cookie(key='product', value='')
-            return response
+        
+        return new_cookie
 
     def accept_shop_cart(request):
         if request.COOKIES.get('product') is not None:
@@ -105,6 +99,3 @@ class OrderDetail:
                 elif cart_obj.status == "r":
                     status.append("Refused from Admin")
         return item, cart_list, status
-
-
-
