@@ -7,7 +7,7 @@ from .models import SiteConfig
 class HomeView(View):
     def get(self, request):
         return render(request, "main/main.html")
-    
+
 class DefaultView(View):
     template_name = "main/main.html"
 
