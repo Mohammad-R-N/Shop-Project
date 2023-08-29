@@ -16,7 +16,15 @@ class CartView(View):
         
     def post(self, request):
         if "remove" in request.POST:
-            ProductOption.remove_from_shop_cart(request)
+            new_info = ProductOption.remove_from_shop_cart(request)
+            try:
+                response = redirect("cart")
+                response.set_cookie(key='product', value=new_info)
+                return response
+            except:
+                response = redirect("cart")
+                response.set_cookie(key='product', value='')
+                return response
         elif "done" in request.POST:
             res = ProductOption.accept_shop_cart(request)
             if res:
