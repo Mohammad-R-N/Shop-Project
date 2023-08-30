@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 
 class StaffPanel:
+
+    @staticmethod
     def waiting_post(model):
         cart = model.objects.all()
         item = list()
@@ -14,7 +16,7 @@ class StaffPanel:
                 item.append(items[0])
                 carts.append(cart_obj)
         return item, carts
-    
+    @staticmethod
     def accept_ord(request):
         if "accepted_ord" in request.POST:
             cart = Cart.objects.all()
@@ -27,7 +29,8 @@ class StaffPanel:
                     item.append(items)
                     carts.append(cart_obj)
             return item, carts
-        
+
+    @staticmethod    
     def refuse_ord(request):
         if "refused_ord" in request.POST:
             cart = Cart.objects.all()
@@ -40,7 +43,8 @@ class StaffPanel:
                     item.append(items)
                     carts.append(cart_obj)
             return item, carts
-        
+
+    @staticmethod   
     def get_ord_by_phone(request):
         phone = request.POST["phone_number"]
         cart = Cart.objects.all()
@@ -53,7 +57,8 @@ class StaffPanel:
                 item_list.append(item[0])
                 cart_list.append(cart_obj)
         return item_list, cart_list
-        
+
+    @staticmethod    
     def make_refuse(request, model):
         user = request.user
         cart_refuse_id = request.POST["refuse"]
@@ -65,9 +70,10 @@ class StaffPanel:
                 update_cart.status = "r"
                 update_cart.cart_users = user
                 update_cart.save()
-                messages.success(request, "Refused successfully!", "warning")
+                # messages.success(request, "Refused successfully!", "warning")
         return None
     
+    @staticmethod
     def make_accept(request, model):
         user = request.user
         cart_accept_id = request.POST["accept"]
@@ -79,10 +85,11 @@ class StaffPanel:
                 update_cart.status = "a"
                 update_cart.cart_users = user
                 update_cart.save()
-                messages.success(request, "Accepted successfully!", "success")
+                # messages.success(request, "Accepted successfully!", "success")
         return None
 
 class StaffEditOrd:
+    @staticmethod
     def get_ord_for_edit(request, model):
         cart_edit_id = request.session["edit_id"]
         cart = model.objects.all()
@@ -96,6 +103,7 @@ class StaffEditOrd:
                 item.append(items)
         return item, cart_list[0].customer_number
 
+    @staticmethod
     def remove_ord(request, model):
         cart_edit_id = request.session["edit_id"]
         order_item_id = request.POST["remove"]
@@ -110,10 +118,11 @@ class StaffEditOrd:
         for item in item_list:
             if item.id == int(order_item_id):
                 OrderItem.objects.get(id=int(order_item_id)).delete()
-                messages.success(request, "Deleted successfully!", "warning")
+                # messages.success(request, "Deleted successfully!", "warning")
                 return True
         return False
     
+    @staticmethod
     def save_new_quantity(request, model):
         order_items = model.objects.all()
 
@@ -133,6 +142,7 @@ class StaffEditOrd:
         return False
 
 class StaffAddOrd:
+    @staticmethod
     def show_product_in_cat(request, model, category_m):
         cat = category_m.objects.all()
         product = model.objects.all()
@@ -141,6 +151,7 @@ class StaffAddOrd:
                 product_cat = model.objects.filter(category_menu=cat_obj)
         return cat, product_cat
 
+    @staticmethod
     def add_ord_to_shop_cart(request, model):
         cart_edit_id = request.session["edit_id"]
         new_product_id = request.POST["add"]
@@ -166,6 +177,8 @@ class StaffAddOrd:
         return False
     
 class ExportCsv:
+
+    @staticmethod
     def generate_csv_response(data, header, filename):
         csv_content = ",".join(header) + "\n"
         for row in data:
@@ -176,6 +189,8 @@ class ExportCsv:
         return response
 
 class Customer:
+
+    @staticmethod
     def get_ord_by_phone(request, model):
         number = request.POST["tel"]
         cart = model.objects.all()
@@ -190,6 +205,8 @@ class Customer:
         return item_list, cart_list
 
 class Manager:
+
+    @staticmethod
     def status_count(request, today, model):
         accepted_carts_count = model.objects.filter(
             status=model.ACCEPT, time__date=today
@@ -227,6 +244,7 @@ class Manager:
             return response
         return data
 
+    @staticmethod
     def status_order(request, today, model):
         accepted_carts_count = model.objects.filter(
             status=model.ACCEPT, time__date=today
