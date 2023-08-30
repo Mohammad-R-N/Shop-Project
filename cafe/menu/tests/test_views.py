@@ -3,7 +3,6 @@ from django.urls import reverse
 from menu.models import Category, Product
 
 
-
 class TestMenuView(TestCase):
 
     def setUp(self):
