@@ -38,7 +38,7 @@ class StaffPanel:
             carts = list()
 
             for cart_obj in cart:
-                if cart_obj.status == "a":
+                if cart_obj.status == "r":
                     items = OrderItem.objects.filter(cart=cart_obj)
                     item.append(items)
                     carts.append(cart_obj)

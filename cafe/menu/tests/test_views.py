@@ -103,7 +103,7 @@ class TestProductPopup(TestCase):
         self.client= Client() 
         self.category = Category.objects.create( name = "category 1", photo = 'test.png')
         self.product = Product.objects.create( name = "product 1", price = 10.12 , category_menu = self.category,photo = 'product.png', status = 'active', )
-        self.product_popup_url = reverse('product_popup', kwargs={'product_id': 1})
+        self.product_popup_url = reverse('product_popup', kwargs={'product_id': self.product.id})
 
     def test_product_popup_GET(self):
         response = self.client.get(self.product_popup_url)
