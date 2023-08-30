@@ -31,4 +31,9 @@ class TestCartView(TestCase):
 
 
 
+class TestOrdDetailView(TestCase):
+
+    def setUp(self):
+        self.client= Client()
+        self.ord_detail_url = reverse('ord_detail')
 
