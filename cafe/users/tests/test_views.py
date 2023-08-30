@@ -5,7 +5,7 @@ from users.authentication import CustomAuthBackend
 from users.views import *
 from users.forms import *
 from unittest.mock import patch
-
+import json
 class StaffLoginTestCase(TestCase):
     def test_get_staff_login(self):
         response = self.client.get(reverse("staff_login"))
@@ -51,3 +51,14 @@ class CheckOtpTest(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse('menu'))
+
+
+class OrderStatusReportViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_get(self):
+        response = self.client.get(reverse('order_status_report'))
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.content)
+        self.assertIsInstance(result, dict)
