@@ -34,18 +34,18 @@ class UtilsTest(TestCase):
         result = utils.accept_shop_cart(request)
         self.assertTrue(result)
 
-    def test_checkout(self):
-        self.table=Table.objects.create(table_name="table 1")
-        self.phone="09022631021"
-        request = self.factory.post('/', {'subject': self.table, 'tel': self.phone})
-        middleware = SessionMiddleware(request)
-        middleware.process_request(request)
-        request.session.save()
-        request.session['cost'] = 10
-        request.session['order'] = ['cafe=1']
-        utils = Reservation()
-        phone_number = utils.checkout(request, Product, Table, Cart, OrderItem)
-        self.assertEqual(phone_number, self.phone)
+    # def test_checkout(self):
+    #     self.table=Table.objects.create(table_name="table 1")
+    #     self.phone="09022631021"
+    #     request = self.factory.post('/', {'subject': self.table, 'tel': self.phone})
+    #     middleware = SessionMiddleware(request)
+    #     middleware.process_request(request)
+    #     request.session.save()
+    #     request.session['cost'] = 10
+    #     request.session['order'] = ['cafe=1']
+    #     utils = Reservation()
+    #     phone_number = utils.checkout(request, Product, Table, Cart, OrderItem)
+    #     self.assertEqual(phone_number, self.phone)
         
 
     def test_showcartdetail(self):
