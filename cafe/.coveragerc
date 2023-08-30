@@ -1,2 +1,2 @@
 [run]
-omit= manage.py, */migrations/*,utils.py
+omit= manage.py, */migrations/*,
