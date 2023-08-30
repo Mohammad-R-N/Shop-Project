@@ -7,7 +7,13 @@ from cart.models import OrderItem
 import random
 from django.http import JsonResponse, HttpResponse
 from django.views.generic.list import ListView
-from django.db.models.functions import ExtractWeekDay, ExtractMonth, ExtractYear, ExtractHour
+from django.db.models.functions import (
+    ExtractWeekDay,
+    ExtractMonth,
+    ExtractYear,
+    ExtractHour,
+)
+
 from utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
@@ -17,7 +23,8 @@ import re
 from django.db.models import Sum, Count
 from django.utils import timezone
 from django.contrib import messages
-from . utils import StaffPanel, StaffEditOrd, StaffAddOrd, ExportCsv, Customer, Manager
+from .utils import StaffPanel, StaffEditOrd, StaffAddOrd, ExportCsv, Customer, Manager
+
 
 class StaffLogin(View):
     form_staff = StaffLoginForm
@@ -51,6 +58,7 @@ class StaffLogin(View):
                 }
                 return redirect("check-otp")
 
+
 class CheckOtp(View):
     form_otp = StaffOtpForm
 
@@ -78,11 +86,13 @@ class CheckOtp(View):
             return redirect("staff_login")
         return redirect("menu")
 
+
 class LogOutView(View):
     def get(self, request):
         logout(request)
         messages.success(request, "LogOut Successfully!", "success")
         return redirect("staff_login")
+
 
 class StaffPanelView(View):
     template_staff = "staff/staff.html"
@@ -98,7 +108,9 @@ class StaffPanelView(View):
             context = {"item": result[0], "cart": result[1]}
             return render(request, self.template_staff, context)
         else:
-            messages.error(request, "You are NOT allowed to see staff panel", extra_tags="danger")
+            messages.error(
+                request, "You are NOT allowed to see staff panel", extra_tags="danger"
+            )
             return redirect("staff_login")
 
     def post(self, request):
@@ -133,6 +145,7 @@ class StaffPanelView(View):
             request.session["edit_id"] = cart_edit_id
             return redirect("edit_ord")
 
+
 class EditOrder(View):
     template_name = "staff/edit_ord.html"
     con = StaffEditOrd
@@ -140,9 +153,12 @@ class EditOrder(View):
     def get(self, request):
         if request.session.has_key("edit_id"):
             result = self.con.get_ord_for_edit(request, Cart)
-            context = {"items": result[0], "cart": result[1],}
+            context = {
+                "items": result[0],
+                "cart": result[1],
+            }
             return render(request, self.template_name, context)
-        
+
         else:
             return render(request, self.template_name)
 
@@ -152,7 +168,7 @@ class EditOrder(View):
             if result:
                 return redirect("edit_ord")
             else:
-                return HttpResponse('hi')
+                return HttpResponse("hi")
 
         elif "done" in request.POST:
             result = self.con.save_new_quantity(request, OrderItem)
@@ -161,6 +177,7 @@ class EditOrder(View):
 
         elif "add_ord" in request.POST:
             return redirect("add_ord")
+
 
 class AddOrder(View):
     template_name = "staff/staff_add_order.html"
@@ -191,9 +208,11 @@ class AddOrder(View):
             context = {"category": result[0], "product": result[1]}
             return render(request, self.template_name, context)
 
+
 class PopularItemsView(ListView):
     model = OrderItem
     csv = ExportCsv.generate_csv_response
+
     def get_queryset(self):
         return (
             OrderItem.objects.values("product__name")
@@ -213,9 +232,11 @@ class PopularItemsView(ListView):
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
 
+
 class SalesByCustomerView(ListView):
     model = Cart
     csv = ExportCsv.generate_csv_response
+
     def get_queryset(self):
         return (
             Cart.objects.values("customer_number")
@@ -237,9 +258,11 @@ class SalesByCustomerView(ListView):
             {"customer_numbers": customer_numbers, "total_sales": total_sales}
         )
 
+
 class PeakBusinessHourView(ListView):
     model = Cart
     csv = ExportCsv.generate_csv_response
+
     def get_queryset(self):
         return (
             Cart.objects.annotate(hour=ExtractHour("time"))
@@ -260,9 +283,11 @@ class PeakBusinessHourView(ListView):
 
         return JsonResponse({"peak_hour": peak_hour})
 
+
 class SalesByCategoryView(ListView):
     model = OrderItem
     csv = ExportCsv.generate_csv_response
+
     def get_queryset(self):
         return (
             OrderItem.objects.select_related("product")
@@ -287,9 +312,11 @@ class SalesByCategoryView(ListView):
             {"category_names": category_names, "total_sales": total_sales}
         )
 
+
 class SalesByEmployeeView(ListView):
     model = Cart
     csv = ExportCsv.generate_csv_response
+
     def get_queryset(self):
         return (
             Cart.objects.values("cart_users__phone_number")
@@ -311,10 +338,12 @@ class SalesByEmployeeView(ListView):
             {"phone_numbers": phone_numbers, "total_sales": total_sales}
         )
 
+
 class CustomerHistory(View):
     template_login = "manager/history_login_manager.html"
     template_history = "manager/history_for_manager.html"
     con = Customer
+
     def get(self, request):
         return render(request, self.template_login)
 
@@ -326,9 +355,11 @@ class CustomerHistory(View):
         else:
             return render(request, self.template_history)
 
+
 class PopularItemsMorningView(ListView):
     model = OrderItem
     csv = ExportCsv.generate_csv_response
+
     def get_queryset(self):
         start_time = timezone.datetime.now().replace(
             hour=8, minute=0, second=0, microsecond=0
@@ -355,11 +386,13 @@ class PopularItemsMorningView(ListView):
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
 
+
 class StatusCountView(View):
     def get(self, request):
-        today = timezone.now().date()  # Just to ensure it's a date object without time
+        today = timezone.now().date()
         result = Manager.status_count(request, today, Cart)
         return JsonResponse(result)
+
 
 class OrderStatusReportView(View):
     def get(self, request):
@@ -367,9 +400,11 @@ class OrderStatusReportView(View):
         result = Manager.status_order(request, today, Cart)
         return JsonResponse(result)
 
+
 class TopSellingItemsView(ListView):
     model = OrderItem
     csv = ExportCsv.generate_csv_response
+
     def get_queryset(self):
         date_filter = self.request.GET.get("date", timezone.now().date())
 
@@ -392,13 +427,27 @@ class TopSellingItemsView(ListView):
 
         return JsonResponse({"product_names": product_names, "quantities": quantities})
 
+
 class ManagerDashboard(View):
     def get(self, request):
-        if request.user.is_authenticated:
-            return render(request, "manager/manager_dashboard.html")
-        else:
-            messages.error(request, "You are NOT allowed to see staff panel", extra_tags="danger")
+        if not request.user.is_authenticated:
+            messages.error(
+                request,
+                "You need to be authenticated to access this page.",
+                extra_tags="danger",
+            )
             return redirect("staff_login")
+
+        if not request.user.has_perm("users.can_access_dashboard"):
+            messages.error(
+                request,
+                "You don't have permission to access this page.",
+                extra_tags="danger",
+            )
+            return redirect("staff_login")
+
+        return render(request, "manager/manager_dashboard.html")
+
 
 class TotalSalesView(ListView):
     model = Cart
@@ -415,6 +464,7 @@ class TotalSalesView(ListView):
             return response
 
         return JsonResponse({"total_sales": total_sales})
+
 
 class DailySalesView(ListView):
     model = Cart
@@ -443,6 +493,7 @@ class DailySalesView(ListView):
 
         return JsonResponse({"days": day_labels, "daily_sales": sales})
 
+
 class YearlySalesView(ListView):
     model = Cart
 
@@ -458,6 +509,7 @@ class YearlySalesView(ListView):
         sales = [item["total_sales"] for item in yearly_sales_data]
 
         return JsonResponse({"years": years, "yearly_sales": sales})
+
 
 class MonthlySalesView(ListView):
     model = Cart
