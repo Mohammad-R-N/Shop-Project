@@ -23,6 +23,12 @@ class TestCartView(TestCase):
         self.assertTemplateUsed(response, 'cart/cart.html')
         
 
+    def test_cart_view_GET_with_cookie(self):
+        self.client.cookies['product'] = 'Pizza'
+        response = self.client.get(self.cart_url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'cart/cart.html') 
+
 
 
 
