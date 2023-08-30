@@ -31,7 +31,7 @@ Before installation make sure you have the prerequisites mentioned below ✅:
  - PIP
 
    
-### Installation
+### Installation 🔗
 
 The first thing to do is to clone the repository:
 
@@ -84,7 +84,7 @@ Create an account for admin:
 ```sh
 python manage.py createsuperuser
 ```
-### Running The Project
+### Running The Project 🖱
 Once `pip` has finished downloading the dependencies:
 
 change the directory(cd)
