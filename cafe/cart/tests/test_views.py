@@ -131,3 +131,14 @@ class TestReservationView(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'customer/reserve.html')
         self.assertEqual(response.context['total'], 0)
+
+
+    def test_reservation_view_post(self):
+        response = self.client.post(self.reservation_url)
+        self.assertEqual(response.status_code, 302)
+
+        self.assertIn('number', response.cookies)
+        self.assertEqual(response.cookies['number'].max_age, 2630000)
+
+        self.assertIn('product', response.cookies)
+        self.assertEqual(response.cookies['product'].max_age, 0)
