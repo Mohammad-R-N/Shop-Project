@@ -93,9 +93,12 @@ change the directory(cd)
 (env)$ cd cafe
 ```
 
+Run the project
+
 ```sh
 (env)$ python manage.py runserver
 ```
+
 And navigate to `http://127.0.0.1:8000`.
 
 To access the admin panel, go to http://localhost:8000/admin and log in using admin account you created earlier.
