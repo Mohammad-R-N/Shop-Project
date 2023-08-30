@@ -12,6 +12,14 @@ you can see the documantations of each part clicking on the links below:
 * [Setup](#set-up)
 
 
+
+
+
+
+
+
+
+
 ## Setup
 The first thing to do is to clone the repository:
 
