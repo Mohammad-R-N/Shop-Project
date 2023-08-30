@@ -59,7 +59,13 @@ class TestCartView(TestCase):
         response = self.client.post(self.cart_url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse('home'))
-           
+
+    def test_cart_post_remove_except(self):
+        response = self.client.get(self.cart_url, {"remove": "true"})
+        
+        self.assertEqual(response.cookies.get('product', ''), '')
+
+
 
 class TestOrdDetailView(TestCase):
 
