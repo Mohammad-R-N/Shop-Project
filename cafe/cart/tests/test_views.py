@@ -26,6 +26,7 @@ class TestCartView(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'cart/cart.html')
         
+        
 
     def test_cart_view_GET_with_cookie(self):
         self.client.cookies['product'] = 'Pizza'
@@ -50,8 +51,15 @@ class TestCartView(TestCase):
             response = self.client.post(self.cart_url, {"done": "true"})
             self.assertEqual(response.status_code, 302)
             self.assertEqual(response.url, reverse('reservation'))
-            
             self.assertTrue(mock_remove.called)
+
+        response = self.client.post(self.cart_url, {"done": "true"})
+
+    def test_post_no_done_no_remove(self):
+        response = self.client.post(self.cart_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('home'))
+           
 
 class TestOrdDetailView(TestCase):
 
