@@ -37,3 +37,8 @@ class TestOrdDetailView(TestCase):
         self.client= Client()
         self.ord_detail_url = reverse('ord_detail')
 
+    def test_ord_deatil_view_GET(self):
+        response = self.client.get(self.ord_detail_url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'customer/customer_ord_detail.html')
