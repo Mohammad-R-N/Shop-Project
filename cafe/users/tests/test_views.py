@@ -159,3 +159,38 @@ class TopSellingItemsViewTest(TestCase):
         self.assertIsInstance(result['product_names'], list)
         self.assertIn('quantities', result)
         self.assertIsInstance(result['quantities'], list)
+
+from django.utils import timezone
+
+
+class PopularItemsMorningViewTest(TestCase):
+    def test_get_queryset(self):
+        view = PopularItemsMorningView()
+        view.request = None  
+        queryset = view.get_queryset()
+        start_time = timezone.datetime.now().replace(hour=8, minute=0, second=0, microsecond=0)
+        end_time = timezone.datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
+        expected_queryset = OrderItem.objects.filter(cart__time__range=(start_time, end_time)) \
+            .values('product__name') \
+            .annotate(total_ordered=Sum('quantity')) \
+            .order_by('-total_ordered')[:2]
+        self.assertQuerysetEqual(queryset, expected_queryset, transform=lambda x: x)
+
+class CustomerHistoryTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+  
+    def test_post_with_tel(self):
+        response = self.client.post(reverse('history_for_manager'), {'tel': '09123456789'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'manager/history_for_manager.html')
+        self.assertIn('items', response.context)
+        self.assertIn('carts', response.context)
+
+    def test_post_without_tel(self):
+        response = self.client.post(reverse('history_for_manager'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'manager/history_for_manager.html')
+        self.assertNotIn('items', response.context)
+        self.assertNotIn('carts', response.context)
