@@ -18,5 +18,6 @@ class TestUrls(SimpleTestCase):
     def test_product_popup_url_resolves(self):
         url = reverse('product_popup', args=[1])
         self.assertEqual(resolve(url).func.view_class, ProductPopup)
+        self.assertEqual(url,"/menu/product_popup/1/")
 
 
