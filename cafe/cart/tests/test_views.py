@@ -74,3 +74,10 @@ class TestOrdDetailView(TestCase):
         message = list(my_message)[0]
         self.assertEqual(message.level, messages.SUCCESS)
         self.assertEqual(message.message, 'Your ORDER has send successfully!')
+
+
+class TestReservationView(TestCase):
+    
+    def setUp(self):
+        self.client= Client()
+        self.ord_detail_url = reverse('reservation')
