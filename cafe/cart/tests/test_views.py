@@ -121,6 +121,13 @@ class TestReservationView(TestCase):
     
     def setUp(self):
         self.client= Client()
-        self.ord_detail_url = reverse('reservation')
+        self.reservation_url = reverse('reservation')
+        self.table = Table.objects.create(table_name='Table 1')
 
 
+    def test_reservation_view_GET(self):
+        response = self.client.get(self.reservation_url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'customer/reserve.html')
+        self.assertEqual(response.context['total'], 0)
