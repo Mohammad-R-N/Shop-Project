@@ -1,7 +1,7 @@
 # Cafe Menu
 This is a repository of a python/django project of an online cafe menu💻.
 
-In this project both manager of the cafe and cusomer can use it which is so optimized because it is one application but it can be used for all users. 
+this is a project that both, manager of the cafe and cusomer can use it which is so optimized because it is one application but it can be used for all users. 
 
 This means that customers are able to see the menu of the cafe and order directly through their phones📲.
 
