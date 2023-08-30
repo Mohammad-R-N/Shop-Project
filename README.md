@@ -7,6 +7,11 @@ This means that customers are able to see the menu of the cafe and order directl
 
 👨👩 Manager and Staff can have access 🔑 to see their sales, change the manu and availablity of a produt, the customer's order and do all the things a manager and staff needs to do.
 
+## Titles
+you can see the documantations of each part clicking on the links below:
+* [Setup](#set-up)
+
+
 ## Setup
 The first thing to do is to clone the repository:
 
