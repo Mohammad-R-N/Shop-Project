@@ -5,6 +5,9 @@ from menu.models import Category
 from decimal import Decimal
 from django.contrib.messages import get_messages
 from django.contrib.messages import constants as messages
+from cart.utils import ProductOption
+from cart.views import CartView
+from unittest.mock import patch
 
 
 class TestCartView(TestCase):
@@ -34,7 +37,13 @@ class TestCartView(TestCase):
         self.assertEqual(str(self.product), 'product : Pizza  price =10.0')
         
 
-
+    def test_post_remove(self):
+        with patch.object(ProductOption, 'remove_from_shop_cart') as mock_remove:
+            response = self.client.post(self.cart_url, {"remove": "true"})
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.url, reverse('cart'))
+            
+            self.assertTrue(mock_remove.called)
 
 
 class TestOrdDetailView(TestCase):
