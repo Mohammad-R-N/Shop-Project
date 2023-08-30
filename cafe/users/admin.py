@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 
 class CustomUserAdmin(UserAdmin):
+
     fieldsets = (
         (None, {"fields": ("phone_number", "password")}),
         ("Personal info", {"fields": ("first_name", "last_name")}),
@@ -16,10 +17,10 @@ class CustomUserAdmin(UserAdmin):
                     "is_superuser",
                     "groups",
                     "user_permissions",
-                )
+                ),
             },
         ),
-        ("Important dates", {"fields": ("last_login", "date_joined")}),
+        ("Important dates", {"fields": ("lastlogin", "date_joined")}),
     )
 
     add_fieldsets = (
