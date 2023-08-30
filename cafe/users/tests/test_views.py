@@ -126,3 +126,36 @@ class DailySalesViewTest(TestCase):
         self.assertIsInstance(result['days'], list)
         self.assertIn('daily_sales', result)
         self.assertIsInstance(result['daily_sales'], list)
+
+
+class TotalSalesViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_render_to_response_json(self):
+        response = self.client.get(reverse('total_sales'))
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.content)
+        self.assertIsInstance(result, dict)
+        self.assertIn('total_sales', result)
+
+    def test_render_to_response_csv(self):
+        response = self.client.get(reverse('total_sales') + '?format=csv')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/csv')
+        self.assertEqual(response['Content-Disposition'], 'attachment; filename="total_sales.csv"')
+        self.assertEqual(response.content.decode(), 'Total Sales\nNone')
+
+class TopSellingItemsViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_render_to_response_json(self):
+        response = self.client.get(reverse('top_selling_items'))
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.content)
+        self.assertIsInstance(result, dict)
+        self.assertIn('product_names', result)
+        self.assertIsInstance(result['product_names'], list)
+        self.assertIn('quantities', result)
+        self.assertIsInstance(result['quantities'], list)
