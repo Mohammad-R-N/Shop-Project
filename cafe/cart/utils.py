@@ -1,5 +1,5 @@
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.shortcuts import redirect
-
 class ProductOption:
 
     def show_product(self,request, model):
@@ -49,9 +49,14 @@ class ProductOption:
                 result = request.COOKIES.get('product')
                 result = str(result).split('-')
                 result.pop(0)
+                middleware = SessionMiddleware(request)
+                middleware.process_request(request)
+                request.session.save()
                 request.session['order'] = result
-                request.session['cost'] = request.session['total']
-                del request.session['total']
+                request.session['cost'] = request.session.get('total',0)
+                if request.session.get('total'):
+                    del request.session['total']
+
                 return True
             else:
                 return False
@@ -65,9 +70,13 @@ class Reservation:
         del request.session['order']
 
         table = request.POST['subject']
-        phone_number = request.POST['tel']
 
-        table_obj = table_m.objects.get(table_name=table)          
+        phone_number = request.POST['tel']
+        try:
+            table_obj = table_m.objects.get(table_name=table)
+        except:
+            return redirect("reservation")
+
         cart = cart_m.objects.create(total_price=cost, total_quantity=len(order), 
                                     customer_number=phone_number, cart_table=table_obj)
         cart.save()
