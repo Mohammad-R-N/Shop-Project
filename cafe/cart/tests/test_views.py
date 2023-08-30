@@ -48,3 +48,10 @@ class TestOrdDetailView(TestCase):
         response = self.client.get(self.ord_detail_url)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'customer/customer_ord_detail.html')
+
+    def test_ord_deatil_view_GET_context_without_cookie(self):
+        response = self.client.get(self.ord_detail_url)
+
+        self.assertNotIn('cart', response.context)
+        self.assertNotIn('items', response.context)
+        self.assertNotIn('process', response.context)
