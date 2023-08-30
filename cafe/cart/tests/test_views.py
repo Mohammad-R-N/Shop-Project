@@ -65,6 +65,12 @@ class TestCartView(TestCase):
         
         self.assertEqual(response.cookies.get('product', ''), '')
 
+    def test_cart_post_done_no_res(self):
+        self.client.cookies['product'] = ""
+        response = self.client.post(self.cart_url, {"done": "true"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('cart'))
+
 
 
 class TestOrdDetailView(TestCase):
