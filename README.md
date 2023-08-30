@@ -4,7 +4,7 @@ Welcome to the online cafe menu project
 ## Titles 📋
 
 you can see the documantations of each part clicking on the links below:
-* [About Project ✏️](about-project-✏️)
+* [About Project](about-project)
   
 * [Setup](#setup)
   
@@ -13,7 +13,7 @@ you can see the documantations of each part clicking on the links below:
 * [Running The Project](#running-the-project)
   
 
-## About Project ✏️
+## About Project
 
 This is a repository of a python/django project of an online cafe menu.
 
@@ -23,7 +23,7 @@ This means that customers are able to see the menu of the cafe and order directl
 
 👨👩 Manager and Staff can have access 🔑 to see their sales, change the manu and availablity of a produt, the customer's order 🛒 and do all the things a manager and staff needs to do.
 
-## Setup 🛠️
+## Setup
 
 Before installation make sure you have the prerequisites mentioned below ✅:
  - GITHUB
@@ -31,7 +31,7 @@ Before installation make sure you have the prerequisites mentioned below ✅:
  - PIP
 
    
-### Installation 🔗
+### Installation
 
 The first thing to do is to clone the repository:
 
@@ -84,7 +84,7 @@ Create an account for admin:
 ```sh
 python manage.py createsuperuser
 ```
-### Running The Project 🖱
+### Running The Project
 Once `pip` has finished downloading the dependencies:
 
 change the directory(cd)
