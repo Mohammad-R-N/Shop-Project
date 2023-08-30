@@ -6,7 +6,11 @@ Welcome to the online cafe menu project
 you can see the documantations of each part clicking on the links below:
 
 * [Setup](#setup)
+  
+  - [Installation](#installation)
+    
 * [Running The Project](#running-the-project)
+  
 * [About Project](about-project)
 
 ## About Project
@@ -15,9 +19,9 @@ This is a repository of a python/django project of an online cafe menu.
 
 this is a web appliacation that both, manager of the cafe and cusomer can use it which is so optimized because it is one application but it can be used for all users ☺️. 
 
-This means that customers are able to see the menu of the cafe and order directly through their phones📲.
+This means that customers are able to see the menu of the cafe and order directly through their phones 📲.
 
-👨👩 Manager and Staff can have access 🔑 to see their sales, change the manu and availablity of a produt, the customer's order  🛒  and do all the things a manager and staff needs to do.
+👨👩 Manager and Staff can have access 🔑 to see their sales, change the manu and availablity of a produt, the customer's order 🛒 and do all the things a manager and staff needs to do.
 
 ## Setup
 
@@ -45,7 +49,7 @@ $ cd Shop-Project
 Create a virtual environment to install dependencies in:
 
 ```sh
-$ virtualenv2 --no-site-packages env
+$ python3 -m venv env
 ```
  Activate the  virtual environment
  
