@@ -6,7 +6,7 @@ from django.contrib import admin
 
 class CartAdminTest(TestCase):
     def test_accept_action(self):
-        cart = Cart.objects.create(total_price=Decimal('0.00'),
+        cart = Cart.objects.create(total_price=20,
             total_quantity=0,
             customer_number='+989123456789',
             cart_users=None,
