@@ -4,7 +4,7 @@ Welcome to the online cafe menu project
 ## Titles 📋
 
 you can see the documantations of each part clicking on the links below:
-* [About Project](about-project)
+* [About Project](#about-project)
   
 * [Setup](#setup)
   
