@@ -3,47 +3,19 @@
 {% block content %}
 {% include 'cart/sidecart.html' %}
 <main>
-    <!-- breadcrumb area start -->
-    <section class="breadcrumb-area pt-140 pb-140 bg_img" data-background="{% static " images/bg/breadcrumb-bg-1.jpeg"
-        %}" data-overlay="dark" data-opacity="5">
-        <div class="shape shape__1"><img src="{% static " images/shape/breadcrumb-shape-1.png" %}" alt=""></div>
-        <div class="shape shape__2"><img src="{% static " images/shape/breadcrumb-shape-2.png" %}" alt=""></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 text-center">
-                    <h2 class="page-title">Login</h2>
-                    <div class="cafena-breadcrumb breadcrumbs">
-                        <ul class="list-unstyled d-flex align-items-center justify-content-center">
-                            <li class="cafenabcrumb-item duxinbcrumb-begin">
-                                <a href="{% url 'home' %}"><span>Home</span></a>
-                            </li>
-                            <li class="cafenabcrumb-item duxinbcrumb-end">
-                                <span>Login</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- breadcrumb area end -->
 
     <!-- login area start -->
-    <div class="login-area pt-120 pb-120">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="login-wrapper">
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                            <button type="submit">Login</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <div class="login-area" style="height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #222;">
+        <div class="login-wrapper" style="width: 100%; max-width: 400px; background-color: #333; padding: 40px; border-radius: 5px; box-shadow: 0 0 15px rgba(0,0,0,0.3);">
+            <form action="" method="post" style="color: #ddd; display: flex; flex-direction: column; align-items: center;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" style="background-color: #C7A17A; color: #ddd; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; margin-top: 20px; display: block; width: 100%;">Login</button>
+            </form>
         </div>
     </div>
+
+
     <!-- login area end -->
 </main>
 {% endblock content %}

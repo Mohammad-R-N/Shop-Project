@@ -1,93 +1,129 @@
 {% extends 'baseAdmin.html' %}
 {% load static %}
 
-
 {% block content %}
 
-
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Manager's Dashboard</h2>
+    <h2 style="color: white" class="text-center mb-4">Manager's Dashboard</h2>
+    <div class="row">
+        <div class="col-md-3">
+            <div id="chartMenu" class="list-group">
+                <a href="#" class="list-group-item list-group-item-action" data-chart="salesByCustomerChart">Sales by Customer</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="popularItemsChart">Popular Items</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="peakBusinessHourChart">Peak Business Hours</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="salesByCategoryChart">Sales by Category</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="salesByEmployeeChart">Sales by Employee</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="popularItemsMorningChart">Popular Items Morning</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="statusCountChart">Status Count</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="orderStatusChart">Order Status</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="topSellingItemsChart">Top Selling Items</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="totalSalesChart">Total Sales</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="dailySalesChart">Daily Sales</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="monthlySalesChart">Monthly Sales</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="yearlySalesChart">Yearly Sales</a>
+            </div>
+        </div>
 
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <canvas id="salesByCustomerChart"></canvas>
-            <a href="{% url 'sales_by_customer' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-        <div class="col-md-6 mb-4">
-            <canvas id="popularItemsChart"></canvas>
-            <a href="{% url 'popular_items' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <canvas id="peakBusinessHourChart"></canvas>
-            <a href="{% url 'peak_business_hour' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-        <div class="col-md-6 mb-4">
-            <canvas id="salesByCategoryChart"></canvas>
-            <a href="{% url 'sales_by_category' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <canvas id="salesByEmployeeChart"></canvas>
-            <a href="{% url 'sales_by_employee' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-        <div class="col-md-6 mb-4">
-            <canvas id="popularItemsMorningChart"></canvas>
-            <a href="{% url 'popular_items_morning' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-    </div>
+        <div class="col-md-9">
+            <!-- Chart containers -->
+            <div id="salesByCustomerChartContainer" class="chart-container mb-4">
+                <h3 style="color: white">Sales by Customer</h3>
+                <canvas id="salesByCustomerChart"></canvas>
+                <a href="{% url 'sales_by_customer' %}?format=csv" class="btn btn-light mt-2">Download CSV</a>
+            </div>
 
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <canvas id="statusCountChart"></canvas>
-            <a href="{% url 'status_count' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-        <div class="col-md-6 mb-4">
-            <canvas id="orderStatusChart"></canvas>
-            <a href="{% url 'order_status_report' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <label for="datePicker">Select Date:</label>
-            <input type="date" id="datePicker" class="form-control">
-        </div>
-        <div class="col-md-6 mb-4">
-            <canvas id="topSellingItemsChart"></canvas>
-            <a href="{% url 'top_selling_items' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <canvas id="totalSalesChart"></canvas>
-            <a href="{% url 'total_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-        <div class="col-md-6 mb-4">
-            <canvas id="dailySalesChart"></canvas>
-            <a href="{% url 'total_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <canvas id="monthlySalesChart"></canvas>
-            <a href="{% url 'monthly_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-        <div class="col-md-6 mb-4">
-            <canvas id="yearlySalesChart"></canvas>
-            <a href="{% url 'yearly_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
-        </div>
-    </div>
+            <div id="popularItemsChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Popular Items</h3>
+                <canvas id="popularItemsChart"></canvas>
+                <a href="{% url 'popular_items' %}?format=csv" class="btn btn-light mt-2">Download CSV</a>
+            </div>
 
-    <div class="text-center mt-4 mb-5">
-        <a href="{% url 'history_for_manager' %}" class="btn btn-primary">View Manager History</a>
-    </div>
+            <div id="peakBusinessHourChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Peak Business Hours</h3>
+                <canvas id="peakBusinessHourChart"></canvas>
+                <a href="{% url 'peak_business_hour' %}?format=csv" class="btn btn-light mt-2">Download CSV</a>
+            </div>
 
+            <div id="salesByCategoryChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Sales by Category</h3>
+                <canvas id="salesByCategoryChart"></canvas>
+                <a href="{% url 'sales_by_category' %}?format=csv" class="btn btn-light mt-2">Download CSV</a>
+            </div>
+
+            <div id="salesByEmployeeChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Sales by Employee</h3>
+                <canvas id="salesByEmployeeChart"></canvas>
+                <a href="{% url 'sales_by_employee' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+            </div>
+            <div id="popularItemsMorningChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Popular Items Morning</h3>
+                <canvas id="popularItemsMorningChart"></canvas>
+                <a href="{% url 'popular_items_morning' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+            </div>
+            <div id="statusCountChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Status Count</h3>
+                <canvas id="statusCountChart"></canvas>
+                <a href="{% url 'status_count' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+            </div>
+            <div id="orderStatusChartChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Order Status</h3>
+                <canvas id="orderStatusChartChart"></canvas>
+                <a href="{% url 'order_status_report' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+            </div>
+            <div id="topSellingItemsChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3>Top Selling Items</h3>
+                <canvas id="topSellingItemsChart"></canvas>
+                <a href="{% url 'top_selling_items' %}?format=csv" class="btn btn-light mt-2">Download CSV</a>
+
+                <div class="date-picker-container mt-4">
+                    <label for="datePicker">Select Date:</label>
+                    <input type="date" id="datePicker" class="form-control">
+                </div>
+            </div>
+            <div id="totalSalesChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Total Sales</h3>
+                <canvas id="totalSalesChart"></canvas>
+                <a href="{% url 'total_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+            </div>
+            <div id="dailySalesChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Daily Sales</h3>
+                <canvas id="dailySalesChart"></canvas>
+                <a href="{% url 'total_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+            </div>
+            <div id="monthlySalesChartContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Monthly Sales</h3>
+                <canvas id="monthlySalesChart"></canvas>
+                <a href="{% url 'monthly_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+            </div>
+            <div id="yearlySalesContainer" class="chart-container mb-4" style="display: none;">
+                <h3 style="color: white">Yearly Sales</h3>
+                <canvas id="yearlySales"></canvas>
+                <a href="{% url 'yearly_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
+            </div>
+
+
+
+
+        
+            
+
+        </div>
+    </div>
 
     <script src="{% static 'js/manager.js' %}"></script>
+    <script>
+    document.getElementById('chartMenu').addEventListener('click', function(e) {
+        if (e.target && e.target.nodeName == 'A') {
+            let chartID = e.target.getAttribute('data-chart') + 'Container';
+            document.querySelectorAll('.chart-container').forEach(function(container) {
+                container.style.display = 'none';
+            });
+            document.getElementById(chartID).style.display = 'block';
+        }
+    });
 
+    </script>
 
+</div>
 
-
-    {% endblock %}
+{% endblock %}
