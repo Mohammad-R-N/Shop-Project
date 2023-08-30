@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 from cart.models import *
 from menu.models import Category
@@ -8,7 +8,8 @@ from django.contrib.messages import constants as messages
 from cart.utils import ProductOption
 from cart.views import CartView
 from unittest.mock import patch
-
+from cart.views import ReservationView
+import warnings
 
 class TestCartView(TestCase):
 
@@ -59,7 +60,21 @@ class TestCartView(TestCase):
         response = self.client.post(self.cart_url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse('home'))
-           
+
+    def test_cart_post_remove_except(self):
+        
+        response = self.client.post(self.cart_url, {"remove": "true"})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('cart'))
+        cookies = response.cookies
+        self.assertEqual(cookies['product'].value, '') 
+
+    def test_cart_post_done_no_res(self):
+        self.client.cookies['product'] = ""
+        response = self.client.post(self.cart_url, {"done": "true"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('cart'))
 
 class TestOrdDetailView(TestCase):
 
@@ -105,10 +120,28 @@ class TestOrdDetailView(TestCase):
         self.assertEqual(message.message, 'Your ORDER has send successfully!')
 
 
-class TestReservationView(TestCase):
-    
+class ReservationViewTest(TestCase):
     def setUp(self):
-        self.client= Client()
-        self.ord_detail_url = reverse('reservation')
+        self.client = Client()
+        self.reservation_url = reverse('reservation')
 
+    def test_get_method(self):
+        session = self.client.session
+        session['cost'] = 100
+        session.save()
 
+        response = self.client.get(self.reservation_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('table', response.context)
+        self.assertIn('total', response.context)
+        self.assertEqual(response.context['total'], 100)
+
+    @patch('cart.utils.Reservation.checkout', return_value="09123456789")
+    def test_post_method(self, mock_checkout):
+        response = self.client.post(self.reservation_url)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], reverse('ord_detail'))
+        self.assertEqual(response.cookies['number'].value, "09123456789")
+        self.assertTrue('product' in response.cookies)
