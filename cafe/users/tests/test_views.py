@@ -62,3 +62,52 @@ class OrderStatusReportViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content)
         self.assertIsInstance(result, dict)
+
+class ManagerDashboardTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(phone_number="09123456789", password="pass")
+    def test_get_authenticated(self):
+        self.client.force_login(self.user) 
+        response = self.client.get(reverse('dashboard'))
+        self.assertEqual(response.status_code, 302)
+
+
+    def test_get_not_authenticated(self):
+        response = self.client.get(reverse('dashboard'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('staff_login'))
+        messages = list(response.wsgi_request._messages)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "You are NOT allowed to see staff panel")
+        self.assertEqual(messages[0].tags, "danger error")
+
+class MonthlySalesViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_render_to_response(self):
+        response = self.client.get(reverse('monthly_sales'))
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.content)
+        self.assertIsInstance(result, dict)
+        self.assertIn('months', result)
+        self.assertIsInstance(result['months'], list)
+        self.assertIn('monthly_sales', result)
+        self.assertIsInstance(result['monthly_sales'], list)
+
+
+
+class YearlySalesViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_render_to_response(self):
+        response = self.client.get(reverse('yearly_sales'))
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.content)
+        self.assertIsInstance(result, dict)
+        self.assertIn('years', result)
+        self.assertIsInstance(result['years'], list)
+        self.assertIn('yearly_sales', result)
+        self.assertIsInstance(result['yearly_sales'], list)
