@@ -13,7 +13,7 @@ class CustomUserAdminTest(TestCase):
         self.admin = CustomUserAdmin(User, self.site)
 
         self.user1 = User.objects.create_user(
-            phone_number='123456789',
+            phone_number='09022631021',
             password='test_password',
             first_name='John',
             last_name='Doe',
@@ -21,7 +21,7 @@ class CustomUserAdminTest(TestCase):
         )
 
         self.user2 = User.objects.create_user(
-            phone_number='987654321',
+            phone_number='09123456789',
             password='test_password',
             first_name='Jane',
             last_name='Doe',
@@ -37,7 +37,7 @@ class CustomUserAdminTest(TestCase):
     def test_search_fields(self):
         self.assertEqual(
             self.admin.get_search_fields(None),
-            ['phone_number', 'first_name', 'last_name']
+            ('phone_number', 'first_name', 'last_name')
         )
 
     def test_ordering(self):
@@ -59,11 +59,16 @@ class CustomUserAdminTest(TestCase):
                 (
                     'Permissions',
                     {
-                        'classes': ('collapse',),
-                        'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
-                    }
+                        'fields': (
+                            'is_active',
+                            'is_staff',
+                            'is_superuser',
+                            'groups',
+                            'user_permissions',
+                        ),
+                    },
                 ),
-                ('Important dates', {'fields': ('last_login', 'date_joined')})
+                ('Important dates', {'fields': ('lastlogin', 'date_joined')}),
             ]
         )
 
@@ -75,17 +80,28 @@ class CustomUserAdminTest(TestCase):
                 ('Personal info', {'fields': ('first_name', 'last_name')}),
                 (
                     'Permissions',
-                    {'classes': ('collapse',), 'fields': ('groups', 'user_permissions')}
+                    {
+                        'fields': (
+                            'is_active',
+                            'is_staff',
+                            'is_superuser',
+                            'groups',
+                            'user_permissions',
+                        ),
+                    },
                 ),
-                ('Important dates', {'fields': ('last_login', 'date_joined')})
+                ('Important dates', {'fields': ('lastlogin', 'date_joined')}),
             ]
         )
 
     def test_add_fieldsets(self):
-        add_fieldsets = list(self.admin.get_add_fieldsets(None))
+        add_fieldsets = list(self.admin.add_fieldsets)
         self.assertEqual(
             add_fieldsets,
             [
-                (None, {'classes': ('wide',), 'fields': ('phone_number', 'password1', 'password2')})
+                (
+                    None,
+                    {'classes': ('wide',), 'fields': ('phone_number', 'password1', 'password2')}
+                )
             ]
         )

@@ -14,8 +14,10 @@ class TestUrls(SimpleTestCase):
         url = reverse('search_products')
         self.assertEquals(resolve(url).func.view_class, SearchProducts)
 
-    def test_product_popup_url_is_resolved(self):
 
-        url = reverse('product_popup')
-        self.assertEquals(resolve(url).func.view_class, ProductPopup)
+    def test_product_popup_url_resolves(self):
+        url = reverse('product_popup', args=[1])
+        self.assertEqual(resolve(url).func.view_class, ProductPopup)
+        self.assertEqual(url,"/menu/product_popup/1/")
+
 
