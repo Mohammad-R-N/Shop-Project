@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from users.models import CustomUser
 
 class CustomUserModelTestCase(TestCase):
+
     def setUp(self):
         self.user = CustomUser.objects.create_user(phone_number='09123456789',password="Pa33Word", first_name='mina', last_name='leylaz', code=1234)
 
@@ -32,3 +33,4 @@ class CustomUserModelTestCase(TestCase):
         with self.assertRaises(ValidationError) as err:
             myuser.full_clean()
         self.assertEqual(err.exception.message_dict['phone_number'], ["Phone number must be entered in the format: '09XXXXXXXXX', '00989XXXXXXXXX' or '+989XXXXXXXXX'."])
+

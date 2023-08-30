@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.admin.sites import AdminSite
 from menu.admin import ProductAdmin, CategoryAdmin
 from menu.models import Category, Product
-
+from users.models import CustomUser
 class ProductAdminTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
