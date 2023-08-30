@@ -5,7 +5,7 @@ Welcome to the online cafe menu project
 
 you can see the documantations of each part clicking on the links below:
 * [About Project](about-project)
-* 
+  
 * [Setup](#setup)
   
   - [Installation](#installation)
