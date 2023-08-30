@@ -55,3 +55,11 @@ class TestOrdDetailView(TestCase):
         self.assertNotIn('cart', response.context)
         self.assertNotIn('items', response.context)
         self.assertNotIn('process', response.context)
+
+    def test_ord_deatil_view_GET_context_with_cookie(self):
+        self.client.cookies['number'] = '09123456789'
+        response = self.client.get(self.ord_detail_url)
+
+        self.assertIn('cart', response.context)
+        self.assertIn('items', response.context)
+        self.assertIn('process', response.context)
