@@ -8,7 +8,6 @@ from django.core.exceptions import ValidationError
 import re
 
 
-
 class PhoneNumberField(models.CharField):
     def get_prep_value(self, value):
         if value is None:
@@ -17,20 +16,27 @@ class PhoneNumberField(models.CharField):
         try:
             regex = phone_number_validator(value)
         except ValidationError:
-            raise ValidationError("Phone number must be entered in the format: '09XXXXXXXXX', '00989XXXXXXXXX' or '+989XXXXXXXXX'.")
+            raise ValidationError(
+                "Phone number must be entered in the format: '09XXXXXXXXX', '00989XXXXXXXXX' or '+989XXXXXXXXX'."
+            )
 
-        formatted_phone_number = re.sub(r'^\+98|^0098', '0', value)
+        formatted_phone_number = re.sub(r"^\+98|^0098", "0", value)
         return formatted_phone_number
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
 
-    phone_number = PhoneNumberField(_("phone number"), max_length=14, unique=True, validators=[phone_number_validator])
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    phone_number = PhoneNumberField(
+        _("phone number"),
+        max_length=14,
+        unique=True,
+        validators=[phone_number_validator],
+    )
     first_name = models.CharField(_("first name"), max_length=20)
     last_name = models.CharField(_("last name"), max_length=30)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    code=models.PositiveSmallIntegerField(null=True)
+    code = models.PositiveSmallIntegerField(null=True)
 
     USERNAME_FIELD = "phone_number"
     REQUIRED_FIELDS = []
@@ -39,4 +45,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.phone_number
-    
+
+    class Meta:
+        permissions = [
+            ("can_access_dashboard", "Can access the dashboard"),
+        ]
