@@ -7,6 +7,10 @@ class CategoryModelTest(TestCase):
     def setUpTestData(cls):
         Category.objects.create(name='TestCategory', photo='category_photo.jpg')
 
+    def test_category_str(self):
+        category = Category( name = "Test cat")
+        self.assertEquals(str(category), "Test cat")  
+        
     def test_name_label(self):
         category = Category.objects.get(id=1)
         field_label = category._meta.get_field('name').verbose_name
