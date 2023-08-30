@@ -13,7 +13,6 @@ class CustomerOptionTestCase(TestCase):
         self.table=Table.objects.create(table_name="table 1")
         self.cart = Cart.objects.create(customer_number=self.customer_number,total_price=100,total_quantity =3,cart_users=self.user,cart_table =self.table)
         self.order_item1 = OrderItem.objects.create(cart=self.cart, quantity=2,price=20,product=self.pro)
-        # self.order_item2 = OrderItem.objects.create(cart=self.cart, name='Item 2')
 
     def test_show_customer_history_with_matching_number(self):
         request = RequestFactory().get('/')
