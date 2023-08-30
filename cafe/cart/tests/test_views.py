@@ -45,6 +45,13 @@ class TestCartView(TestCase):
             
             self.assertTrue(mock_remove.called)
 
+    def test_post_done(self):
+        with patch.object(ProductOption, 'accept_shop_cart') as mock_remove:
+            response = self.client.post(self.cart_url, {"done": "true"})
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.url, reverse('reservation'))
+            
+            self.assertTrue(mock_remove.called)
 
 class TestOrdDetailView(TestCase):
 
