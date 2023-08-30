@@ -38,7 +38,7 @@ class ReservationView(View):
     template_name = "customer/reserve.html"
     def get(self, request):
         tables = Table.objects.all()
-        context = {'table': tables, 'total': request.session['cost']}
+        context = {'table': tables, 'total': request.session.get('cost',0)}
         return render(request, self.template_name, context)
     
     def post(self, request):
