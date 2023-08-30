@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from . models import Product
 from . models import Category
@@ -10,10 +9,7 @@ class MenuView(View):
     def get(self, request):
         cat = Category.objects.all()
         product = Product.objects.all()
-        context = {
-            "category": cat,
-            "product": product
-        }
+        context = {"category": cat, "product": product}
         return render(request,"menu/menu.html", context)
     
     def post(self, request):
@@ -70,9 +66,7 @@ class SearchProducts(View):
             request, "menu/search_results.html", {"results": results, "query": query}
         )
     
-
 class ProductPopup(View):
     def get(self, request, product_id):
         product = Product.objects.get(id=product_id)
         return render(request, "menu/product_detail.html", {"product": product})
-   
