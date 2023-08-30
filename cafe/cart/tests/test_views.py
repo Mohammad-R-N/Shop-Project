@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 from cart.models import *
 from menu.models import Category
@@ -8,7 +8,8 @@ from django.contrib.messages import constants as messages
 from cart.utils import ProductOption
 from cart.views import CartView
 from unittest.mock import patch
-
+from cart.views import ReservationView
+import warnings
 
 class TestCartView(TestCase):
 
@@ -75,8 +76,6 @@ class TestCartView(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse('cart'))
 
-
-
 class TestOrdDetailView(TestCase):
 
     def setUp(self):
@@ -121,28 +120,28 @@ class TestOrdDetailView(TestCase):
         self.assertEqual(message.message, 'Your ORDER has send successfully!')
 
 
-class TestReservationView(TestCase):
-    
+class ReservationViewTest(TestCase):
     def setUp(self):
-        self.client= Client()
+        self.client = Client()
         self.reservation_url = reverse('reservation')
-        self.table = Table.objects.create(table_name='Table 1')
 
+    def test_get_method(self):
+        session = self.client.session
+        session['cost'] = 100
+        session.save()
 
-    def test_reservation_view_GET(self):
         response = self.client.get(self.reservation_url)
 
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'customer/reserve.html')
-        self.assertEqual(response.context['total'], 0)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('table', response.context)
+        self.assertIn('total', response.context)
+        self.assertEqual(response.context['total'], 100)
 
+    @patch('cart.utils.Reservation.checkout', return_value="09123456789")
+    def test_post_method(self, mock_checkout):
+        response = self.client.post(self.reservation_url)
 
-    # def test_reservation_view_post(self):
-    #     response = self.client.post(self.reservation_url)
-    #     self.assertEqual(response.status_code, 302)
-
-    #     self.assertIn('number', response.cookies)
-    #     self.assertEqual(response.cookies['number'].max_age, 2630000)
-
-    #     self.assertIn('product', response.cookies)
-    #     self.assertEqual(response.cookies['product'].max_age, 0)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], reverse('ord_detail'))
+        self.assertEqual(response.cookies['number'].value, "09123456789")
+        self.assertTrue('product' in response.cookies)
