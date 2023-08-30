@@ -111,3 +111,18 @@ class YearlySalesViewTest(TestCase):
         self.assertIsInstance(result['years'], list)
         self.assertIn('yearly_sales', result)
         self.assertIsInstance(result['yearly_sales'], list)
+
+
+class DailySalesViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_render_to_response(self):
+        response = self.client.get(reverse('daily_sales'))
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.content)
+        self.assertIsInstance(result, dict)
+        self.assertIn('days', result)
+        self.assertIsInstance(result['days'], list)
+        self.assertIn('daily_sales', result)
+        self.assertIsInstance(result['daily_sales'], list)
