@@ -1,24 +1,17 @@
-# Cafe Menu
-This is a repository of a python/django project of an online cafe menu💻.
+# 💻 Cafe Menu
+This is a repository of a python/django project of an online cafe menu.
 
-this is a project that both, manager of the cafe and cusomer can use it which is so optimized because it is one application but it can be used for all users. 
+this is a project that both, manager of the cafe and cusomer can use it which is so optimized because it is one application but it can be used for all users ☺️. 
 
 This means that customers are able to see the menu of the cafe and order directly through their phones📲.
 
-👨👩 Manager and Staff can have access 🔑 to see their sales, change the manu and availablity of a produt, the customer's order and do all the things a manager and staff needs to do.
+👨👩 Manager and Staff can have access 🔑 to see their sales, change the manu and availablity of a produt, the customer's order  🛒  and do all the things a manager and staff needs to do.
 
 ## Titles
+
 you can see the documantations of each part clicking on the links below:
+
 * [Setup](#setup)
-
-
-
-
-
-
-
-
-
 
 ## Setup
 The first thing to do is to clone the repository:
@@ -28,11 +21,27 @@ $ git clone https://github.com/Mohammad-R-N/Shop-Project.git
 $ cd Shop-Project
 ```
 
+change the directory(cd)
+
+```sh
+$ cd Shop-Project
+```
+
 Create a virtual environment to install dependencies in and activate it:
 
 ```sh
 $ virtualenv2 --no-site-packages env
+```
+For Mac/Linux:
+
+```sh
 $ source env/bin/activate
+```
+
+For Windows:
+
+```sh
+env\Scripts\activate
 ```
 
 Then install the dependencies:
