@@ -9,7 +9,7 @@ This means that customers are able to see the menu of the cafe and order directl
 
 ## Titles
 you can see the documantations of each part clicking on the links below:
-* [Setup](#set-up)
+* [Setup](#setup)
 
 
 
