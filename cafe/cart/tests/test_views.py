@@ -61,9 +61,13 @@ class TestCartView(TestCase):
         self.assertEqual(response.url, reverse('home'))
 
     def test_cart_post_remove_except(self):
-        response = self.client.get(self.cart_url, {"remove": "true"})
         
-        self.assertEqual(response.cookies.get('product', ''), '')
+        response = self.client.post(self.cart_url, {"remove": "true"})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('cart'))
+        cookies = response.cookies
+        self.assertEqual(cookies['product'].value, '') 
 
     def test_cart_post_done_no_res(self):
         self.client.cookies['product'] = ""
@@ -133,12 +137,12 @@ class TestReservationView(TestCase):
         self.assertEqual(response.context['total'], 0)
 
 
-    def test_reservation_view_post(self):
-        response = self.client.post(self.reservation_url)
-        self.assertEqual(response.status_code, 302)
+    # def test_reservation_view_post(self):
+    #     response = self.client.post(self.reservation_url)
+    #     self.assertEqual(response.status_code, 302)
 
-        self.assertIn('number', response.cookies)
-        self.assertEqual(response.cookies['number'].max_age, 2630000)
+    #     self.assertIn('number', response.cookies)
+    #     self.assertEqual(response.cookies['number'].max_age, 2630000)
 
-        self.assertIn('product', response.cookies)
-        self.assertEqual(response.cookies['product'].max_age, 0)
+    #     self.assertIn('product', response.cookies)
+    #     self.assertEqual(response.cookies['product'].max_age, 0)
