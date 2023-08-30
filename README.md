@@ -27,11 +27,13 @@ change the directory(cd)
 $ cd Shop-Project
 ```
 
-Create a virtual environment to install dependencies in and activate it:
+Create a virtual environment to install dependencies in:
 
 ```sh
 $ virtualenv2 --no-site-packages env
 ```
+ Activate the  virtual environment
+ 
 For Mac/Linux:
 
 ```sh
