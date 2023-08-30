@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from cart.models import OrderItem, Cart, Table
 from users.models import CustomUser
 from datetime import datetime
@@ -9,6 +9,7 @@ from users.utils import *
 
 class TestUtils(TestCase):
     def setUp(self):
+        self.factory = RequestFactory()
         self.customer_number = '09022631021'
         self.cat=Category.objects.create(name="drinks")
         self.pro=Product.objects.create(name="caffee",price=20,photo='',description ="dark drink",category_menu=self.cat)
@@ -32,13 +33,24 @@ class TestUtils(TestCase):
         self.assertEqual(carts, [self.cart])
 
     def test_refuse_ord(self):
-        self.request.POST['refused_ord'] = 'true'
-        item, carts = StaffPanel.refuse_ord(self.request)
-        self.assertEqual(item, [self.order_item])
-        self.assertEqual(carts, [self.cart])
+        # Create a dummy request with POST data
+        request = self.factory.post('/refuse_ord/', data={'refused_ord': True})
+
+        # Create two cart objects, one with status 'r' and one without
+        cart1 = self.cart
+        cart2 = Cart.objects.create(status='a')
+        # Create some order items linked to the cart objects
+        item1 = OrderItem.objects.create(cart=cart1, product=self.pro,quantity=2,price=20)
+        item2 = OrderItem.objects.create(cart=cart2, product=self.pro,quantity=1,price=10)
+
+        response = StaffPanel.refuse_ord(request)
+        # Check if the returned item and carts lists are correct
+        self.assertEqual(response[0], [item1, item2])
+        self.assertEqual(response[1], [cart1])
+
 
     def test_get_ord_by_phone(self):
-        self.request.POST['phone_number'] = '1234567890'
+        self.request.POST['phone_number'] = '09334565456'
         item_list, cart_list = StaffPanel.get_ord_by_phone(self.request)
         self.assertEqual(item_list, [self.order_item])
         self.assertEqual(cart_list, [self.cart])
