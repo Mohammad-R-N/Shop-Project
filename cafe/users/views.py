@@ -14,7 +14,7 @@ from django.db.models.functions import (
     ExtractHour,
 )
 
-from utils import send_OTP
+# from cafe.utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
 from cart.models import Cart, OrderItem

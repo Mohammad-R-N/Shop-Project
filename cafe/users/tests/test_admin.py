@@ -68,7 +68,7 @@ class CustomUserAdminTest(TestCase):
                         ),
                     },
                 ),
-                ('Important dates', {'fields': ('lastlogin', 'date_joined')}),
+                ('Important dates', {'fields': ('last_login', 'date_joined')}),
             ]
         )
 
@@ -90,7 +90,7 @@ class CustomUserAdminTest(TestCase):
                         ),
                     },
                 ),
-                ('Important dates', {'fields': ('lastlogin', 'date_joined')}),
+                ('Important dates', {'fields': ('last_login', 'date_joined')}),
             ]
         )
 
