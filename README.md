@@ -15,7 +15,7 @@ you can see the documantations of each part clicking on the links below:
 
 * [How To Contribute](#how-to-contribute)
 
-*  [Contributing](#contributing)
+* 🤝 [Contributing](#contributing)
   
 
 ## About Project
