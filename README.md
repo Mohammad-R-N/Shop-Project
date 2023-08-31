@@ -7,11 +7,11 @@ Welcome to the online cafe menu project
 you can see the documantations of each part clicking on the links below:
 * 📃 [About Project](#about-project)
   
-* [Setup](#setup)
+  * ⚙️ [Setup](#setup)
   
-  - [Installation](#installation)
+  - 🔗 [Installation](#installation)
     
-* [Running The Project](#running-the-project)
+* 💻  [Running The Project](#running-the-project)
   
 
 ## About Project
@@ -28,7 +28,7 @@ This means that customers are able to see the menu of the cafe and order directl
 
 Before installation make sure you have the prerequisites mentioned below ✅:
  - GITHUB
- - PYTHON
+ - [![Python][Python.js]][Python-url]
  - PIP
 
    
@@ -105,13 +105,17 @@ python manage.py createsuperuser
 ### Running The Project
 Once `pip` has finished downloading the dependencies:
 
-change the directory(cd)
+<br />
+
+> 👉 change the directory(cd)
 
 ```sh
 (env)$ cd cafe
 ```
 
-Run the project
+<br />
+
+> 👉 Run the project
 
 ```sh
 (env)$ python manage.py runserver
