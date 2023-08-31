@@ -2,25 +2,59 @@
 {% load static %}
 
 {% block content %}
+<style>
+    #chartMenu {
+        background-color: #2c2c2c;
+        margin-bottom: 60px;
+    }
+
+    .list-group-item {
+        background-color: #333;
+        border-color: #444;
+        color: #ddd;
+    }
+
+    .list-group-item:hover {
+        background-color: #444;
+        color: #fff;
+    }
+
+    .list-group-item-action.active {
+        background-color: #555;
+        border-color: #666;
+        color: #fff;
+    }
+</style>
 
 <div class="container mt-4">
     <h2 style="color: white" class="text-center mb-4">Manager's Dashboard</h2>
     <div class="row">
         <div class="col-md-3">
             <div id="chartMenu" class="list-group">
-                <a href="#" class="list-group-item list-group-item-action" data-chart="salesByCustomerChart">Sales by Customer</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="popularItemsChart">Popular Items</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="peakBusinessHourChart">Peak Business Hours</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="salesByCategoryChart">Sales by Category</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="salesByEmployeeChart">Sales by Employee</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="popularItemsMorningChart">Popular Items Morning</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="statusCountChart">Status Count</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="orderStatusChart">Order Status</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="topSellingItemsChart">Top Selling Items</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="salesByCustomerChart">Sales by
+                    Customer</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="popularItemsChart">Popular
+                    Items</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="peakBusinessHourChart">Peak
+                    Business Hours</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="salesByCategoryChart">Sales by
+                    Category</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="salesByEmployeeChart">Sales by
+                    Employee</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="popularItemsMorningChart">Popular
+                    Items Morning</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="statusCountChart">Status
+                    Count</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="orderStatusChart">Order
+                    Status</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="topSellingItemsChart">Top Selling
+                    Items</a>
                 <a href="#" class="list-group-item list-group-item-action" data-chart="totalSalesChart">Total Sales</a>
                 <a href="#" class="list-group-item list-group-item-action" data-chart="dailySalesChart">Daily Sales</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="monthlySalesChart">Monthly Sales</a>
-                <a href="#" class="list-group-item list-group-item-action" data-chart="yearlySalesChart">Yearly Sales</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="monthlySalesChart">Monthly
+                    Sales</a>
+                <a href="#" class="list-group-item list-group-item-action" data-chart="yearlySalesChart">Yearly
+                    Sales</a>
             </div>
         </div>
 
@@ -65,9 +99,9 @@
                 <canvas id="statusCountChart"></canvas>
                 <a href="{% url 'status_count' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
             </div>
-            <div id="orderStatusChartChartContainer" class="chart-container mb-4" style="display: none;">
+            <div id="orderStatusChartContainer" class="chart-container mb-4" style="display: none;">
                 <h3 style="color: white">Order Status</h3>
-                <canvas id="orderStatusChartChart"></canvas>
+                <canvas id="orderStatusChart"></canvas>
                 <a href="{% url 'order_status_report' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
             </div>
             <div id="topSellingItemsChartContainer" class="chart-container mb-4" style="display: none;">
@@ -97,30 +131,28 @@
             </div>
             <div id="yearlySalesContainer" class="chart-container mb-4" style="display: none;">
                 <h3 style="color: white">Yearly Sales</h3>
-                <canvas id="yearlySales"></canvas>
+                <canvas id="yearlySalesChart"></canvas>
                 <a href="{% url 'yearly_sales' %}?format=csv" class="btn btn-primary mt-2">Download CSV</a>
             </div>
 
 
 
 
-        
-            
 
         </div>
     </div>
 
     <script src="{% static 'js/manager.js' %}"></script>
     <script>
-    document.getElementById('chartMenu').addEventListener('click', function(e) {
-        if (e.target && e.target.nodeName == 'A') {
-            let chartID = e.target.getAttribute('data-chart') + 'Container';
-            document.querySelectorAll('.chart-container').forEach(function(container) {
-                container.style.display = 'none';
-            });
-            document.getElementById(chartID).style.display = 'block';
-        }
-    });
+        document.getElementById('chartMenu').addEventListener('click', function (e) {
+            if (e.target && e.target.nodeName == 'A') {
+                let chartID = e.target.getAttribute('data-chart') + 'Container';
+                document.querySelectorAll('.chart-container').forEach(function (container) {
+                    container.style.display = 'none';
+                });
+                document.getElementById(chartID).style.display = 'block';
+            }
+        });
 
     </script>
 
