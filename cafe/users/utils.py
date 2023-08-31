@@ -44,6 +44,36 @@ class StaffPanel:
                     carts.append(cart_obj)
             return item, carts
 
+    @staticmethod    
+    def get_ord_by_table(request):
+        table_number = request.POST["table"]
+        table_obj = Table.objects.get(table_name=table_number)
+        cart = Cart.objects.all()
+        item_list = list()
+        cart_list = list()
+
+        for cart_obj in cart:
+            if cart_obj.cart_table == table_obj and cart_obj.status == "w":
+                item = OrderItem.objects.filter(cart=cart_obj)
+                item_list.append(item[0])
+                cart_list.append(cart_obj)
+        return item_list, cart_list
+
+    @staticmethod  
+    def get_ord_by_date(request):
+        date = request.POST["date"]
+        cart = Cart.objects.all()
+        item_list = list()
+        cart_list = list()
+
+        for cart_obj in cart:
+            if str(cart_obj.time.date()) == date and cart_obj.status == "w":
+                item = OrderItem.objects.filter(cart=cart_obj)
+                item_list.append(item[0])
+                cart_list.append(cart_obj)
+        return item_list, cart_list
+    
+
     @staticmethod   
     def get_ord_by_phone(request):
         phone = request.POST["phone_number"]
@@ -52,7 +82,7 @@ class StaffPanel:
         cart_list = list()
 
         for cart_obj in cart:
-            if cart_obj.customer_number == phone:
+            if cart_obj.customer_number == phone and cart_obj.status == "w":
                 item = OrderItem.objects.filter(cart=cart_obj)
                 item_list.append(item[0])
                 cart_list.append(cart_obj)
