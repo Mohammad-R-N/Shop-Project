@@ -5,7 +5,7 @@ Welcome to the online cafe menu project
 ## Titles 📋
 
 you can see the documantations of each part clicking on the links below:
-* [About Project](#about-project)
+* 📃 [About Project](#about-project)
   
 * [Setup](#setup)
   
@@ -34,7 +34,9 @@ Before installation make sure you have the prerequisites mentioned below ✅:
    
 ### Installation
 
-The first thing to do is to clone the repository:
+<br />
+
+> 👉 The first thing to do is to clone the repository:
 
 ```sh
 $ git clone https://github.com/Mohammad-R-N/Shop-Project.git
@@ -50,26 +52,34 @@ $ cd Shop-Project
 $ cd Shop-Project
 ```
 
-Create a virtual environment to install dependencies in:
+<br />
+
+> 👉 Create a virtual environment to install dependencies in:
 
 ```sh
 $ python3 -m venv env
 ```
  Activate the  virtual environment
  
-For Mac/Linux:
+<br />
+
+> 👉 For Mac/Linux:
 
 ```sh
 $ source env/bin/activate
 ```
 
-For Windows:
+<br />
+
+> 👉 For Windows:
 
 ```sh
 env\Scripts\activate
 ```
 
-Then install the dependencies:
+<br />
+
+> 👉 Then install the dependencies:
 
 ```sh
 (env)$ pip install -r requirements.txt
@@ -77,13 +87,17 @@ Then install the dependencies:
 
 Note the `(env)` in front of the prompt. This indicates that this terminal.
 
-Make migrations: 
+<br />
+
+> 👉 Make migrations: 
 
 ```sh
 (env)$ python manage.py makemigrations
 (env)$ python manage.py migrate
 ```
-Create an account for admin:
+<br />
+
+> 👉 Create an account for admin:
 
 ```sh
 python manage.py createsuperuser
