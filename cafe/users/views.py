@@ -129,17 +129,17 @@ class StaffPanelView(View):
 
         elif "phone_number" in request.POST:
             result = self.con.get_ord_by_phone(request)
-            context = {"items": result[0], "carts": result[1], "table": self.tables}
+            context = {"items": result[0], "carts": result[1], "table": self.tables, "query": result[2]}
             return render(request, self.template_staff_search, context)
         
         elif "date" in request.POST:
             result = self.con.get_ord_by_date(request)
-            context = {"items": result[0], "carts": result[1], "table": self.tables}
+            context = {"items": result[0], "carts": result[1], "table": self.tables, "query": result[2]}
             return render(request, self.template_staff_search, context)
 
         elif "table" in request.POST:
             result = self.con.get_ord_by_table(request)
-            context = {"items": result[0], "carts": result[1], "table": self.tables}
+            context = {"items": result[0], "carts": result[1], "table": self.tables, "query": result[2]}
             return render(request, self.template_staff_search, context)
         
         elif "refuse" in request.POST:
