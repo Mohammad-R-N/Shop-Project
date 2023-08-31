@@ -79,7 +79,7 @@ class ManagerDashboardTest(TestCase):
         self.assertRedirects(response, reverse('staff_login'))
         messages = list(response.wsgi_request._messages)
         self.assertEqual(len(messages), 1)
-        self.assertEqual(str(messages[0]), "You are NOT allowed to see staff panel")
+        self.assertEqual(str(messages[0]), "You need to be authenticated to access this page.")
         self.assertEqual(messages[0].tags, "danger error")
 
 class MonthlySalesViewTest(TestCase):

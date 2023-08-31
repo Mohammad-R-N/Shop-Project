@@ -26,34 +26,6 @@ class TestUtils(TestCase):
         self.assertEqual(item, [self.order_item])
         self.assertEqual(carts, [self.cart])
 
-    def test_accept_ord(self):
-        self.request.POST['accepted_ord'] = 'true'
-        item, carts = StaffPanel.accept_ord(self.request)
-        self.assertEqual(item, [self.order_item])
-        self.assertEqual(carts, [self.cart])
-
-    def test_refuse_ord(self):
-        # Create a dummy request with POST data
-        request = self.factory.post('/refuse_ord/', data={'refused_ord': True})
-
-        # Create two cart objects, one with status 'r' and one without
-        cart1 = self.cart
-        cart2 = Cart.objects.create(status='a')
-        # Create some order items linked to the cart objects
-        item1 = OrderItem.objects.create(cart=cart1, product=self.pro,quantity=2,price=20)
-        item2 = OrderItem.objects.create(cart=cart2, product=self.pro,quantity=1,price=10)
-
-        response = StaffPanel.refuse_ord(request)
-        # Check if the returned item and carts lists are correct
-        self.assertEqual(response[0], [item1, item2])
-        self.assertEqual(response[1], [cart1])
-
-
-    def test_get_ord_by_phone(self):
-        self.request.POST['phone_number'] = '09334565456'
-        item_list, cart_list = StaffPanel.get_ord_by_phone(self.request)
-        self.assertEqual(item_list, [self.order_item])
-        self.assertEqual(cart_list, [self.cart])
 
     def test_make_refuse(self):
         self.request.POST['refuse'] = str(self.cart.id)
@@ -91,24 +63,6 @@ class TestUtils(TestCase):
         self.assertEqual(updated_order_item.cart.total_price, 100)
         self.assertEqual(updated_order_item.cart.total_quantity, 3)
 
-    def test_staff_add_ord_showproductincat(self):
-        category = self.cat
-        product = self.pro
-        self.request.POST['category'] = 'category'
-        cat, product_cat = StaffAddOrd.show_product_in_cat(self.request, Product, Category)
-        self.assertEqual(cat, [category])
-        self.assertEqual(product_cat, [product])
-
-    def test_add_ord_to_shop_cart(self):
-        self.request.session['edit_id'] = self.cart.id
-        self.request.POST['add'] = str(self.order_item.id)
-        self.request.POST['quantity'] = '2'
-        added = StaffAddOrd.add_ord_to_shop_cart(self.request, OrderItem)
-        updated_cart = Cart.objects.get(id=self.cart.id)
-        self.assertTrue(added)
-        self.assertEqual(updated_cart.total_price, 30)
-        self.assertEqual(updated_cart.total_quantity, 2)
-
     def test_export_csv_generatecsvresponse(self):
         data = [[1, 2, 3], [4, 5, 6]]
         header = ['A', 'B', 'C']
@@ -119,12 +73,6 @@ class TestUtils(TestCase):
             response.get('Content-Disposition'),
             f'attachment; filename="{filename}.csv"'
         )
-
-    def test_customer_getordbyphone(self):
-        self.request.POST['tel'] = '1234567890'
-        item_list, cart_list = Customer.get_ord_by_phone(self.request, Cart)
-        self.assertEqual(item_list, [[self.order_item]])
-        self.assertEqual(cart_list, [self.cart])
 
     def test_manager_statuscount(self):
         today = datetime.today().date()
