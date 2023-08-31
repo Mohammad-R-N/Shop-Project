@@ -41,7 +41,10 @@ $ git clone https://github.com/Mohammad-R-N/Shop-Project.git
 $ cd Shop-Project
 ```
 
-change the directory(cd)
+<br />
+
+> 👉 change the directory(cd)
+
 
 ```sh
 $ cd Shop-Project
