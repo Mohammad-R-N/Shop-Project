@@ -62,6 +62,7 @@ class ProductOption:
                 return False
 
 class Reservation:
+    
     def checkout(self,request, product_m, table_m, cart_m, orderItem_m):
         cost = request.session['cost']
         del request.session['cost']

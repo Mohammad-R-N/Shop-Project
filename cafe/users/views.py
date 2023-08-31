@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .forms import StaffLoginForm, StaffOtpForm
 from django.views import View
-from cart.models import OrderItem
+from cart.models import OrderItem, Table
 import random
 from django.http import JsonResponse, HttpResponse
 from django.views.generic.list import ListView
@@ -14,7 +14,7 @@ from django.db.models.functions import (
     ExtractHour,
 )
 
-from utils import send_OTP
+# from cafe.utils import send_OTP
 from .models import CustomUser
 from menu.models import Product, Category
 from cart.models import Cart, OrderItem
@@ -101,11 +101,11 @@ class StaffPanelView(View):
     template_staff_refuse_ord = "staff/staff_refused.html"
     template_staff_search = "staff/staff_search_result.html"
     con = StaffPanel
-
+    tables = Table.objects.all()
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             result = self.con.waiting_post(Cart)
-            context = {"item": result[0], "cart": result[1]}
+            context = {"item": result[0], "cart": result[1], "table": self.tables}
             return render(request, self.template_staff, context)
         else:
             messages.error(
@@ -129,9 +129,19 @@ class StaffPanelView(View):
 
         elif "phone_number" in request.POST:
             result = self.con.get_ord_by_phone(request)
-            context = {"items": result[0], "carts": result[1]}
+            context = {"items": result[0], "carts": result[1], "table": self.tables}
+            return render(request, self.template_staff_search, context)
+        
+        elif "date" in request.POST:
+            result = self.con.get_ord_by_date(request)
+            context = {"items": result[0], "carts": result[1], "table": self.tables}
             return render(request, self.template_staff_search, context)
 
+        elif "table" in request.POST:
+            result = self.con.get_ord_by_table(request)
+            context = {"items": result[0], "carts": result[1], "table": self.tables}
+            return render(request, self.template_staff_search, context)
+        
         elif "refuse" in request.POST:
             self.con.make_refuse(request, Cart)
             return redirect("staff")
