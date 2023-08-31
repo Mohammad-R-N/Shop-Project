@@ -3,7 +3,10 @@ from .models import Cart
 from datetime import datetime, time
 from .models import OrderItem, Table
 
+class OrderAdmin(admin.TabularInline):
+    model = OrderItem
 class CartAdmin(admin.ModelAdmin):
+    inlines = [OrderAdmin, ]
 
     actions = ['accept']
     @admin.action(description='Mark Selected Carts as Accept')
