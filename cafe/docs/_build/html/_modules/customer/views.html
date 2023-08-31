@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>customer.views &#8212; Shop-Project  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../../_static/groundwork.css?v=594d7a89" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Shop-Project  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">customer.views</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for customer.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">cart.models</span> <span class="kn">import</span> <span class="n">Cart</span><span class="p">,</span> <span class="n">OrderItem</span>
+
+<span class="c1"># Create your views here.</span>
+<div class="viewcode-block" id="CustomerView">
+<a class="viewcode-back" href="../../customer.html#customer.views.CustomerView">[docs]</a>
+<span class="k">class</span> <span class="nc">CustomerView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<div class="viewcode-block" id="CustomerView.get">
+<a class="viewcode-back" href="../../customer.html#customer.views.CustomerView.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s2">&quot;customer/customer.html&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CustomerView.post">
+<a class="viewcode-back" href="../../customer.html#customer.views.CustomerView.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+<div class="viewcode-block" id="CustomerHistory">
+<a class="viewcode-back" href="../../customer.html#customer.views.CustomerHistory">[docs]</a>
+<span class="k">class</span> <span class="nc">CustomerHistory</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="n">template_login</span> <span class="o">=</span> <span class="s2">&quot;customer/history_login.html&quot;</span>
+    <span class="n">template_history</span> <span class="o">=</span> <span class="s2">&quot;customer/history.html&quot;</span>
+<div class="viewcode-block" id="CustomerHistory.get">
+<a class="viewcode-back" href="../../customer.html#customer.views.CustomerHistory.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_login</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="CustomerHistory.post">
+<a class="viewcode-back" href="../../customer.html#customer.views.CustomerHistory.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;tel&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;tel&#39;</span><span class="p">]</span>
+            <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="n">item_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="n">cart_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">cart_obj</span> <span class="ow">in</span> <span class="n">cart</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cart_obj</span><span class="o">.</span><span class="n">customer_number</span> <span class="o">==</span> <span class="n">number</span><span class="p">:</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cart</span><span class="o">=</span><span class="n">cart_obj</span><span class="p">)</span>
+                    <span class="n">item_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                    <span class="n">cart_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cart_obj</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">item_list</span><span class="p">)</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="n">item_list</span><span class="p">,</span>
+                <span class="s2">&quot;carts&quot;</span><span class="p">:</span> <span class="n">cart_list</span>
+                <span class="p">}</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_history</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_history</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Shop-Project  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">customer.views</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, rana danesh.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    </div>
+  </body>
+</html>
