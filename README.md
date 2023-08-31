@@ -1,6 +1,5 @@
-[![IMG-0018.jpg](https://i.postimg.cc/YC7bC4yz/IMG-0018.jpg)](https://postimg.cc/PP6m6qHC)
-# 💻 Cafe Menu
-[![IMG-0018.jpg](https://i.postimg.cc/FKVRX6kx/IMG-0018.jpg)](https://postimg.cc/yJWBFvPJ)
+# [![IMG-0018-1.jpg](https://i.postimg.cc/xdpddzgk/IMG-0018-1.jpg)](https://postimg.cc/zLWNt3s5) Cafe Menu
+
 Welcome to the online cafe menu project
 
 ## Titles 📋
