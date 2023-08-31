@@ -57,7 +57,7 @@ class StaffPanel:
                 item = OrderItem.objects.filter(cart=cart_obj)
                 item_list.append(item[0])
                 cart_list.append(cart_obj)
-        return item_list, cart_list
+        return item_list, cart_list, f'Search result for table "{table_number}"'
 
     @staticmethod  
     def get_ord_by_date(request):
@@ -71,7 +71,7 @@ class StaffPanel:
                 item = OrderItem.objects.filter(cart=cart_obj)
                 item_list.append(item[0])
                 cart_list.append(cart_obj)
-        return item_list, cart_list
+        return item_list, cart_list, f'Search result for "{date}"'
     
 
     @staticmethod   
@@ -86,7 +86,7 @@ class StaffPanel:
                 item = OrderItem.objects.filter(cart=cart_obj)
                 item_list.append(item[0])
                 cart_list.append(cart_obj)
-        return item_list, cart_list
+        return item_list, cart_list, f'Search result for "{phone}"'
 
     @staticmethod    
     def make_refuse(request, model):
