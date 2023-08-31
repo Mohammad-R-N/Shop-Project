@@ -42,7 +42,7 @@ class ReservationView(View):
         return render(request, self.template_name, context)
     
     def post(self, request):
-        phone = Reservation.checkout(self,request, Product, Table, Cart, OrderItem)
+        phone = Reservation.checkout(request, Product, Table, Cart, OrderItem)
         result = redirect('ord_detail')
         result.set_cookie("number", phone, 2630000)
         result.delete_cookie('product')
