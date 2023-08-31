@@ -13,9 +13,9 @@ you can see the documantations of each part clicking on the links below:
     
 * 💻  [Running The Project](#running-the-project)
 
-* [Contributing](#contributing)
+* [How To Contribute](#how-to-contribute)
 
-* 
+*  [Contributing](#contributing)
   
 
 ## About Project
