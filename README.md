@@ -32,7 +32,7 @@ This means that customers are able to see the menu of the cafe and order directl
 
 Before installation make sure you have the prerequisites mentioned below ✅:
  - GITHUB
- - [![Python][Python.js]][Python-url]
+ - PYTHON
  - PIP
 
    
@@ -144,10 +144,3 @@ To access the admin panel, go to http://localhost:8000/admin and log in using ad
 
 > 👉Please take a look at our contributing guidelines if you're interested in helping!
  we will be very happy for your interest in our project and contribute to it.
-
-
-
-[Python.js]:(https://img.shields.io/badge/:badgeContent?label=PYTHON&labelColor=blue&color=dark)
-
-
-
