@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.safestring import mark_safe
 
 
 class Category(models.Model):
@@ -23,6 +23,11 @@ class Product(models.Model):
     description = models.CharField(max_length=500)
     point = models.PositiveIntegerField(default=0)
     category_menu = models.ForeignKey(Category, on_delete=models.PROTECT)
+
+    product_img = models.ImageField(upload_to='images')
+
+    def img_preview(self):  # new
+        return mark_safe(f'<img src = "{self.product_img.url}" width = "75" height = "100"/>')
     
 
     def __str__(self):
