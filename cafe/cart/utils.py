@@ -1,7 +1,8 @@
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.shortcuts import redirect
-
 class ProductOption:
-    def show_product(request, model):
+
+    def show_product(self,request, model):
         cost = 0
         product_list = list()
         result = request.COOKIES.get('product')
@@ -26,7 +27,7 @@ class ProductOption:
 
         return cost, product_list
 
-    def remove_from_shop_cart(request):
+    def remove_from_shop_cart(self,request):
         remove = request.POST['remove']
         result = request.COOKIES.get('product')
         result = str(result).split('-')
@@ -42,21 +43,26 @@ class ProductOption:
         
         return new_cookie
 
-    def accept_shop_cart(request):
+    def accept_shop_cart(self,request):
         if request.COOKIES.get('product') is not None:
             if len(request.COOKIES.get('product')) > 1:
                 result = request.COOKIES.get('product')
                 result = str(result).split('-')
                 result.pop(0)
+                middleware = SessionMiddleware(request)
+                middleware.process_request(request)
+                request.session.save()
                 request.session['order'] = result
-                request.session['cost'] = request.session['total']
-                del request.session['total']
+                request.session['cost'] = request.session.get('total',0)
+                if request.session.get('total'):
+                    del request.session['total']
+
                 return True
             else:
                 return False
 
 class Reservation:
-    def checkout(request, product_m, table_m, cart_m, orderItem_m):
+    def checkout(self,request, product_m, table_m, cart_m, orderItem_m):
         cost = request.session['cost']
         del request.session['cost']
 
@@ -64,9 +70,13 @@ class Reservation:
         del request.session['order']
 
         table = request.POST['subject']
-        phone_number = request.POST['tel']
 
-        table_obj = table_m.objects.get(table_name=table)          
+        phone_number = request.POST['tel']
+        try:
+            table_obj = table_m.objects.get(table_name=table)
+        except:
+            return redirect("reservation")
+
         cart = cart_m.objects.create(total_price=cost, total_quantity=len(order), 
                                     customer_number=phone_number, cart_table=table_obj)
         cart.save()
@@ -80,7 +90,7 @@ class Reservation:
         return phone_number
 
 class OrderDetail:
-    def show_cart_detail(request, cart_m, orderItem_m):
+    def show_cart_detail(self,request, cart_m, orderItem_m):
         phone_number = request.COOKIES.get('number')
         cart = cart_m.objects.all()
         item = list()

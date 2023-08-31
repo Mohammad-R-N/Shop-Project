@@ -7,7 +7,7 @@ from .utils import CustomerOption
 class CustomerView(View):
     def get(self, request):
         return render(request,"customer/customer.html")
-
+      
 class CustomerHistory(View):
     template_history = "customer/history.html"
 
