@@ -12,6 +12,10 @@ you can see the documantations of each part clicking on the links below:
   - 🔗 [Installation](#installation)
     
 * 💻  [Running The Project](#running-the-project)
+
+* [Contributing](#contributing)
+
+* 
   
 
 ## About Project
@@ -28,7 +32,7 @@ This means that customers are able to see the menu of the cafe and order directl
 
 Before installation make sure you have the prerequisites mentioned below ✅:
  - GITHUB
- - [![Python][Python.js]][Python-url]
+ - Python
  - PIP
 
    
@@ -124,3 +128,20 @@ Once `pip` has finished downloading the dependencies:
 And navigate to `http://127.0.0.1:8000`.
 
 To access the admin panel, go to http://localhost:8000/admin and log in using admin account you created earlier.
+### How to Contribute
+
+<br />
+
+> 👉 Fork the repository and Clone it to your local machine.
+<br />
+
+> 👉 create a new branch
+﻿﻿﻿Submit Pull Request with comprehensive description of changes 
+
+### Contributing
+
+<br />
+
+> 👉Please take a look at our contributing guidelines if you're interested in helping!
+
+we will be very happy for your interest in our project and contribute to it.
