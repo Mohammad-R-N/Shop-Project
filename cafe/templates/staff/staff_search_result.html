@@ -55,6 +55,29 @@
                                     </form>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <label for="search" style="color: aliceblue;">Search order by date</label>
+                                        <input type="date" name="date" id="">
+                                        <button class="btn btn-light" type="submit">Search</button>
+                                    </form>
+                                </div>
+                                <div class="col-6">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <label for="search" style="color: aliceblue;">Search order by table</label>
+                                        <select name="table" id="subject">
+                                            <option data-display="Service Category">Seates*</option>
+                                            {% for tb in table %}
+                                            <option value="{{ tb.table_name }}">Table {{ tb.table_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button class="btn btn-light" type="submit">Search</button>
+                                    </form>
+                                </div>
+                            </div>
                             <br>
                             <table class="table mobile-table">
                                 <thead>

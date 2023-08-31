@@ -56,6 +56,30 @@
                                 </div>
                             </div>
                             <br>
+                            <div class="row">
+                                <div class="col-6">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <label for="search" style="color: aliceblue;">Search order by date</label>
+                                        <input type="date" name="date" id="">
+                                        <button class="btn btn-light" type="submit">Search</button>
+                                    </form>
+                                </div>
+                                <div class="col-6">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <label for="search" style="color: aliceblue;">Search order by table</label>
+                                        <select name="table" id="subject">
+                                            <option data-display="Service Category">Seates*</option>
+                                            {% for tb in table %}
+                                            <option value="{{ tb.table_name }}">Table {{ tb.table_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button class="btn btn-light" type="submit">Search</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <br>
                             <table class="table mobile-table">
                                 <thead>
                                     <tr>
@@ -63,6 +87,7 @@
                                         <th class="cart-product-name">Order Quantity</th>
                                         <th class="cart-product-name">Table</th>
                                         <th class="product-price">Total</th>
+                                        <th class="product-price">Date</th>
                                         <th class="product-quantity">Detail</th>
                                         <th class="product-actions">Actions</th>
                                     </tr>
@@ -77,6 +102,7 @@
                                         <td class="product-name"><a>{{ cart.total_quantity }} orders</a></td>
                                         <td class="product-name"><a>{{ cart.cart_table.table_name }}</a></td>
                                         <td class="product-price"><span class="amount">$ {{ cart.total_price }}</span></td>
+                                        <td class="product-price"><span class="amount">{{ cart.time }}</span></td>
                                         <td class="product-subtotal"><span class="amount"><button class="btn btn-warning" style="color: black;">
                                         <details>{{ ord.product.name }} {{ ord.quantity }}<br></details></button></span>
                                         </td>
