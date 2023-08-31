@@ -51,7 +51,7 @@ class StaffLogin(View):
                     "staff_login"
                 )  # Redirect to signup page if user is not registered
             else:
-                send_OTP(formatted_phone_number, random_code)
+                # send_OTP(formatted_phone_number, random_code)
                 request.session["user_info"] = {
                     "phone_number": formatted_phone_number,
                     "code": random_code,
