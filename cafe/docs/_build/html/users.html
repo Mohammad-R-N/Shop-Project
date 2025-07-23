@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>users package &#8212; Shop-Project  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/groundwork.css?v=594d7a89" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="users.migrations package" href="users.migrations.html" />
+    <link rel="prev" title="menu.migrations package" href="menu.migrations.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="users.migrations.html" title="users.migrations package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="menu.migrations.html" title="menu.migrations package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Shop-Project  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">cafe</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">users package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="users-package">
+<h1>users package<a class="headerlink" href="#users-package" title="Link to this heading">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="users.migrations.html">users.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="users.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.migrations.html#module-users.migrations.0001_initial">users.migrations.0001_initial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="users.migrations.html#users.migrations.0001_initial.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.migrations.html#users.migrations.0001_initial.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.migrations.html#users.migrations.0001_initial.Migration.initial"><code class="docutils literal notranslate"><span class="pre">Migration.initial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.migrations.html#users.migrations.0001_initial.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="users.migrations.html#module-users.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-users.admin">
+<span id="users-admin-module"></span><h2>users.admin module<a class="headerlink" href="#module-users.admin" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.admin.CustomUserAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.admin.</span></span><span class="sig-name descname"><span class="pre">CustomUserAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/admin.html#CustomUserAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.admin.CustomUserAdmin" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">UserAdmin</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.admin.CustomUserAdmin.add_fieldsets">
+<span class="sig-name descname"><span class="pre">add_fieldsets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">((None,</span> <span class="pre">{'classes':</span> <span class="pre">('wide',),</span> <span class="pre">'fields':</span> <span class="pre">('phone_number',</span> <span class="pre">'password1',</span> <span class="pre">'password2')}),)</span></em><a class="headerlink" href="#users.admin.CustomUserAdmin.add_fieldsets" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.admin.CustomUserAdmin.fieldsets">
+<span class="sig-name descname"><span class="pre">fieldsets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">((None,</span> <span class="pre">{'fields':</span> <span class="pre">('phone_number',</span> <span class="pre">'password')}),</span> <span class="pre">('Personal</span> <span class="pre">info',</span> <span class="pre">{'fields':</span> <span class="pre">('first_name',</span> <span class="pre">'last_name')}),</span> <span class="pre">('Permissions',</span> <span class="pre">{'fields':</span> <span class="pre">('is_active',</span> <span class="pre">'is_staff',</span> <span class="pre">'is_superuser',</span> <span class="pre">'groups',</span> <span class="pre">'user_permissions')}),</span> <span class="pre">('Important</span> <span class="pre">dates',</span> <span class="pre">{'fields':</span> <span class="pre">('last_login',</span> <span class="pre">'date_joined')}))</span></em><a class="headerlink" href="#users.admin.CustomUserAdmin.fieldsets" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.admin.CustomUserAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('phone_number',</span> <span class="pre">'first_name',</span> <span class="pre">'last_name',</span> <span class="pre">'is_staff')</span></em><a class="headerlink" href="#users.admin.CustomUserAdmin.list_display" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="users.admin.CustomUserAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#users.admin.CustomUserAdmin.media" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.admin.CustomUserAdmin.ordering">
+<span class="sig-name descname"><span class="pre">ordering</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('phone_number',)</span></em><a class="headerlink" href="#users.admin.CustomUserAdmin.ordering" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.admin.CustomUserAdmin.search_fields">
+<span class="sig-name descname"><span class="pre">search_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('phone_number',</span> <span class="pre">'first_name',</span> <span class="pre">'last_name')</span></em><a class="headerlink" href="#users.admin.CustomUserAdmin.search_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.apps">
+<span id="users-apps-module"></span><h2>users.apps module<a class="headerlink" href="#module-users.apps" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.apps.UsersConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.apps.</span></span><span class="sig-name descname"><span class="pre">UsersConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/apps.html#UsersConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.apps.UsersConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.apps.UsersConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#users.apps.UsersConfig.default_auto_field" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.apps.UsersConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'users'</span></em><a class="headerlink" href="#users.apps.UsersConfig.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.authentication">
+<span id="users-authentication-module"></span><h2>users.authentication module<a class="headerlink" href="#module-users.authentication" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.authentication.CustomAuthBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.authentication.</span></span><span class="sig-name descname"><span class="pre">CustomAuthBackend</span></span><a class="reference internal" href="_modules/users/authentication.html#CustomAuthBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.authentication.CustomAuthBackend" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseBackend</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="users.authentication.CustomAuthBackend.authenticate">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/authentication.html#CustomAuthBackend.authenticate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.authentication.CustomAuthBackend.authenticate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.forms">
+<span id="users-forms-module"></span><h2>users.forms module<a class="headerlink" href="#module-users.forms" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.forms.CustomAuthenticationForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.forms.</span></span><span class="sig-name descname"><span class="pre">CustomAuthenticationForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/forms.html#CustomAuthenticationForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.forms.CustomAuthenticationForm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AuthenticationForm</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.forms.CustomAuthenticationForm.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/users/forms.html#CustomAuthenticationForm.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.forms.CustomAuthenticationForm.Meta" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.CustomAuthenticationForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['phone_number',</span> <span class="pre">'password']</span></em><a class="headerlink" href="#users.forms.CustomAuthenticationForm.Meta.fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.CustomAuthenticationForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#users.forms.CustomAuthenticationForm.Meta.model" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#users.models.CustomUser" title="users.models.CustomUser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomUser</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.CustomAuthenticationForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'password':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.contrib.auth.forms.UsernameField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#users.forms.CustomAuthenticationForm.base_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.CustomAuthenticationForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'password':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.contrib.auth.forms.UsernameField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#users.forms.CustomAuthenticationForm.declared_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="users.forms.CustomAuthenticationForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#users.forms.CustomAuthenticationForm.media" title="Link to this definition">¶</a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.forms.CustomUserCreationForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.forms.</span></span><span class="sig-name descname"><span class="pre">CustomUserCreationForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/forms.html#CustomUserCreationForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.forms.CustomUserCreationForm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">UserCreationForm</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.forms.CustomUserCreationForm.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/users/forms.html#CustomUserCreationForm.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.forms.CustomUserCreationForm.Meta" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.CustomUserCreationForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['phone_number',</span> <span class="pre">'first_name',</span> <span class="pre">'last_name',</span> <span class="pre">'password1',</span> <span class="pre">'password2']</span></em><a class="headerlink" href="#users.forms.CustomUserCreationForm.Meta.fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.CustomUserCreationForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#users.forms.CustomUserCreationForm.Meta.model" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#users.models.CustomUser" title="users.models.CustomUser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomUser</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.CustomUserCreationForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'first_name':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'last_name':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'password1':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'password2':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'phone_number':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#users.forms.CustomUserCreationForm.base_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.CustomUserCreationForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'password1':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'password2':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#users.forms.CustomUserCreationForm.declared_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="users.forms.CustomUserCreationForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#users.forms.CustomUserCreationForm.media" title="Link to this definition">¶</a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.forms.StaffLoginForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.forms.</span></span><span class="sig-name descname"><span class="pre">StaffLoginForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_order=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/forms.html#StaffLoginForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.forms.StaffLoginForm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.StaffLoginForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'phone_number':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#users.forms.StaffLoginForm.base_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.StaffLoginForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'phone_number':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#users.forms.StaffLoginForm.declared_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="users.forms.StaffLoginForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#users.forms.StaffLoginForm.media" title="Link to this definition">¶</a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.forms.StaffOtpForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.forms.</span></span><span class="sig-name descname"><span class="pre">StaffOtpForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_order=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/forms.html#StaffOtpForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.forms.StaffOtpForm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.StaffOtpForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'code':</span> <span class="pre">&lt;django.forms.fields.IntegerField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#users.forms.StaffOtpForm.base_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.forms.StaffOtpForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'code':</span> <span class="pre">&lt;django.forms.fields.IntegerField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#users.forms.StaffOtpForm.declared_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="users.forms.StaffOtpForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#users.forms.StaffOtpForm.media" title="Link to this definition">¶</a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.managers">
+<span id="users-managers-module"></span><h2>users.managers module<a class="headerlink" href="#module-users.managers" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.managers.CustomUserManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.managers.</span></span><span class="sig-name descname"><span class="pre">CustomUserManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/managers.html#CustomUserManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.managers.CustomUserManager" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseUserManager</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="users.managers.CustomUserManager.create_superuser">
+<span class="sig-name descname"><span class="pre">create_superuser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phone_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/managers.html#CustomUserManager.create_superuser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.managers.CustomUserManager.create_superuser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.managers.CustomUserManager.create_user">
+<span class="sig-name descname"><span class="pre">create_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phone_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/managers.html#CustomUserManager.create_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.managers.CustomUserManager.create_user" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.models">
+<span id="users-models-module"></span><h2>users.models module<a class="headerlink" href="#module-users.models" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.models.CustomUser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.models.</span></span><span class="sig-name descname"><span class="pre">CustomUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_staff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/models.html#CustomUser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.models.CustomUser" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBaseUser</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PermissionsMixin</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="users.models.CustomUser.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#users.models.CustomUser.DoesNotExist" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="users.models.CustomUser.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#users.models.CustomUser.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.REQUIRED_FIELDS">
+<span class="sig-name descname"><span class="pre">REQUIRED_FIELDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#users.models.CustomUser.REQUIRED_FIELDS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.USERNAME_FIELD">
+<span class="sig-name descname"><span class="pre">USERNAME_FIELD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'phone_number'</span></em><a class="headerlink" href="#users.models.CustomUser.USERNAME_FIELD" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.cart_set">
+<span class="sig-name descname"><span class="pre">cart_set</span></span><a class="headerlink" href="#users.models.CustomUser.cart_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.code">
+<span class="sig-name descname"><span class="pre">code</span></span><a class="headerlink" href="#users.models.CustomUser.code" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.date_joined">
+<span class="sig-name descname"><span class="pre">date_joined</span></span><a class="headerlink" href="#users.models.CustomUser.date_joined" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.first_name">
+<span class="sig-name descname"><span class="pre">first_name</span></span><a class="headerlink" href="#users.models.CustomUser.first_name" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.models.CustomUser.get_next_by_date_joined">
+<span class="sig-name descname"><span class="pre">get_next_by_date_joined</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">date_joined&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#users.models.CustomUser.get_next_by_date_joined" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.models.CustomUser.get_previous_by_date_joined">
+<span class="sig-name descname"><span class="pre">get_previous_by_date_joined</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">date_joined&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#users.models.CustomUser.get_previous_by_date_joined" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.groups">
+<span class="sig-name descname"><span class="pre">groups</span></span><a class="headerlink" href="#users.models.CustomUser.groups" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#users.models.CustomUser.id" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><a class="headerlink" href="#users.models.CustomUser.is_active" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.is_staff">
+<span class="sig-name descname"><span class="pre">is_staff</span></span><a class="headerlink" href="#users.models.CustomUser.is_staff" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.is_superuser">
+<span class="sig-name descname"><span class="pre">is_superuser</span></span><a class="headerlink" href="#users.models.CustomUser.is_superuser" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.last_login">
+<span class="sig-name descname"><span class="pre">last_login</span></span><a class="headerlink" href="#users.models.CustomUser.last_login" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.last_name">
+<span class="sig-name descname"><span class="pre">last_name</span></span><a class="headerlink" href="#users.models.CustomUser.last_name" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.logentry_set">
+<span class="sig-name descname"><span class="pre">logentry_set</span></span><a class="headerlink" href="#users.models.CustomUser.logentry_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;users.managers.CustomUserManager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#users.models.CustomUser.objects" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.password">
+<span class="sig-name descname"><span class="pre">password</span></span><a class="headerlink" href="#users.models.CustomUser.password" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.phone_number">
+<span class="sig-name descname"><span class="pre">phone_number</span></span><a class="headerlink" href="#users.models.CustomUser.phone_number" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.models.CustomUser.user_permissions">
+<span class="sig-name descname"><span class="pre">user_permissions</span></span><a class="headerlink" href="#users.models.CustomUser.user_permissions" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.models.PhoneNumberField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.models.</span></span><span class="sig-name descname"><span class="pre">PhoneNumberField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_collation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/models.html#PhoneNumberField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.models.PhoneNumberField" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="users.models.PhoneNumberField.get_prep_value">
+<span class="sig-name descname"><span class="pre">get_prep_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/models.html#PhoneNumberField.get_prep_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.models.PhoneNumberField.get_prep_value" title="Link to this definition">¶</a></dt>
+<dd><p>Perform preliminary non-db specific value checks and conversions.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.tests">
+<span id="users-tests-module"></span><h2>users.tests module<a class="headerlink" href="#module-users.tests" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-users.urls">
+<span id="users-urls-module"></span><h2>users.urls module<a class="headerlink" href="#module-users.urls" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-users.validation">
+<span id="users-validation-module"></span><h2>users.validation module<a class="headerlink" href="#module-users.validation" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="users.validation.phone_number_validator">
+<span class="sig-prename descclassname"><span class="pre">users.validation.</span></span><span class="sig-name descname"><span class="pre">phone_number_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/validation.html#phone_number_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.validation.phone_number_validator" title="Link to this definition">¶</a></dt>
+<dd><p>Validates phone numbers in the 09XX, 00989XX, or +98XX format and replaces the +98 and 0098 parts with 0.</p>
+</dd></dl>
+
+</section>
+<section id="module-users.views">
+<span id="users-views-module"></span><h2>users.views module<a class="headerlink" href="#module-users.views" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.views.AddOrder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.views.</span></span><span class="sig-name descname"><span class="pre">AddOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#AddOrder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.AddOrder" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.AddOrder.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#AddOrder.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.AddOrder.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.AddOrder.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#AddOrder.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.AddOrder.post" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.views.AddOrder.template_name">
+<span class="sig-name descname"><span class="pre">template_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'staff/staff_add_order.html'</span></em><a class="headerlink" href="#users.views.AddOrder.template_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.views.CheckOtp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.views.</span></span><span class="sig-name descname"><span class="pre">CheckOtp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#CheckOtp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.CheckOtp" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.views.CheckOtp.form_otp">
+<span class="sig-name descname"><span class="pre">form_otp</span></span><a class="headerlink" href="#users.views.CheckOtp.form_otp" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#users.forms.StaffOtpForm" title="users.forms.StaffOtpForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">StaffOtpForm</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.CheckOtp.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#CheckOtp.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.CheckOtp.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.CheckOtp.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#CheckOtp.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.CheckOtp.post" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.views.EditOrder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.views.</span></span><span class="sig-name descname"><span class="pre">EditOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#EditOrder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.EditOrder" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.EditOrder.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#EditOrder.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.EditOrder.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.EditOrder.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#EditOrder.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.EditOrder.post" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.views.EditOrder.template_name">
+<span class="sig-name descname"><span class="pre">template_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'staff/edit_ord.html'</span></em><a class="headerlink" href="#users.views.EditOrder.template_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.views.LogOutView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.views.</span></span><span class="sig-name descname"><span class="pre">LogOutView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#LogOutView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.LogOutView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.LogOutView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#LogOutView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.LogOutView.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.LogOutView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#LogOutView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.LogOutView.post" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.views.ManagerDashboard">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.views.</span></span><span class="sig-name descname"><span class="pre">ManagerDashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#ManagerDashboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.ManagerDashboard" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.ManagerDashboard.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#ManagerDashboard.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.ManagerDashboard.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.views.ManagerDashboard.template_name">
+<span class="sig-name descname"><span class="pre">template_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'manager/manager_dashboard.html'</span></em><a class="headerlink" href="#users.views.ManagerDashboard.template_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.views.ManagerDashboard.today">
+<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.datetime(2023,</span> <span class="pre">8,</span> <span class="pre">31,</span> <span class="pre">13,</span> <span class="pre">45,</span> <span class="pre">29,</span> <span class="pre">221810)</span></em><a class="headerlink" href="#users.views.ManagerDashboard.today" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.views.StaffLogin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.views.</span></span><span class="sig-name descname"><span class="pre">StaffLogin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#StaffLogin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.StaffLogin" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.views.StaffLogin.form_staff">
+<span class="sig-name descname"><span class="pre">form_staff</span></span><a class="headerlink" href="#users.views.StaffLogin.form_staff" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#users.forms.StaffLoginForm" title="users.forms.StaffLoginForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">StaffLoginForm</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.StaffLogin.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#StaffLogin.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.StaffLogin.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.StaffLogin.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#StaffLogin.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.StaffLogin.post" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.views.StaffPanelView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.views.</span></span><span class="sig-name descname"><span class="pre">StaffPanelView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#StaffPanelView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.StaffPanelView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.StaffPanelView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#StaffPanelView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.StaffPanelView.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.StaffPanelView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#StaffPanelView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.StaffPanelView.post" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.views.StaffPanelView.template_staff">
+<span class="sig-name descname"><span class="pre">template_staff</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'staff/staff.html'</span></em><a class="headerlink" href="#users.views.StaffPanelView.template_staff" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="users.views.UserView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.views.</span></span><span class="sig-name descname"><span class="pre">UserView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#UserView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.UserView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.UserView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#UserView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.UserView.get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users.views.UserView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/views.html#UserView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.views.UserView.post" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-users" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">users package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-users.admin">users.admin module</a><ul>
+<li><a class="reference internal" href="#users.admin.CustomUserAdmin"><code class="docutils literal notranslate"><span class="pre">CustomUserAdmin</span></code></a><ul>
+<li><a class="reference internal" href="#users.admin.CustomUserAdmin.add_fieldsets"><code class="docutils literal notranslate"><span class="pre">CustomUserAdmin.add_fieldsets</span></code></a></li>
+<li><a class="reference internal" href="#users.admin.CustomUserAdmin.fieldsets"><code class="docutils literal notranslate"><span class="pre">CustomUserAdmin.fieldsets</span></code></a></li>
+<li><a class="reference internal" href="#users.admin.CustomUserAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">CustomUserAdmin.list_display</span></code></a></li>
+<li><a class="reference internal" href="#users.admin.CustomUserAdmin.media"><code class="docutils literal notranslate"><span class="pre">CustomUserAdmin.media</span></code></a></li>
+<li><a class="reference internal" href="#users.admin.CustomUserAdmin.ordering"><code class="docutils literal notranslate"><span class="pre">CustomUserAdmin.ordering</span></code></a></li>
+<li><a class="reference internal" href="#users.admin.CustomUserAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-users.apps">users.apps module</a><ul>
+<li><a class="reference internal" href="#users.apps.UsersConfig"><code class="docutils literal notranslate"><span class="pre">UsersConfig</span></code></a><ul>
+<li><a class="reference internal" href="#users.apps.UsersConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">UsersConfig.default_auto_field</span></code></a></li>
+<li><a class="reference internal" href="#users.apps.UsersConfig.name"><code class="docutils literal notranslate"><span class="pre">UsersConfig.name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-users.authentication">users.authentication module</a><ul>
+<li><a class="reference internal" href="#users.authentication.CustomAuthBackend"><code class="docutils literal notranslate"><span class="pre">CustomAuthBackend</span></code></a><ul>
+<li><a class="reference internal" href="#users.authentication.CustomAuthBackend.authenticate"><code class="docutils literal notranslate"><span class="pre">CustomAuthBackend.authenticate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-users.forms">users.forms module</a><ul>
+<li><a class="reference internal" href="#users.forms.CustomAuthenticationForm"><code class="docutils literal notranslate"><span class="pre">CustomAuthenticationForm</span></code></a><ul>
+<li><a class="reference internal" href="#users.forms.CustomAuthenticationForm.Meta"><code class="docutils literal notranslate"><span class="pre">CustomAuthenticationForm.Meta</span></code></a><ul>
+<li><a class="reference internal" href="#users.forms.CustomAuthenticationForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">CustomAuthenticationForm.Meta.fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.CustomAuthenticationForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">CustomAuthenticationForm.Meta.model</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.forms.CustomAuthenticationForm.base_fields"><code class="docutils literal notranslate"><span class="pre">CustomAuthenticationForm.base_fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.CustomAuthenticationForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">CustomAuthenticationForm.declared_fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.CustomAuthenticationForm.media"><code class="docutils literal notranslate"><span class="pre">CustomAuthenticationForm.media</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.forms.CustomUserCreationForm"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm</span></code></a><ul>
+<li><a class="reference internal" href="#users.forms.CustomUserCreationForm.Meta"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.Meta</span></code></a><ul>
+<li><a class="reference internal" href="#users.forms.CustomUserCreationForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.Meta.fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.CustomUserCreationForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.Meta.model</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.forms.CustomUserCreationForm.base_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.base_fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.CustomUserCreationForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.declared_fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.CustomUserCreationForm.media"><code class="docutils literal notranslate"><span class="pre">CustomUserCreationForm.media</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.forms.StaffLoginForm"><code class="docutils literal notranslate"><span class="pre">StaffLoginForm</span></code></a><ul>
+<li><a class="reference internal" href="#users.forms.StaffLoginForm.base_fields"><code class="docutils literal notranslate"><span class="pre">StaffLoginForm.base_fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.StaffLoginForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">StaffLoginForm.declared_fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.StaffLoginForm.media"><code class="docutils literal notranslate"><span class="pre">StaffLoginForm.media</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.forms.StaffOtpForm"><code class="docutils literal notranslate"><span class="pre">StaffOtpForm</span></code></a><ul>
+<li><a class="reference internal" href="#users.forms.StaffOtpForm.base_fields"><code class="docutils literal notranslate"><span class="pre">StaffOtpForm.base_fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.StaffOtpForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">StaffOtpForm.declared_fields</span></code></a></li>
+<li><a class="reference internal" href="#users.forms.StaffOtpForm.media"><code class="docutils literal notranslate"><span class="pre">StaffOtpForm.media</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-users.managers">users.managers module</a><ul>
+<li><a class="reference internal" href="#users.managers.CustomUserManager"><code class="docutils literal notranslate"><span class="pre">CustomUserManager</span></code></a><ul>
+<li><a class="reference internal" href="#users.managers.CustomUserManager.create_superuser"><code class="docutils literal notranslate"><span class="pre">CustomUserManager.create_superuser()</span></code></a></li>
+<li><a class="reference internal" href="#users.managers.CustomUserManager.create_user"><code class="docutils literal notranslate"><span class="pre">CustomUserManager.create_user()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-users.models">users.models module</a><ul>
+<li><a class="reference internal" href="#users.models.CustomUser"><code class="docutils literal notranslate"><span class="pre">CustomUser</span></code></a><ul>
+<li><a class="reference internal" href="#users.models.CustomUser.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">CustomUser.DoesNotExist</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">CustomUser.MultipleObjectsReturned</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.REQUIRED_FIELDS"><code class="docutils literal notranslate"><span class="pre">CustomUser.REQUIRED_FIELDS</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.USERNAME_FIELD"><code class="docutils literal notranslate"><span class="pre">CustomUser.USERNAME_FIELD</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.cart_set"><code class="docutils literal notranslate"><span class="pre">CustomUser.cart_set</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.code"><code class="docutils literal notranslate"><span class="pre">CustomUser.code</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.date_joined"><code class="docutils literal notranslate"><span class="pre">CustomUser.date_joined</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.first_name"><code class="docutils literal notranslate"><span class="pre">CustomUser.first_name</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.get_next_by_date_joined"><code class="docutils literal notranslate"><span class="pre">CustomUser.get_next_by_date_joined()</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.get_previous_by_date_joined"><code class="docutils literal notranslate"><span class="pre">CustomUser.get_previous_by_date_joined()</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.groups"><code class="docutils literal notranslate"><span class="pre">CustomUser.groups</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.id"><code class="docutils literal notranslate"><span class="pre">CustomUser.id</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.is_active"><code class="docutils literal notranslate"><span class="pre">CustomUser.is_active</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.is_staff"><code class="docutils literal notranslate"><span class="pre">CustomUser.is_staff</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.is_superuser"><code class="docutils literal notranslate"><span class="pre">CustomUser.is_superuser</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.last_login"><code class="docutils literal notranslate"><span class="pre">CustomUser.last_login</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.last_name"><code class="docutils literal notranslate"><span class="pre">CustomUser.last_name</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.logentry_set"><code class="docutils literal notranslate"><span class="pre">CustomUser.logentry_set</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.objects"><code class="docutils literal notranslate"><span class="pre">CustomUser.objects</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.password"><code class="docutils literal notranslate"><span class="pre">CustomUser.password</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.phone_number"><code class="docutils literal notranslate"><span class="pre">CustomUser.phone_number</span></code></a></li>
+<li><a class="reference internal" href="#users.models.CustomUser.user_permissions"><code class="docutils literal notranslate"><span class="pre">CustomUser.user_permissions</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.models.PhoneNumberField"><code class="docutils literal notranslate"><span class="pre">PhoneNumberField</span></code></a><ul>
+<li><a class="reference internal" href="#users.models.PhoneNumberField.get_prep_value"><code class="docutils literal notranslate"><span class="pre">PhoneNumberField.get_prep_value()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-users.tests">users.tests module</a></li>
+<li><a class="reference internal" href="#module-users.urls">users.urls module</a></li>
+<li><a class="reference internal" href="#module-users.validation">users.validation module</a><ul>
+<li><a class="reference internal" href="#users.validation.phone_number_validator"><code class="docutils literal notranslate"><span class="pre">phone_number_validator()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-users.views">users.views module</a><ul>
+<li><a class="reference internal" href="#users.views.AddOrder"><code class="docutils literal notranslate"><span class="pre">AddOrder</span></code></a><ul>
+<li><a class="reference internal" href="#users.views.AddOrder.get"><code class="docutils literal notranslate"><span class="pre">AddOrder.get()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.AddOrder.post"><code class="docutils literal notranslate"><span class="pre">AddOrder.post()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.AddOrder.template_name"><code class="docutils literal notranslate"><span class="pre">AddOrder.template_name</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.views.CheckOtp"><code class="docutils literal notranslate"><span class="pre">CheckOtp</span></code></a><ul>
+<li><a class="reference internal" href="#users.views.CheckOtp.form_otp"><code class="docutils literal notranslate"><span class="pre">CheckOtp.form_otp</span></code></a></li>
+<li><a class="reference internal" href="#users.views.CheckOtp.get"><code class="docutils literal notranslate"><span class="pre">CheckOtp.get()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.CheckOtp.post"><code class="docutils literal notranslate"><span class="pre">CheckOtp.post()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.views.EditOrder"><code class="docutils literal notranslate"><span class="pre">EditOrder</span></code></a><ul>
+<li><a class="reference internal" href="#users.views.EditOrder.get"><code class="docutils literal notranslate"><span class="pre">EditOrder.get()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.EditOrder.post"><code class="docutils literal notranslate"><span class="pre">EditOrder.post()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.EditOrder.template_name"><code class="docutils literal notranslate"><span class="pre">EditOrder.template_name</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.views.LogOutView"><code class="docutils literal notranslate"><span class="pre">LogOutView</span></code></a><ul>
+<li><a class="reference internal" href="#users.views.LogOutView.get"><code class="docutils literal notranslate"><span class="pre">LogOutView.get()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.LogOutView.post"><code class="docutils literal notranslate"><span class="pre">LogOutView.post()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.views.ManagerDashboard"><code class="docutils literal notranslate"><span class="pre">ManagerDashboard</span></code></a><ul>
+<li><a class="reference internal" href="#users.views.ManagerDashboard.get"><code class="docutils literal notranslate"><span class="pre">ManagerDashboard.get()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.ManagerDashboard.template_name"><code class="docutils literal notranslate"><span class="pre">ManagerDashboard.template_name</span></code></a></li>
+<li><a class="reference internal" href="#users.views.ManagerDashboard.today"><code class="docutils literal notranslate"><span class="pre">ManagerDashboard.today</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.views.StaffLogin"><code class="docutils literal notranslate"><span class="pre">StaffLogin</span></code></a><ul>
+<li><a class="reference internal" href="#users.views.StaffLogin.form_staff"><code class="docutils literal notranslate"><span class="pre">StaffLogin.form_staff</span></code></a></li>
+<li><a class="reference internal" href="#users.views.StaffLogin.get"><code class="docutils literal notranslate"><span class="pre">StaffLogin.get()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.StaffLogin.post"><code class="docutils literal notranslate"><span class="pre">StaffLogin.post()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.views.StaffPanelView"><code class="docutils literal notranslate"><span class="pre">StaffPanelView</span></code></a><ul>
+<li><a class="reference internal" href="#users.views.StaffPanelView.get"><code class="docutils literal notranslate"><span class="pre">StaffPanelView.get()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.StaffPanelView.post"><code class="docutils literal notranslate"><span class="pre">StaffPanelView.post()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.StaffPanelView.template_staff"><code class="docutils literal notranslate"><span class="pre">StaffPanelView.template_staff</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#users.views.UserView"><code class="docutils literal notranslate"><span class="pre">UserView</span></code></a><ul>
+<li><a class="reference internal" href="#users.views.UserView.get"><code class="docutils literal notranslate"><span class="pre">UserView.get()</span></code></a></li>
+<li><a class="reference internal" href="#users.views.UserView.post"><code class="docutils literal notranslate"><span class="pre">UserView.post()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-users">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="menu.migrations.html"
+                          title="previous chapter">menu.migrations package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="users.migrations.html"
+                          title="next chapter">users.migrations package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/users.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="users.migrations.html" title="users.migrations package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="menu.migrations.html" title="menu.migrations package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Shop-Project  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >cafe</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">users package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, rana danesh.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    </div>
+  </body>
+</html>

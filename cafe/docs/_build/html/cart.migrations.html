@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>cart.migrations package &#8212; Shop-Project  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/groundwork.css?v=594d7a89" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="customer package" href="customer.html" />
+    <link rel="prev" title="cart package" href="cart.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="customer.html" title="customer package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cart.html" title="cart package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Shop-Project  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >cafe</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="cart.html" accesskey="U">cart package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cart.migrations package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cart-migrations-package">
+<h1>cart.migrations package<a class="headerlink" href="#cart-migrations-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-cart.migrations.0001_initial">
+<span id="cart-migrations-0001-initial-module"></span><h2>cart.migrations.0001_initial module<a class="headerlink" href="#module-cart.migrations.0001_initial" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="cart.migrations.0001_initial.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cart.migrations.0001_initial.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cart/migrations/0001_initial.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cart.migrations.0001_initial.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cart.migrations.0001_initial.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('users',</span> <span class="pre">'__first__'),</span> <span class="pre">('menu',</span> <span class="pre">'0001_initial')]</span></em><a class="headerlink" href="#cart.migrations.0001_initial.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cart.migrations.0001_initial.Migration.initial">
+<span class="sig-name descname"><span class="pre">initial</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#cart.migrations.0001_initial.Migration.initial" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cart.migrations.0001_initial.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='Cart',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.BigAutoField&gt;),</span> <span class="pre">('total_price',</span> <span class="pre">&lt;django.db.models.fields.DecimalField&gt;),</span> <span class="pre">('time',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('total_quantity',</span> <span class="pre">&lt;django.db.models.fields.PositiveIntegerField&gt;),</span> <span class="pre">('customer_number',</span> <span class="pre">&lt;users.models.PhoneNumberField&gt;),</span> <span class="pre">('status',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;)]&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='Table',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.BigAutoField&gt;),</span> <span class="pre">('table_name',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('status',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;)]&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='OrderItem',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.BigAutoField&gt;),</span> <span class="pre">('quantity',</span> <span class="pre">&lt;django.db.models.fields.PositiveIntegerField&gt;),</span> <span class="pre">('price',</span> <span class="pre">&lt;django.db.models.fields.DecimalField&gt;),</span> <span class="pre">('cart',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;),</span> <span class="pre">('product',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)]&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='cart',</span> <span class="pre">name='cart_table',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='cart',</span> <span class="pre">name='cart_users',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#cart.migrations.0001_initial.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-cart.migrations.0002_alter_cart_options_cart_cart_users">
+<span id="cart-migrations-0002-alter-cart-options-cart-cart-users-module"></span><h2>cart.migrations.0002_alter_cart_options_cart_cart_users module<a class="headerlink" href="#module-cart.migrations.0002_alter_cart_options_cart_cart_users" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="cart.migrations.0002_alter_cart_options_cart_cart_users.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cart.migrations.0002_alter_cart_options_cart_cart_users.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cart/migrations/0002_alter_cart_options_cart_cart_users.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cart.migrations.0002_alter_cart_options_cart_cart_users.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cart.migrations.0002_alter_cart_options_cart_cart_users.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('users',</span> <span class="pre">'__first__'),</span> <span class="pre">('cart',</span> <span class="pre">'0001_initial')]</span></em><a class="headerlink" href="#cart.migrations.0002_alter_cart_options_cart_cart_users.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cart.migrations.0002_alter_cart_options_cart_cart_users.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterModelOptions</span>&#160; <span class="pre">name='cart',</span> <span class="pre">options={'verbose_name':</span> <span class="pre">'cart'}&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='cart',</span> <span class="pre">name='cart_users',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#cart.migrations.0002_alter_cart_options_cart_cart_users.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-cart.migrations.0003_alter_cart_options_alter_cart_cart_users">
+<span id="cart-migrations-0003-alter-cart-options-alter-cart-cart-users-module"></span><h2>cart.migrations.0003_alter_cart_options_alter_cart_cart_users module<a class="headerlink" href="#module-cart.migrations.0003_alter_cart_options_alter_cart_cart_users" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="cart.migrations.0003_alter_cart_options_alter_cart_cart_users.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cart.migrations.0003_alter_cart_options_alter_cart_cart_users.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cart/migrations/0003_alter_cart_options_alter_cart_cart_users.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cart.migrations.0003_alter_cart_options_alter_cart_cart_users.Migration" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cart.migrations.0003_alter_cart_options_alter_cart_cart_users.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('users',</span> <span class="pre">'__first__'),</span> <span class="pre">('cart',</span> <span class="pre">'0002_alter_cart_options_cart_cart_users')]</span></em><a class="headerlink" href="#cart.migrations.0003_alter_cart_options_alter_cart_cart_users.Migration.dependencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cart.migrations.0003_alter_cart_options_alter_cart_cart_users.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterModelOptions</span>&#160; <span class="pre">name='cart',</span> <span class="pre">options={}&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='cart',</span> <span class="pre">name='cart_users',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#cart.migrations.0003_alter_cart_options_alter_cart_cart_users.Migration.operations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-cart.migrations">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cart.migrations" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">cart.migrations package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-cart.migrations.0001_initial">cart.migrations.0001_initial module</a><ul>
+<li><a class="reference internal" href="#cart.migrations.0001_initial.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li><a class="reference internal" href="#cart.migrations.0001_initial.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li><a class="reference internal" href="#cart.migrations.0001_initial.Migration.initial"><code class="docutils literal notranslate"><span class="pre">Migration.initial</span></code></a></li>
+<li><a class="reference internal" href="#cart.migrations.0001_initial.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-cart.migrations.0002_alter_cart_options_cart_cart_users">cart.migrations.0002_alter_cart_options_cart_cart_users module</a><ul>
+<li><a class="reference internal" href="#cart.migrations.0002_alter_cart_options_cart_cart_users.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li><a class="reference internal" href="#cart.migrations.0002_alter_cart_options_cart_cart_users.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li><a class="reference internal" href="#cart.migrations.0002_alter_cart_options_cart_cart_users.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-cart.migrations.0003_alter_cart_options_alter_cart_cart_users">cart.migrations.0003_alter_cart_options_alter_cart_cart_users module</a><ul>
+<li><a class="reference internal" href="#cart.migrations.0003_alter_cart_options_alter_cart_cart_users.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li><a class="reference internal" href="#cart.migrations.0003_alter_cart_options_alter_cart_cart_users.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li><a class="reference internal" href="#cart.migrations.0003_alter_cart_options_alter_cart_cart_users.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-cart.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="cart.html"
+                          title="previous chapter">cart package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="customer.html"
+                          title="next chapter">customer package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cart.migrations.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="customer.html" title="customer package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cart.html" title="cart package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Shop-Project  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >cafe</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="cart.html" >cart package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cart.migrations package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, rana danesh.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    </div>
+  </body>
+</html>

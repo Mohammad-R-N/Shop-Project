@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>users.views &#8212; Shop-Project  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../../_static/groundwork.css?v=594d7a89" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Shop-Project  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">users.views</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for users.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">login</span><span class="p">,</span> <span class="n">logout</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">StaffLoginForm</span><span class="p">,</span> <span class="n">StaffOtpForm</span>
+<span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">cart.models</span> <span class="kn">import</span> <span class="n">OrderItem</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">send_OTP</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">CustomUser</span>
+<span class="kn">from</span> <span class="nn">menu.models</span> <span class="kn">import</span> <span class="n">Product</span><span class="p">,</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">cart.models</span> <span class="kn">import</span> <span class="n">Cart</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">.authentication</span> <span class="kn">import</span> <span class="n">CustomAuthBackend</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<div class="viewcode-block" id="UserView">
+<a class="viewcode-back" href="../../users.html#users.views.UserView">[docs]</a>
+<span class="k">class</span> <span class="nc">UserView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<div class="viewcode-block" id="UserView.get">
+<a class="viewcode-back" href="../../users.html#users.views.UserView.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;users/staff.html&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserView.post">
+<a class="viewcode-back" href="../../users.html#users.views.UserView.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="StaffLogin">
+<a class="viewcode-back" href="../../users.html#users.views.StaffLogin">[docs]</a>
+<span class="k">class</span> <span class="nc">StaffLogin</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="n">form_staff</span> <span class="o">=</span> <span class="n">StaffLoginForm</span>
+
+<div class="viewcode-block" id="StaffLogin.get">
+<a class="viewcode-back" href="../../users.html#users.views.StaffLogin.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_staff</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;staff/login.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="StaffLogin.post">
+<a class="viewcode-back" href="../../users.html#users.views.StaffLogin.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_staff</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">random_code</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">random_code</span><span class="p">)</span>
+            <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">random_code</span><span class="p">)</span>
+            <span class="n">phone_number</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;phone_number&quot;</span><span class="p">)</span>
+            <span class="n">formatted_phone_number</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\+98|^0098&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="n">phone_number</span><span class="p">)</span>
+
+            <span class="n">user</span> <span class="o">=</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">phone_number</span><span class="o">=</span><span class="n">formatted_phone_number</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>  <span class="c1"># Redirect to signup page if user is not registered</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="n">send_OTP</span><span class="p">(</span><span class="n">formatted_phone_number</span><span class="p">,</span> <span class="n">random_code</span><span class="p">)</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;user_info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;phone_number&quot;</span><span class="p">:</span> <span class="n">formatted_phone_number</span><span class="p">,</span>
+                    <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">random_code</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;check-otp&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CheckOtp">
+<a class="viewcode-back" href="../../users.html#users.views.CheckOtp">[docs]</a>
+<span class="k">class</span> <span class="nc">CheckOtp</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="n">form_otp</span> <span class="o">=</span> <span class="n">StaffOtpForm</span>
+
+<div class="viewcode-block" id="CheckOtp.get">
+<a class="viewcode-back" href="../../users.html#users.views.CheckOtp.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_otp</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;staff/otp.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="CheckOtp.post">
+<a class="viewcode-back" href="../../users.html#users.views.CheckOtp.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_otp</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">otp</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">CustomAuthBackend</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">phone_number</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;user_info&quot;</span><span class="p">][</span><span class="s2">&quot;phone_number&quot;</span><span class="p">],</span> <span class="n">code</span><span class="o">=</span><span class="n">otp</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;django.contrib.auth.backends.ModelBackend&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;staff&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;menu&#39;</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="LogOutView">
+<a class="viewcode-back" href="../../users.html#users.views.LogOutView">[docs]</a>
+<span class="k">class</span> <span class="nc">LogOutView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<div class="viewcode-block" id="LogOutView.get">
+<a class="viewcode-back" href="../../users.html#users.views.LogOutView.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">logout</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;home&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LogOutView.post">
+<a class="viewcode-back" href="../../users.html#users.views.LogOutView.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="StaffPanelView">
+<a class="viewcode-back" href="../../users.html#users.views.StaffPanelView">[docs]</a>
+<span class="k">class</span> <span class="nc">StaffPanelView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="n">template_staff</span> <span class="o">=</span> <span class="s2">&quot;staff/staff.html&quot;</span>
+    <span class="c1"># template_staff_login = &quot;staff/login.html&quot;</span>
+
+<div class="viewcode-block" id="StaffPanelView.get">
+<a class="viewcode-back" href="../../users.html#users.views.StaffPanelView.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># return redirect(&quot;staff_login&quot;)</span>
+        <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">carts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">cart_obj</span> <span class="ow">in</span> <span class="n">cart</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cart_obj</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span>
+                <span class="n">items</span> <span class="o">=</span> <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">cart</span><span class="o">=</span><span class="n">cart_obj</span><span class="p">)</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+                <span class="n">carts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cart_obj</span><span class="p">)</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
+            <span class="s1">&#39;cart&#39;</span><span class="p">:</span> <span class="n">carts</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_staff</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="StaffPanelView.post">
+<a class="viewcode-back" href="../../users.html#users.views.StaffPanelView.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;refuse&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">cart_refuse_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;refuse&#39;</span><span class="p">]</span>
+            <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">cart_obj</span> <span class="ow">in</span> <span class="n">cart</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cart_obj</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">cart_refuse_id</span><span class="p">):</span>
+                    <span class="n">update_cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">cart_obj</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                    <span class="n">update_cart</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span>
+                    <span class="n">update_cart</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;staff&quot;</span><span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="s2">&quot;accept&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">cart_accept_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;accept&#39;</span><span class="p">]</span>
+            <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">cart_obj</span> <span class="ow">in</span> <span class="n">cart</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cart_obj</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">cart_accept_id</span><span class="p">):</span>
+                    <span class="n">update_cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">cart_obj</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                    <span class="n">update_cart</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span>
+                    <span class="n">update_cart</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;staff&quot;</span><span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="s2">&quot;edit&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">cart_edit_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;edit&#39;</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;edit_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cart_edit_id</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;edit_ord&quot;</span><span class="p">)</span></div>
+</div>
+
+            
+<div class="viewcode-block" id="EditOrder">
+<a class="viewcode-back" href="../../users.html#users.views.EditOrder">[docs]</a>
+<span class="k">class</span> <span class="nc">EditOrder</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;staff/edit_ord.html&quot;</span>
+
+<div class="viewcode-block" id="EditOrder.get">
+<a class="viewcode-back" href="../../users.html#users.views.EditOrder.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s2">&quot;edit_id&quot;</span><span class="p">):</span>
+            <span class="n">cart_edit_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;edit_id&quot;</span><span class="p">]</span>
+            <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="n">cart_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">cart_obj</span> <span class="ow">in</span> <span class="n">cart</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cart_obj</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">cart_edit_id</span><span class="p">):</span>
+                    <span class="n">items</span> <span class="o">=</span> <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">cart</span><span class="o">=</span><span class="n">cart_obj</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                    <span class="c1"># print(items[1][&#39;product_id&#39;])</span>
+                    <span class="n">cart_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cart_obj</span><span class="p">)</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+
+            <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;cart&quot;</span><span class="p">:</span> <span class="n">cart_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">customer_number</span><span class="p">,</span>
+                <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="EditOrder.post">
+<a class="viewcode-back" href="../../users.html#users.views.EditOrder.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;remove&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">cart_edit_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;edit_id&quot;</span><span class="p">]</span>
+            <span class="n">order_item_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;remove&quot;</span><span class="p">]</span>
+            <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="n">item_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">cart_obj</span> <span class="ow">in</span> <span class="n">cart</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cart_obj</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">cart_edit_id</span><span class="p">):</span>
+                    <span class="n">items</span> <span class="o">=</span> <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cart</span><span class="o">=</span><span class="n">cart_obj</span><span class="p">)</span>
+                    <span class="n">item_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+            
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">item_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">order_item_id</span><span class="p">):</span>
+                    <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">order_item_id</span><span class="p">))</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;staff&quot;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="s2">&quot;done&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">order_items</span> <span class="o">=</span> <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        
+            <span class="k">for</span> <span class="nb">ord</span> <span class="ow">in</span> <span class="n">order_items</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="nb">ord</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+                    <span class="n">new_quantity</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">ord</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+                    <span class="nb">ord</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_quantity</span><span class="p">)</span>
+                    <span class="nb">ord</span><span class="o">.</span><span class="n">cart</span><span class="o">.</span><span class="n">total_price</span> <span class="o">=</span> <span class="nb">ord</span><span class="o">.</span><span class="n">price</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_quantity</span><span class="p">)</span>
+                    <span class="nb">ord</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;staff&quot;</span><span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="s2">&quot;add_ord&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;add_ord&#39;</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="AddOrder">
+<a class="viewcode-back" href="../../users.html#users.views.AddOrder">[docs]</a>
+<span class="k">class</span> <span class="nc">AddOrder</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;staff/staff_add_order.html&quot;</span>
+    
+<div class="viewcode-block" id="AddOrder.get">
+<a class="viewcode-back" href="../../users.html#users.views.AddOrder.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">cat</span><span class="p">,</span>
+            <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">product</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AddOrder.post">
+<a class="viewcode-back" href="../../users.html#users.views.AddOrder.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;add&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">cart_edit_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;edit_id&quot;</span><span class="p">]</span>
+            <span class="n">new_product_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">]</span>
+            <span class="n">new_product_quantity</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;quantity&quot;</span><span class="p">]</span>
+            <span class="n">new_product_obj</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">new_product_id</span><span class="p">))</span>
+            <span class="n">cart</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">cart_obj</span> <span class="ow">in</span> <span class="n">cart</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cart_obj</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">cart_edit_id</span><span class="p">):</span>
+                    <span class="n">order_item</span> <span class="o">=</span> <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">product</span><span class="o">=</span><span class="n">new_product_obj</span><span class="p">,</span> <span class="n">cart</span><span class="o">=</span><span class="n">cart_obj</span><span class="p">,</span> 
+                                                            <span class="n">quantity</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">new_product_quantity</span><span class="p">),</span> <span class="n">price</span><span class="o">=</span><span class="n">new_product_obj</span><span class="o">.</span><span class="n">price</span><span class="p">)</span>
+                    <span class="n">order_item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="s1">&#39;all&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">cat</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">cat</span><span class="p">,</span> <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">product</span><span class="p">}</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cat</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">cat_obj</span> <span class="ow">in</span> <span class="n">cat</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cat_obj</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+                    <span class="n">product_cat</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category_menu</span><span class="o">=</span><span class="n">cat_obj</span><span class="p">)</span>
+                    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">cat</span><span class="p">,</span> <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">product_cat</span><span class="p">}</span>
+                    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="ManagerDashboard">
+<a class="viewcode-back" href="../../users.html#users.views.ManagerDashboard">[docs]</a>
+<span class="k">class</span> <span class="nc">ManagerDashboard</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;manager/manager_dashboard.html&#39;</span>
+    <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ManagerDashboard.get">
+<a class="viewcode-back" href="../../users.html#users.views.ManagerDashboard.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">daily_order</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="p">)</span>
+        <span class="n">orders</span> <span class="o">=</span> <span class="n">Cart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="n">today_discount</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="nb">ord</span> <span class="ow">in</span> <span class="n">daily_order</span><span class="p">:</span>
+            <span class="n">today_discount</span> <span class="o">+=</span> <span class="nb">ord</span><span class="o">.</span><span class="n">discount</span>
+        <span class="n">avg_today_discount</span> <span class="o">=</span> <span class="n">today_discount</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">daily_order</span><span class="p">)</span>
+
+        <span class="n">today_order</span> <span class="o">=</span> <span class="mi">0</span> 
+        <span class="k">for</span> <span class="nb">ord</span> <span class="ow">in</span> <span class="n">daily_order</span><span class="p">:</span>
+            <span class="n">today_order</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">today_sales</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="nb">ord</span> <span class="ow">in</span> <span class="n">today_order</span><span class="p">:</span>
+            <span class="n">today_sales</span> <span class="o">+=</span> <span class="nb">ord</span><span class="o">.</span><span class="n">total_price</span>
+
+        <span class="n">total_sales</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="nb">ord</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
+            <span class="n">total_sales</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">total_order</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="nb">ord</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
+            <span class="n">total_order</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;avg_today_discount&#39;</span><span class="p">:</span> <span class="n">avg_today_discount</span><span class="p">,</span>
+            <span class="s1">&#39;today_order&#39;</span><span class="p">:</span> <span class="n">today_order</span><span class="p">,</span>
+            <span class="s1">&#39;today_sales&#39;</span><span class="p">:</span> <span class="n">today_sales</span><span class="p">,</span>
+            <span class="s1">&#39;total_sales&#39;</span><span class="p">:</span> <span class="n">total_sales</span><span class="p">,</span>
+            <span class="s1">&#39;total_order&#39;</span><span class="p">:</span> <span class="n">total_order</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+</div>
+
+        <span class="c1"># return render(request, self.template_name)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Shop-Project  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">users.views</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, rana danesh.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    </div>
+  </body>
+</html>
